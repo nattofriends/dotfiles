@@ -1,3 +1,3 @@
 #!/bin/bash
 
-aptitude install htop
+aptitude install htop tmux
