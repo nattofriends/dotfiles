@@ -1,0 +1,3 @@
+#!/bin/bash
+
+aptitude install htop tmux ntp curl wget
