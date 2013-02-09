@@ -1,6 +1,6 @@
 #!/bin/bash
 
-aptitude install python python-distribute
+aptitude install -y python python-dev thon-distribute
 curl -O https://raw.github.com/pypa/pip/master/contrib/get-pip.py
 python get-pip.py
 pip install virtualenv
