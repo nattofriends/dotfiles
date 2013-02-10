@@ -9,6 +9,7 @@ alias ltmux="(cd $HOME; if tmux has 2> /dev/null; then tmux -u attach; else tmux
 # Alias for melon
 alias update-upgrade="aptitude update; aptitude upgrade -DWVZ"
 # alias apt-dater="chmod 777 /proc/self/fd/0 && sudo -u apt-dater apt-dater"
+alias update-git="ssh-agent sh -c 'cd /; ssh-add ~/.ssh/id_rsa_gitcontrol; git pull'"
 
 alias naon=nano
 alias nnao=nano
