@@ -40,7 +40,7 @@ alias ltmux="(cd $HOME; if tmux has 2> /dev/null; then tmux -u attach; else tmux
 alias naon=nano
 alias nnao=nano
 
-if [ "ocf.berkeley.edu" == $DOMAIN ]; then
+if [[ "ocf.berkeley.edu" == $DOMAIN ]]; then
     alias plogout="pkill -u $(whoami)"
     alias server-status='ssh death wget -qO - http://localhost/server-status?auto'
     alias apt-dater="ssh -t lightning sudo /opt/puppet/scripts/apt-dater.sh"
@@ -48,7 +48,7 @@ if [ "ocf.berkeley.edu" == $DOMAIN ]; then
     alias kinit-forever="kinit -l52w"
 fi
 
-if [ -d "/.git" ]; then # This machine is git controlled
+if [[ -d "/.git" ]]; then # This machine is git controlled
     alias update-git="ssh-agent sh -c 'cd /; ssh-add ~/.ssh/id_rsa_gitcontrol; git pull'"
 fi
 
@@ -60,22 +60,22 @@ export PATH=$HOME/local/bin:$PATH
 export EDITOR=nano
 
 # Don't export xterm if we already exported screen (probably remote ssh)
-[ "$TERM" != "screen-256color" ] && export TERM='xterm-256color'
+[[ "$TERM" != "screen-256color" ]] && export TERM='xterm-256color'
 # Only export screen if we're in tmux.
-[ -n "$TMUX" ] && export TERM=screen-256color
+[[ -n "$TMUX" ]] && export TERM=screen-256color
 # Then fix if we're on Solaris.
-[ "solaris2.10" == "$OSTYPE" ] && export TERM=xterm
+[[ "solaris2.10" == "$OSTYPE" ]] && export TERM=xterm
 
 case $DOMAIN in
 warosu.org)
     alias update-upgrade='aptitude update; aptitude upgrade -DWVZ'
-    [ "melon" == $(hostname) ] && export PHABRICATOR_ENV='custom/local'
+    [[ "melon" == $(hostname) ]] && export PHABRICATOR_ENV='custom/local'
     ;;
 esac
 
 # So much overhead! It hurts!
 function parse_git_branch {
-  [[ -e `which git` ]] && git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1) /'
+  [[ -e `which git` && "/" != `git rev-parse --show-toplevel 2>/dev/null` ]] && git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1) /'
 }
 
 # Begone, colors!
