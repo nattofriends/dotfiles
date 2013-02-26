@@ -1,31 +1,92 @@
-# Standard .bashrc for debian servers in warosu.
+# Unified .bashrc for natto
+# Domains special cases: warosu.org, ocf.berkeley.edu, (EE)CS.Berkeley.EDU
 
-# Standard aliases
-alias ls='ls -lhALHF --color=auto --group-directories-first'
+case $OSTYPE in
+solaris2.10)  DOMAINNAME=domainname ;;
+linux-gnu)  DOMAINNAME=dnsdomainname ;;
+esac
+
+DOMAIN=$($DOMAINNAME)
+
+####################
+# Sourcing
+####################
+
+case $DOMAIN in
+ocf.berkeley.edu)
+    if [ -r /opt/ocf/share/environment/.bashrc ]; then
+      source /opt/ocf/share/environment/.bashrc
+    fi
+    ;;
+CS.Berkeley.EDU | EECS.Berkeley.EDU)
+    [[ -z ${MASTER} ]] && export MASTER=${LOGNAME%-*}
+    [[ -z ${MASTERDIR} ]] && export MASTERDIR=$(eval echo ~${MASTER})
+    ;;
+esac
+
+##################
+# Aliases
+##################
+
+LS='ls -lhALHF --color=auto --group-directories-first'
+case $OSTYPE in
+solaris2.10)  alias ls='g$LS' ;;
+linux-gnu)  alias ls='$LS' ;;
+esac
+
 alias clears="clear; echo -ne '\e[3J'"
 alias iotop='iotop -oPd 0.5'
 alias ltmux="(cd $HOME; if tmux has 2> /dev/null; then tmux -u attach; else tmux -u new; fi)"
-
-# Alias for melon
-alias update-upgrade="aptitude update; aptitude upgrade -DWVZ"
-# alias apt-dater="chmod 777 /proc/self/fd/0 && sudo -u apt-dater apt-dater"
-alias update-git="ssh-agent sh -c 'cd /; ssh-add ~/.ssh/id_rsa_gitcontrol; git pull'"
-
 alias naon=nano
 alias nnao=nano
 
-# Standard exports
-export TERM='xterm-256color'
-[ -n "$TMUX" ] && export TERM=screen-256color
+if [ "ocf.berkeley.edu" == $DOMAIN ]; then
+    alias plogout="pkill -u $(whoami)"
+    alias server-status='ssh death wget -qO - http://localhost/server-status?auto'
+    alias apt-dater="ssh -t lightning sudo /opt/puppet/scripts/apt-dater.sh"
+    alias print-stats="ssh -t printhost print/stats.py"
+    alias kinit-forever="kinit -l52w"
+fi
+
+if [ -d "/.git" ]; then # This machine is git controlled
+    alias update-git="ssh-agent sh -c 'cd /; ssh-add ~/.ssh/id_rsa_gitcontrol; git pull'"
+fi
+
+##################
+# Exports
+##################
+
+export PATH=$HOME/local/bin:$PATH
 export EDITOR=nano
 
-# Export for melon
-export PHABRICATOR_ENV='custom/local'
+# Don't export xterm if we already exported screen (probably remote ssh)
+[ "$TERM" != "screen-256color" ] && export TERM='xterm-256color'
+# Only export screen if we're in tmux.
+[ -n "$TMUX" ] && export TERM=screen-256color
+# Then fix if we're on Solaris.
+[ "solaris2.10" == "$OSTYPE" ] && export TERM=xterm
 
-# Where the hell did this come from?
-LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=31;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lz=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.axa=00;36:*.oga=00;36:*.spx=00;36:*.xspf=00;36:';
-export LS_COLORS
+case $DOMAIN in
+warosu.org)
+    alias update-upgrade='aptitude update; aptitude upgrade -DWVZ'
+    [ "melon" == $(hostname) ] && export PHABRICATOR_ENV='custom/local'
+    ;;
+esac
 
-# Standard PS1
-PS1='[\D{%m/%d %R:%S}] ${debian_chroot:+($debian_chroot)}\u@\h \w $ '
+# So much overhead! It hurts!
+function parse_git_branch {
+  [[ -e `which git` ]] && git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1) /'
+}
+
+# Begone, colors!
+PS1='[\D{%m/%d %R:%S}] \u $(tput bold)\w $(parse_git_branch)$ $(tput sgr0)'
+
+# tmux start tests -- only for supernova.ocf.berkeley.edu and tomato.warosu.org
+if [ -z "$TMUX" ]; then
+    case $DOMAIN in
+    ocf.berkeley.edu)  [ "supernova" == $(hostname) ] && ltmux ;;
+    warosu.org)  [ "tomato" == $(hostname) ] && ltmux ;;
+    esac
+fi
+
 
