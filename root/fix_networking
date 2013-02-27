@@ -1,0 +1,1 @@
+modprobe -r e1000 && modprobe e1000
