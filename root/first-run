@@ -1,4 +1,4 @@
 #!/bin/bash
 
 aptitude install -y htop tmux ntp curl wget
-chmod 644 ~/.ssh/id_rsa_gitcontrol
+chmod 600 ~/.ssh/id_rsa_gitcontrol
