@@ -79,7 +79,7 @@ function parse_git_branch {
 }
 
 # Begone, colors!
-PS1='[\D{%m/%d %R:%S}] \u $(tput bold)\w $(parse_git_branch)$ $(tput sgr0)'
+PS1='[\D{%m/%d %R:%S}] \u \[$(tput bold)\]\w $(parse_git_branch)$ \[$(tput sgr0)\]'
 
 # tmux start tests -- only for supernova.ocf.berkeley.edu and tomato.warosu.org
 if [ -z "$TMUX" ]; then
