@@ -1,8 +1,8 @@
 #!/bin/bash
 
 aptitude install -y python python-dev python-distribute
-curl -O https://raw.github.com/pypa/pip/master/contrib/get-pip.py
-python get-pip.py
+curl -qO https://raw.github.com/pypa/pip/master/contrib/get-pip.py | python
+# python get-pip.py
 pip install virtualenv
 
-rm get-pip.py
+# rm get-pip.py

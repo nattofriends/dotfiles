@@ -32,6 +32,7 @@ LS='ls -lhALHF --color=auto --group-directories-first'
 case $OSTYPE in
 solaris2.10)  alias ls='g$LS' ;;
 linux-gnu)  alias ls='$LS' ;;
+*)  alias ls='$LS' ;;
 esac
 
 alias clears="clear; echo -ne '\e[3J'"
@@ -39,6 +40,7 @@ alias iotop='iotop -oPd 0.5'
 alias ltmux="(cd $HOME; if tmux has 2> /dev/null; then tmux -u attach; else tmux -u new; fi)"
 alias naon=nano
 alias nnao=nano
+alias n=nano
 
 if [[ "ocf.berkeley.edu" == $DOMAIN ]]; then
     alias plogout="pkill -u $(whoami)"
@@ -77,6 +79,20 @@ esac
 function parse_git_branch {
   [[ -e `which git` && "/" != `git rev-parse --show-toplevel 2>/dev/null` ]] && git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1) /'
 }
+
+export LESS_TERMCAP_mb=$(tput bold; tput setaf 1) # green
+export LESS_TERMCAP_md=$(tput bold; tput setab 234; tput setaf 51) # cyan
+export LESS_TERMCAP_me=$(tput sgr0)
+export LESS_TERMCAP_so=$(tput bold; tput setaf 3; tput setab 4) # yellow on blue
+export LESS_TERMCAP_se=$(tput rmso; tput sgr0)
+export LESS_TERMCAP_us=$(tput smul; tput bold; tput setaf 7) # white
+export LESS_TERMCAP_ue=$(tput rmul; tput sgr0)
+export LESS_TERMCAP_mr=$(tput rev)
+export LESS_TERMCAP_mh=$(tput dim)
+export LESS_TERMCAP_ZN=$(tput ssubm)
+export LESS_TERMCAP_ZV=$(tput rsubm)
+export LESS_TERMCAP_ZO=$(tput ssupm)
+export LESS_TERMCAP_ZW=$(tput rsupm)
 
 # Begone, colors!
 PS1='[\D{%m/%d %R:%S}] \u \[$(tput bold)\]\w $(parse_git_branch)$ \[$(tput sgr0)\]'
