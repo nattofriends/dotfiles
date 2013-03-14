@@ -1,0 +1,6 @@
+This machine is git-controlled.
+
+How to start:
+aptitude install -y git
+sftp root@melon.warosu.org:init_git
+./init_git ssh://melon.warosu.org/~/vm-control
