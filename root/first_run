@@ -1,4 +1,4 @@
 #!/bin/bash
 
-aptitude install -y htop tmux ntp curl wget openssh-server lsof iftop iotop nfs-common_ at_ rpcbind_
+aptitude install -y htop tmux ntp curl wget openssh-server lsof iftop iotop rsync nfs-common_ at_ rpcbind_
 chmod 600 ~/.ssh/id_rsa_gitcontrol
