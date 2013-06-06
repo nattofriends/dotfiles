@@ -1,0 +1,18 @@
+[submodule "root/.vim/bundle/nerdtree"]
+	path = root/.vim/bundle/nerdtree
+	url = https://github.com/scrooloose/nerdtree
+[submodule "root/.vim/bundle/nerdcommenter"]
+	path = root/.vim/bundle/nerdcommenter
+	url = https://github.com/scrooloose/nerdcommenter
+[submodule "root/.vim/bundle/vim-powerline"]
+	path = root/.vim/bundle/vim-powerline
+	url = https://github.com/Lokaltog/vim-powerline
+[submodule "root/.vim/bundle/vim-nerdtree-tabs"]
+	path = root/.vim/bundle/vim-nerdtree-tabs
+	url = https://github.com/jistr/vim-nerdtree-tabs
+[submodule "root/.vim/bundle/python-mode"]
+	path = root/.vim/bundle/python-mode
+	url = https://github.com/klen/python-mode
+[submodule "root/.vim.bundle/vim-colorschemes"]
+	path = root/.vim.bundle/vim-colorschemes
+	url = https://github.com/flazz/vim-colorschemes
