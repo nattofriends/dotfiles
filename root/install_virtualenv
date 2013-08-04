@@ -1,8 +1,10 @@
 #!/bin/bash
 
-aptitude install -y python python-dev python-distribute
+# pip installation requires setuptools...
+aptitude install -y python python-dev python-setuptools
 wget -qO- https://raw.github.com/pypa/pip/master/contrib/get-pip.py | python
-# python get-pip.py
-pip install virtualenv
+# ...but debian's is ancient
+aptitude purge python-setuptools
 
-# rm get-pip.py
+pip install virtualenv setuptools
+
