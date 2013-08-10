@@ -1,10 +1,9 @@
 #!/bin/bash
 
 # pip installation requires setuptools...
-aptitude install -y python python-dev python-setuptools
+aptitude install -y python python-dev
+wget -qO- https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py | python
 wget -qO- https://raw.github.com/pypa/pip/master/contrib/get-pip.py | python
-# ...but debian's is ancient
-aptitude purge python-setuptools
 
 pip install virtualenv setuptools
 
