@@ -1,1 +1,0 @@
-*/30 * * * * root ssh-agent sh -c 'cd /; ssh-add ~/.ssh/id_rsa_gitcontrol; git pull' &> /dev/null

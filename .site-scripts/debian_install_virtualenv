@@ -4,6 +4,7 @@
 aptitude install -y python python-dev
 wget -qO- https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py | python
 wget -qO- https://raw.github.com/pypa/pip/master/contrib/get-pip.py | python
+rm setuptools*tar.gz
 
 pip install virtualenv setuptools
 
