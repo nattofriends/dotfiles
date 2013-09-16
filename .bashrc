@@ -50,7 +50,7 @@ if [[ "ocf.berkeley.edu" == $DOMAIN ]]; then
     alias kinit-forever="kinit -l52w"
 fi
 
-if [[ -d "/.git" ]]; then # This machine is git controlled
+if [[ -d "~.git" ]]; then # This machine is git controlled
     alias update-git="ssh-agent sh -c 'cd /; ssh-add ~/.ssh/id_rsa_gitcontrol; git pull'"
 fi
 
@@ -105,4 +105,6 @@ if [ -z "$TMUX" ]; then
     esac
 fi
 
+# Local changes?!
+[[ -e ".bashrc_local" ]] && source .bashrc_local
 
