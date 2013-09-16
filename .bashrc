@@ -77,7 +77,7 @@ esac
 
 # So much overhead! It hurts!
 function parse_git_branch {
-  [[ -e `which git` && "/" != `git rev-parse --show-toplevel 2>/dev/null` ]] && git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1) /'
+  [[ -e `which git` && $HOME != `git rev-parse --show-toplevel 2>/dev/null` ]] && git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1) /'
 }
 
 export LESS_TERMCAP_mb=$(tput bold; tput setaf 1) # green
