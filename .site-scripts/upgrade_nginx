@@ -1,0 +1,7 @@
+#!/bin/bash
+
+PID=`pgrep -f "nginx: master"`
+for s in SIGUSR2 SIGWINCH SIGQUIT
+do
+	kill -s $s $PID
+done
