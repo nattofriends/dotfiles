@@ -121,5 +121,8 @@ if [ "$SSH_TTY" -a `hostname` = "supernova" ]; then
     kinit --renew
 fi
 
+# Try to automatically update 10% of the time
+[[ $RANDOM -lt 3276 ]] && git pull
+
 # Local changes?!
 [[ -e ".bashrc_local" ]] && source .bashrc_local
