@@ -2,8 +2,8 @@
 # Domains special cases: warosu.org, ocf.berkeley.edu, (EE)CS.Berkeley.EDU
 
 case $OSTYPE in
-solaris2.10)  DOMAINNAME=domainname ;;
-linux-gnu)  DOMAINNAME=dnsdomainname ;;
+    solaris2.10)  DOMAINNAME=domainname ;;
+    linux-gnu)  DOMAINNAME=dnsdomainname ;;
 esac
 
 DOMAIN=$($DOMAINNAME)
@@ -29,10 +29,11 @@ esac
 ##################
 
 LS='ls -lhALHF --color=auto --group-directories-first'
+
 case $OSTYPE in
-solaris2.10)  alias ls='g$LS' ;;
-linux-gnu)  alias ls='$LS' ;;
-*)  alias ls='$LS' ;;
+    solaris2.10)  alias ls='g$LS' ;;
+    linux-gnu)  alias ls='$LS' ;;
+    *)  alias ls='$LS' ;;
 esac
 
 alias clears="clear; echo -ne '\e[3J'"
@@ -48,6 +49,8 @@ if [[ "ocf.berkeley.edu" == $DOMAIN ]]; then
     alias apt-dater="ssh -t lightning sudo /opt/puppet/scripts/apt-dater.sh"
     alias print-stats="ssh -t printhost print/stats.py"
     alias kinit-forever="kinit -l52w"
+    alias apt-dated="ssh -t lightning sudo /root/history.py"
+    alias create="sudo /opt/ocf/packages/create/create.py"
 fi
 
 if [[ -d "~.git" ]]; then # This machine is git controlled
@@ -63,8 +66,10 @@ export EDITOR=nano
 
 # Don't export xterm if we already exported screen (probably remote ssh)
 [[ "$TERM" != "screen-256color" ]] && export TERM='xterm-256color'
+
 # Only export screen if we're in tmux.
 [[ -n "$TMUX" ]] && export TERM=screen-256color
+
 # Then fix if we're on Solaris.
 [[ "solaris2.10" == "$OSTYPE" ]] && export TERM=xterm
 
@@ -105,6 +110,16 @@ if [ -z "$TMUX" ]; then
     esac
 fi
 
+# kinit for ocf
+if [ "$SSH_TTY" -a `hostname` = "supernova" ]; then
+    klist &> /dev/null
+    if [ $? == "1" ] ; then
+        echo Requesting new ticket
+        kinit -l 26w -r 52w
+        klist -v
+    fi
+    kinit --renew
+fi
+
 # Local changes?!
 [[ -e ".bashrc_local" ]] && source .bashrc_local
-
