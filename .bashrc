@@ -51,6 +51,11 @@ if [[ "ocf.berkeley.edu" == $DOMAIN ]]; then
     alias kinit-forever="kinit -l52w"
     alias apt-dated="ssh -t lightning sudo /root/history.py"
     alias create="sudo /opt/ocf/packages/create/create.py"
+    alias reload-vhost="ssh -t death 'sudo ~staff/vhost/buildvirtual.pl && sudo ~staff/vhost/buildvirtual-wrappers.sh && sudo service apache2 reload'"
+    ldapsearch_campus() {
+        ldapsearch -xh nds.berkeley.edu -b dc=berkeley,dc=edu $@
+    }
+
 fi
 
 if [[ -d "~.git" ]]; then # This machine is git controlled
