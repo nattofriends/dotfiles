@@ -89,13 +89,10 @@ let g:nerdtree_tabs_open_on_console_startup=1
 
 set showtabline=2
 
-function YelpSettings()
-    setlocal noexpandtab    " don't turn them into spaces
-    setlocal shiftwidth=4   " auto-indent width
-    setlocal tabstop=4      " display width of a physical tab character
-    setlocal softtabstop=0  " disable part-tab-part-space tabbing
-endfunction
-autocmd BufNewFile,BufRead $HOME/pg/* call YelpSettings()
+set expandtab      " Tab key indents with spaces
+set shiftwidth=4   " auto-indent (e.g. >>) width
+set tabstop=4      " display width of a physical tab character
+set softtabstop=0  " disable part-tab-part-space tabbing
 
 let NERDTreeChDirMode=2
 
