@@ -130,4 +130,4 @@ fi
 [[ $RANDOM -lt 3276 ]] && git pull
 
 # Local changes?!
-[[ -e ".bashrc_local" ]] && source .bashrc_local
+[[ -e "~/.bashrc_local" ]] && source ~/.bashrc_local
