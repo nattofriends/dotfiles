@@ -82,8 +82,10 @@ set lazyredraw
 
 set nobomb
 
+set t_Co=256
 set background=dark
-" colors monokai
+let g:solarized_termcolors=256
+colorscheme solarized
 
 let g:nerdtree_tabs_open_on_console_startup=1
 
@@ -95,9 +97,21 @@ set tabstop=4      " display width of a physical tab character
 set softtabstop=0  " disable part-tab-part-space tabbing
 
 let NERDTreeChDirMode=2
+let NERDTreeMouseMode=2
+let NERDTreeIgnore = ['\.pyc$']
 
-let g:pymode_lint_checker = "pyflakes"
+let g:pymode_lint_checkers = "pyflakes"
 let g:pymode_lint_cwindow = 0
+let g:pymode_motion = 1
+let g:pymode_syntax = 1
+let g:pymode_syntax_all = 1
+let g:pymode_syntax_indent_errors = g:pymode_syntax_all
+let g:pymode_syntax_space_errors = g:pymode_syntax_all
+
+let g:airline_left_sep=''
+let g:airline_right_sep=''
+" let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#tabline#tab_nr_type = 1
 
 "This unsets the "last search pattern" register by hitting return
 nnoremap <CR> :noh<CR><CR>
