@@ -100,7 +100,7 @@ let NERDTreeChDirMode=2
 let NERDTreeMouseMode=2
 let NERDTreeIgnore = ['\.pyc$']
 
-let g:pymode_lint_checkers = "pyflakes"
+let g:pymode_lint_checkers = ['pyflakes']
 let g:pymode_lint_cwindow = 0
 let g:pymode_motion = 1
 let g:pymode_syntax = 1
