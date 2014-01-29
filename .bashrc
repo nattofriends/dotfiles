@@ -90,6 +90,7 @@ function parse_git_branch {
   [[ -e `which git` && $HOME != `git rev-parse --show-toplevel 2>/dev/null` ]] && git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1) /'
 }
 
+if [[ "solaris2.10" != "$OSTYPE" ]]; then
 export LESS_TERMCAP_mb=$(tput bold; tput setaf 1) # green
 export LESS_TERMCAP_md=$(tput bold; tput setab 234; tput setaf 51) # cyan
 export LESS_TERMCAP_me=$(tput sgr0)
@@ -103,6 +104,7 @@ export LESS_TERMCAP_ZN=$(tput ssubm)
 export LESS_TERMCAP_ZV=$(tput rsubm)
 export LESS_TERMCAP_ZO=$(tput ssupm)
 export LESS_TERMCAP_ZW=$(tput rsupm)
+fi
 
 # Begone, colors!
 PS1='[\D{%m/%d %R:%S}] \u \[$(tput bold)\]\w $(parse_git_branch)$ \[$(tput sgr0)\]'
