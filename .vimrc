@@ -7,6 +7,7 @@ call pathogen#helptags()
 " Better command-line completion
 set wildmode=longest,list,full
 set wildmenu
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc
 
 " Show partial commands in the last line of the screen
 set showcmd
