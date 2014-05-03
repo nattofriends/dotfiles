@@ -129,7 +129,7 @@ if [ "$SSH_TTY" -a `hostname` = "supernova" ]; then
 fi
 
 # Try to automatically update 10% of the time
-[[ $RANDOM -lt 3276 ]] && git --git-dir $HOME/.git --work-tree $HOME pull
+[[ $RANDOM -lt 3276 ]] && git --git-dir $HOME/.git --work-tree $HOME pull && git --git-dir $HOME/.git --work-tree $HOME submodule update
 
 # Local changes?!
 [[ -e "$HOME/.bashrc_local" ]] && [[ -z "$_SOURCED_LOCAL" ]] && source $HOME/.bashrc_local
