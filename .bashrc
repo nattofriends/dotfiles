@@ -131,5 +131,8 @@ fi
 # Try to automatically update 10% of the time
 [[ $RANDOM -lt 3276 ]] && git --git-dir $HOME/.git --work-tree $HOME pull && git --git-dir $HOME/.git --work-tree $HOME submodule update
 
+# Notify if restart necessary
+(cat /proc/version | grep Debian) && [[ $(dpkg -l | grep `uname -r` | awk '{print $3}' | uniq) != $(cat /proc/version | awk '{print $NF}') ]] && echo "Kernel restart required"
+
 # Local changes?!
 [[ -e "$HOME/.bashrc_local" ]] && [[ -z "$_SOURCED_LOCAL" ]] && source $HOME/.bashrc_local
