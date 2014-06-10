@@ -1,6 +1,11 @@
 # Unified .bashrc for natto
 # Domains special cases: warosu.org, ocf.berkeley.edu, (EE)CS.Berkeley.EDU
 
+# Nothing interesting? Get the fuck out
+if [[ $- != *i* ]] ; then
+    return
+fi
+
 case $OSTYPE in
     solaris2.10)  DOMAINNAME=domainname ;;
     linux-gnu)  DOMAINNAME=dnsdomainname ;;
