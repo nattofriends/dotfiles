@@ -1,6 +1,11 @@
 # Unified .bashrc for natto
 # Domains special cases: warosu.org, ocf.berkeley.edu, (EE)CS.Berkeley.EDU
 
+# Nothing interesting? Get the fuck out
+if [[ $- != *i* ]] ; then
+    return
+fi
+
 case $OSTYPE in
     solaris2.10)  DOMAINNAME=domainname ;;
     linux-gnu)  DOMAINNAME=dnsdomainname ;;
@@ -90,6 +95,7 @@ function parse_git_branch {
   [[ -e `which git` && $HOME != `git rev-parse --show-toplevel 2>/dev/null` ]] && git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1) /'
 }
 
+if [[ "solaris2.10" != "$OSTYPE" ]]; then
 export LESS_TERMCAP_mb=$(tput bold; tput setaf 1) # green
 export LESS_TERMCAP_md=$(tput bold; tput setab 234; tput setaf 51) # cyan
 export LESS_TERMCAP_me=$(tput sgr0)
@@ -103,6 +109,7 @@ export LESS_TERMCAP_ZN=$(tput ssubm)
 export LESS_TERMCAP_ZV=$(tput rsubm)
 export LESS_TERMCAP_ZO=$(tput ssupm)
 export LESS_TERMCAP_ZW=$(tput rsupm)
+fi
 
 # Begone, colors!
 PS1='[\D{%m/%d %R:%S}] \u \[$(tput bold)\]\w $(parse_git_branch)$ \[$(tput sgr0)\]'
@@ -127,7 +134,10 @@ if [ "$SSH_TTY" -a `hostname` = "supernova" ]; then
 fi
 
 # Try to automatically update 10% of the time
-[[ $RANDOM -lt 3276 ]] && git pull
+[[ $RANDOM -lt 3276 ]] && git --git-dir $HOME/.git --work-tree $HOME pull && git --git-dir $HOME/.git --work-tree $HOME submodule update
+
+# Notify if restart necessary
+(cat /proc/version | grep Debian > /dev/null) && [[ $(dpkg -l | grep `uname -r` | awk '{print $3}' | uniq) != $(cat /proc/version | awk '{print $NF}') ]] && echo "Kernel restart required"
 
 # Local changes?!
-[[ -e ".bashrc_local" ]] && source .bashrc_local
+[[ -e "$HOME/.bashrc_local" ]] && [[ -z "$_SOURCED_LOCAL" ]] && source $HOME/.bashrc_local

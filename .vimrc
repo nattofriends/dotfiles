@@ -7,6 +7,7 @@ call pathogen#helptags()
 " Better command-line completion
 set wildmode=longest,list,full
 set wildmenu
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc
 
 " Show partial commands in the last line of the screen
 set showcmd
@@ -82,25 +83,43 @@ set lazyredraw
 
 set nobomb
 
+set t_Co=256
 set background=dark
-" colors monokai
+let g:solarized_termcolors=256
+colorscheme solarized
 
 let g:nerdtree_tabs_open_on_console_startup=1
 
 set showtabline=2
 
-function YelpSettings()
-    setlocal noexpandtab    " don't turn them into spaces
-    setlocal shiftwidth=4   " auto-indent width
-    setlocal tabstop=4      " display width of a physical tab character
-    setlocal softtabstop=0  " disable part-tab-part-space tabbing
-endfunction
-autocmd BufNewFile,BufRead $HOME/pg/* call YelpSettings()
+set expandtab      " Tab key indents with spaces
+set shiftwidth=4   " auto-indent (e.g. >>) width
+set tabstop=4      " display width of a physical tab character
+set softtabstop=0  " disable part-tab-part-space tabbing
 
 let NERDTreeChDirMode=2
+let NERDTreeMouseMode=2
+let NERDTreeIgnore = ['\.pyc$']
 
-let g:pymode_lint_checker = "pyflakes"
+let g:pymode_lint_checkers = ['pyflakes']
 let g:pymode_lint_cwindow = 0
+let g:pymode_motion = 1
+let g:pymode_syntax = 1
+let g:pymode_syntax_all = 1
+let g:pymode_syntax_indent_errors = g:pymode_syntax_all
+let g:pymode_syntax_space_errors = g:pymode_syntax_all
+let g:pymode_doc = 0
+
+let g:airline_left_sep=''
+let g:airline_right_sep=''
+" let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#tabline#tab_nr_type = 1
 
 "This unsets the "last search pattern" register by hitting return
 nnoremap <CR> :noh<CR><CR>
+
+let g:ctrlp_by_filename = 1
+let g:ctrlp_working_path_mode = 'r'
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
+
