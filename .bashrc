@@ -53,9 +53,8 @@ if [[ "ocf.berkeley.edu" == $DOMAIN ]]; then
     alias server-status='ssh death wget -qO - http://localhost/server-status?auto'
     alias print-stats="ssh -t printhost print/stats.py"
     alias kinit-forever="kinit -l52w"
-    alias apt-dated="ssh -t lightning sudo /root/history.py"
     alias create="sudo /opt/ocf/packages/create/create.py"
-    alias reload-vhost="ssh -t death 'sudo ~staff/vhost/buildvirtual.pl && sudo ~staff/vhost/buildvirtual-wrappers.sh && sudo service apache2 reload'"
+
     ldapsearch_campus() {
         ldapsearch -xh nds.berkeley.edu -b dc=berkeley,dc=edu $@
     }
@@ -86,6 +85,10 @@ case $DOMAIN in
 warosu.org)
     alias update-upgrade='aptitude update; aptitude upgrade -DWVZ'
     [[ "melon" == $(hostname) ]] && export PHABRICATOR_ENV='custom/local'
+    ;;
+ocf.berkeley.edu)
+    export PATH=$HOME/ocf-utils:$PATH
+    export PATH=$HOME/utils-bin:$PATH
     ;;
 esac
 
