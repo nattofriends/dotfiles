@@ -7,3 +7,6 @@
 	autocrlf = false
 [push]
 	default = simple
+[user]
+	name = Timmy Zhu
+	email = nattofriends@gmail.com
