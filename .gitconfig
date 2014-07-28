@@ -3,3 +3,7 @@
 [user]
 	name = Timmy Zhu
 	email = nattofriends@gmail.com
+[core]
+	autocrlf = false
+[push]
+	default = simple
