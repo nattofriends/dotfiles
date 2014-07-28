@@ -51,7 +51,6 @@ alias n=nano
 if [[ "ocf.berkeley.edu" == $DOMAIN ]]; then
     alias plogout="pkill -u $(whoami)"
     alias server-status='ssh death wget -qO - http://localhost/server-status?auto'
-    alias apt-dater="ssh -t lightning sudo /opt/puppet/scripts/apt-dater.sh"
     alias print-stats="ssh -t printhost print/stats.py"
     alias kinit-forever="kinit -l52w"
     alias apt-dated="ssh -t lightning sudo /root/history.py"
@@ -71,7 +70,7 @@ fi
 # Exports
 ##################
 
-export PATH=$HOME/local/bin:$PATH
+export PATH=$HOME/.local/bin:$PATH
 export EDITOR=nano
 
 # Don't export xterm if we already exported screen (probably remote ssh)
