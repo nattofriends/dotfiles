@@ -1,5 +1,4 @@
 # Unified .bashrc for natto
-# Domains special cases: warosu.org, ocf.berkeley.edu, (EE)CS.Berkeley.EDU
 
 # Nothing interesting? Get the fuck out
 if [[ $- != *i* ]] ; then
@@ -43,7 +42,7 @@ esac
 
 alias clears="clear; echo -ne '\e[3J'"
 alias iotop='iotop -oPd 0.5'
-alias ltmux="(cd $HOME; if tmux has 2> /dev/null; then tmux -u attach; else tmux -u new; fi)"
+alias ltmux="(cd $HOME; if tmux has 2> /dev/null; then tmux -u attach -t 0; else tmux -u new; fi)"
 alias naon=nano
 alias nnao=nano
 alias n=nano
@@ -97,22 +96,6 @@ function parse_git_branch {
   [[ -e `which git` && $HOME != `git rev-parse --show-toplevel 2>/dev/null` ]] && git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1) /'
 }
 
-if [[ "solaris2.10" != "$OSTYPE" ]]; then
-export LESS_TERMCAP_mb=$(tput bold; tput setaf 1) # green
-export LESS_TERMCAP_md=$(tput bold; tput setab 234; tput setaf 51) # cyan
-export LESS_TERMCAP_me=$(tput sgr0)
-export LESS_TERMCAP_so=$(tput bold; tput setaf 3; tput setab 4) # yellow on blue
-export LESS_TERMCAP_se=$(tput rmso; tput sgr0)
-export LESS_TERMCAP_us=$(tput smul; tput bold; tput setaf 7) # white
-export LESS_TERMCAP_ue=$(tput rmul; tput sgr0)
-export LESS_TERMCAP_mr=$(tput rev)
-export LESS_TERMCAP_mh=$(tput dim)
-export LESS_TERMCAP_ZN=$(tput ssubm)
-export LESS_TERMCAP_ZV=$(tput rsubm)
-export LESS_TERMCAP_ZO=$(tput ssupm)
-export LESS_TERMCAP_ZW=$(tput rsupm)
-fi
-
 # Begone, colors!
 PS1='[\D{%m/%d %R:%S}] \u \[$(tput bold)\]\w $(parse_git_branch)$ \[$(tput sgr0)\]'
 
@@ -141,5 +124,5 @@ fi
 # Notify if restart necessary
 [[ -e /proc/version ]] && (cat /proc/version | grep Debian > /dev/null) && [[ $(dpkg -l | grep `uname -r` | awk '{print $3}' | uniq) != $(cat /proc/version | awk '{print $NF}') ]] && echo "Kernel restart required"
 
-# Local changes?!
+# Source any local changes
 [[ -e "$HOME/.bashrc_local" ]] && [[ -z "$_SOURCED_LOCAL" ]] && source $HOME/.bashrc_local
