@@ -88,7 +88,8 @@ set background=dark
 let g:solarized_termcolors=256
 colorscheme solarized
 
-let g:nerdtree_tabs_open_on_console_startup=1
+" let g:nerdtree_tabs_open_on_console_startup=1
+let g:nerdtree_tabs_focus_on_files=1
 
 set showtabline=2
 
@@ -134,6 +135,9 @@ nnoremap <leader><leader> :noh <cr>
 
 " Toggling relative number mode.
 nnoremap <silent><leader>n :set rnu! rnu? <cr>
+
+" File browser
+nnoremap <leader>f :NERDTreeTabsToggle <cr>
 
 " Easier rename
 " nmap <leader>rr :call RopeRename() <cr>
