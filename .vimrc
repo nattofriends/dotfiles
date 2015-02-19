@@ -116,14 +116,24 @@ let g:airline_right_sep=''
 " let g:airline#extensions#tabline#enabled = 1
 " let g:airline#extensions#tabline#tab_nr_type = 1
 
-" This unsets the "last search pattern" register by hitting return
-nnoremap <CR> :noh<CR><CR>
 
 let g:ctrlp_by_filename = 1
 let g:ctrlp_working_path_mode = 'r'
 let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
 
-" Set a shortcut for showing the tagbar.
-nmap <c-l> :TagbarToggle<CR>
+" Keyboard stuff
+let mapleader=","
 
+" Set a shortcut for showing the tagbar.
+nnoremap <leader>l :TagbarToggle <cr>
+
+" This unsets the "last search pattern" register by hitting return
+nnoremap <CR> :noh<CR><CR>
+nnoremap <leader><leader> :noh <cr>
+
+" Toggling relative number mode.
+nnoremap <silent><leader>n :set rnu! rnu? <cr>
+
+" Easier rename
+" nmap <leader>rr :call RopeRename() <cr>
