@@ -98,10 +98,17 @@ set shiftwidth=4   " auto-indent (e.g. >>) width
 set tabstop=4      " display width of a physical tab character
 set softtabstop=0  " disable part-tab-part-space tabbing
 
+set relativenumber
+
+" NERDTree
 let NERDTreeChDirMode=2
 let NERDTreeMouseMode=2
 let NERDTreeIgnore = ['\.pyc$']
 
+" NERDCommenter
+let NERDSpaceDelims = 1
+
+" Python-mode
 let g:pymode_lint_checkers = ['pyflakes']
 let g:pymode_lint_cwindow = 0
 let g:pymode_motion = 1
@@ -112,12 +119,13 @@ let g:pymode_syntax_space_errors = g:pymode_syntax_all
 let g:pymode_doc = 0
 let g:pymode_rope_complete_on_dot = 0
 
+" Airline
 let g:airline_left_sep=''
 let g:airline_right_sep=''
 " let g:airline#extensions#tabline#enabled = 1
 " let g:airline#extensions#tabline#tab_nr_type = 1
 
-
+" CtrlP
 let g:ctrlp_by_filename = 1
 let g:ctrlp_working_path_mode = 'r'
 let g:ctrlp_clear_cache_on_exit = 0
@@ -131,13 +139,15 @@ nnoremap <leader>l :TagbarToggle <cr>
 
 " This unsets the "last search pattern" register by hitting return
 nnoremap <CR> :noh<CR><CR>
-nnoremap <leader><leader> :noh <cr>
 
 " Toggling relative number mode.
 nnoremap <silent><leader>n :set rnu! rnu? <cr>
 
 " File browser
 nnoremap <leader>f :NERDTreeTabsToggle <cr>
+
+" Bidirectional search jump
+nmap <leader>s <Plug>(easymotion-s)
 
 " Easier rename
 " nmap <leader>rr :call RopeRename() <cr>
