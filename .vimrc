@@ -118,6 +118,7 @@ let g:pymode_syntax_indent_errors = g:pymode_syntax_all
 let g:pymode_syntax_space_errors = g:pymode_syntax_all
 let g:pymode_doc = 0
 let g:pymode_rope_complete_on_dot = 0
+let g:pymode_rope_rename_bind = '<leader>r'
 
 " Airline
 let g:airline_left_sep=''
@@ -148,6 +149,3 @@ nnoremap <leader>f :NERDTreeTabsToggle <cr>
 
 " Bidirectional search jump
 nmap <leader>s <Plug>(easymotion-s)
-
-" Easier rename
-" nmap <leader>rr :call RopeRename() <cr>
