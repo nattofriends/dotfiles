@@ -111,6 +111,9 @@ let NERDSpaceDelims = 1
 " Python-mode
 let g:pymode_lint_checkers = ['pyflakes']
 let g:pymode_lint_cwindow = 0
+let g:pymode_lint_write = 1
+let g:pymode_lint_on_fly = 1
+let g:pymode_lint_message = 1
 let g:pymode_motion = 1
 let g:pymode_syntax = 1
 let g:pymode_syntax_all = 1
@@ -136,7 +139,7 @@ let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-stand
 let mapleader=","
 
 " Set a shortcut for showing the tagbar.
-nnoremap <leader>l :TagbarToggle <cr>
+nnoremap <leader>t :TagbarToggle <cr>
 
 " This unsets the "last search pattern" register by hitting return
 nnoremap <CR> :noh<CR><CR>
