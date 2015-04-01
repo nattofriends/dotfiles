@@ -118,6 +118,10 @@ if [ "$SSH_TTY" -a `hostname` = "supernova" ]; then
     kinit --renew
 fi
 
+# Multi-terminal history
+shopt -s histappend
+PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
+
 # Try to automatically update 10% of the time
 [[ $RANDOM -lt 3276 ]] && git --git-dir $HOME/.git --work-tree $HOME pull && git --git-dir $HOME/.git --work-tree $HOME submodule update
 
