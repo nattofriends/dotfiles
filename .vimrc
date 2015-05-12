@@ -155,12 +155,9 @@ nnoremap <leader>f :NERDTreeTabsToggle <cr>
 nmap <leader>s <Plug>(easymotion-s)
 
 " Anti-ideological navigation
-nnoremap <C-S-tab> :tabprevious<CR>
-nnoremap <C-tab>   :tabnext<CR>
-nnoremap <C-t>     :tabnew<CR>
-inoremap <C-S-tab> <Esc>:tabprevious<CR>i
-inoremap <C-tab>   <Esc>:tabnext<CR>i
-inoremap <C-t>     <Esc>:tabnew<CR>
+nnoremap <leader>. :tabprevious<CR>
+nnoremap <leader>/ :tabnext<CR>
+nnoremap <C-t> :tabnew<CR>
 nnoremap <leader>1 1gt
 nnoremap <leader>2 2gt
 nnoremap <leader>3 3gt
