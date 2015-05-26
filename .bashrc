@@ -43,9 +43,6 @@ esac
 alias clears="clear; echo -ne '\e[3J'"
 alias iotop='iotop -oPd 0.5'
 alias ltmux="(cd $HOME; if tmux has 2> /dev/null; then tmux -u attach -t 0; else tmux -u new; fi)"
-alias naon=nano
-alias nnao=nano
-alias n=nano
 
 if [[ "ocf.berkeley.edu" == $DOMAIN ]]; then
     alias plogout="pkill -u $(whoami)"
@@ -69,7 +66,7 @@ fi
 ##################
 
 export PATH=$HOME/.local/bin:$PATH
-export EDITOR=nano
+export EDITOR=vim
 
 # Don't export xterm if we already exported screen (probably remote ssh)
 [[ "$TERM" != "screen-256color" ]] && export TERM='xterm-256color'
