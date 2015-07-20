@@ -152,7 +152,7 @@ nnoremap <silent><leader>n :set rnu! rnu? <cr>
 nnoremap <leader>f :NERDTreeTabsToggle <cr>
 
 " Bidirectional search jump
-nmap <leader>s <Plug>(easymotion-s)
+nmap <leader>s <Plug>(easymotion-s2)
 
 " Anti-ideological navigation
 nnoremap <leader>. :tabprevious<CR>
