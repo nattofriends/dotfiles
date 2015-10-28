@@ -168,6 +168,8 @@ nnoremap <leader>7 7gt
 nnoremap <leader>8 8gt
 nnoremap <leader>9 9gt
 
+set pastetoggle=<leader>p
+
 " Tabby tabline
 if exists("+showtabline")
   function! MyTabLine()
