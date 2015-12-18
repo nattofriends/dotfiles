@@ -119,6 +119,10 @@ fi
 shopt -s histappend
 PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
 
+# Disable flow control
+stty ixany
+stty ixoff -ixon
+
 # Try to automatically update 10% of the time
 [[ $RANDOM -lt 3276 ]] && git --git-dir $HOME/.git --work-tree $HOME pull && git --git-dir $HOME/.git --work-tree $HOME submodule update
 
