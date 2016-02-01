@@ -126,8 +126,8 @@ let g:pymode_rope_rename_bind = '<leader>r'
 " Airline
 let g:airline_left_sep=''
 let g:airline_right_sep=''
-" let g:airline#extensions#tabline#enabled = 1
-" let g:airline#extensions#tabline#tab_nr_type = 1
+let g:airline_theme='solarized'
+let g:airline_solarized_bg='dark'
 
 " CtrlP
 let g:ctrlp_by_filename = 1
