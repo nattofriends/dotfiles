@@ -117,7 +117,13 @@ fi
 
 # Multi-terminal history
 shopt -s histappend
-PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
+
+# Standard(tm) window titles
+
+TILDE="~"
+PROMPT_TITLE='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/${TILDE}}\007"'
+
+PROMPT_COMMAND="history -a; $PROMPT_TITLE; $PROMPT_COMMAND"
 
 # Disable flow control
 stty ixany
@@ -125,9 +131,6 @@ stty ixoff -ixon
 
 # Try to automatically update 10% of the time
 [[ $RANDOM -lt 3276 ]] && git --git-dir $HOME/.git --work-tree $HOME pull && git --git-dir $HOME/.git --work-tree $HOME submodule update
-
-# Notify if restart necessary
-[[ -e /proc/version ]] && (cat /proc/version | grep Debian > /dev/null) && [[ $(dpkg -l | grep `uname -r` | awk '{print $3}' | uniq) != $(cat /proc/version | awk '{print $NF}') ]] && echo "Kernel restart required"
 
 # Source any local changes
 [[ -e "$HOME/.bashrc_local" ]] && [[ -z "$_SOURCED_LOCAL" ]] && source $HOME/.bashrc_local
