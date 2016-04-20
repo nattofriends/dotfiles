@@ -208,3 +208,12 @@ if exists("+showtabline")
   endfunction
   set tabline=%!MyTabLine()
 endif
+
+" Directory for undo file
+silent !mkdir ~/.vim/undos > /dev/null 2>&1
+set undodir=~/.vim/undos
+set undofile
+
+if !empty(glob("~/.vimrc_local"))
+    exec 'source' glob("~/.vimrc_local")
+endif
