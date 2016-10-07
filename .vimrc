@@ -58,7 +58,11 @@ set visualbell
 set t_vb=
 
 " Enable use of the mouse for all modes
-set ttymouse=xterm2
+if has("mouse_sgr")
+    set ttymouse=sgr
+else
+    set ttymouse=xterm2
+end
 set mouse=a
 
 " Set the command window height to 2 lines, to avoid many cases of having to
