@@ -88,9 +88,6 @@ set background=dark
 let g:solarized_termcolors=256
 colorscheme solarized
 
-" let g:nerdtree_tabs_open_on_console_startup=1
-let g:nerdtree_tabs_focus_on_files=1
-
 set showtabline=2
 
 set expandtab      " Tab key indents with spaces
@@ -104,24 +101,10 @@ set relativenumber
 let NERDTreeChDirMode=2
 let NERDTreeMouseMode=2
 let NERDTreeIgnore = ['\.pyc$']
+let g:nerdtree_tabs_focus_on_files=1
 
 " NERDCommenter
 let NERDSpaceDelims = 1
-
-" Python-mode
-let g:pymode_lint_checkers = ['pyflakes']
-let g:pymode_lint_cwindow = 0
-let g:pymode_lint_write = 1
-let g:pymode_lint_on_fly = 1
-let g:pymode_lint_message = 1
-let g:pymode_motion = 1
-let g:pymode_syntax = 1
-let g:pymode_syntax_all = 1
-let g:pymode_syntax_indent_errors = g:pymode_syntax_all
-let g:pymode_syntax_space_errors = g:pymode_syntax_all
-let g:pymode_doc = 0
-let g:pymode_rope_complete_on_dot = 0
-let g:pymode_rope_rename_bind = '<leader>r'
 
 " Airline
 let g:airline_left_sep=''
@@ -135,6 +118,32 @@ let g:ctrlp_working_path_mode = 'r'
 let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
 let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
+
+" Tagbar
+let g:tagbar_compact = 1
+let g:tagbar_iconchars = ['+', '-']
+" Fold imports and put them down there
+let g:tagbar_foldlevel = 1
+let g:tagbar_type_python = {
+    \ 'kinds' : [
+        \ 'c:classes',
+        \ 'f:functions',
+        \ 'm:members',
+        \ 'i:imports:1:0',
+        \ 'v:variables:0:0',
+    \ ],
+\ }
+
+" Syntastic
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_wq = 0
+
+let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_python_flake8_args = '--ignore=E265,E301,E501'
+
+" Jedi
+autocmd FileType python setlocal completeopt-=preview
 
 " Keyboard stuff
 let mapleader=","
