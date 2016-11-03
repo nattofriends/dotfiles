@@ -2,7 +2,6 @@
 filetype off
 
 call pathogen#infect()
-call pathogen#helptags()
 
 " Better command-line completion
 set wildmode=longest,list,full
