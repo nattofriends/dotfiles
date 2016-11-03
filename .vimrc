@@ -2,6 +2,9 @@
 runtime bundle/vim-pathogen/autoload/pathogen.vim
 execute pathogen#infect()
 
+filetype plugin indent on
+syntax on
+
 " Better command-line completion
 set wildmode=longest,list,full
 set wildmenu
@@ -14,11 +17,6 @@ set showcmd
 " mapping of <C-L> below)
 set hlsearch
 set incsearch
-set ignorecase
-set smartcase
-
-filetype plugin indent on
-syntax on
 
 " Use case insensitive search, except when using capital letters
 set ignorecase
@@ -98,6 +96,8 @@ set shiftwidth=0    " auto-indent (e.g. >>) width; 0 = use tabstop
 set softtabstop=-1  " disable part-tab-part-space tabbing; < 0 = use tabstop
 
 set relativenumber
+
+set scrolloff=1
 
 " NERDTree
 let NERDTreeChDirMode=2
