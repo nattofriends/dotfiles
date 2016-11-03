@@ -1,7 +1,6 @@
 " Pathogen load
-filetype off
-
-call pathogen#infect()
+runtime bundle/vim-pathogen/autoload/pathogen.vim
+execute pathogen#infect()
 
 " Better command-line completion
 set wildmode=longest,list,full
