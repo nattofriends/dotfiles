@@ -1,0 +1,8 @@
+[alias]
+    co = checkout
+[color]
+	ui = true
+[core]
+	autocrlf = false
+[push]
+	default = simple
