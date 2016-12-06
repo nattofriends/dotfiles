@@ -6,3 +6,5 @@
 	autocrlf = false
 [push]
 	default = simple
+[include]
+    path = .gitconfig_local
