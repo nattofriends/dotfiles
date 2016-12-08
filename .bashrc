@@ -5,33 +5,7 @@ if [[ $- != *i* ]] ; then
     return
 fi
 
-case $OSTYPE in
-    solaris2.10)  DOMAINNAME=domainname ;;
-    linux-gnu)  DOMAINNAME=dnsdomainname ;;
-esac
-
-DOMAIN=$($DOMAINNAME)
-
-####################
-# Sourcing
-####################
-
-case $DOMAIN in
-ocf.berkeley.edu)
-    if [ -r /opt/ocf/share/environment/.bashrc ]; then
-      source /opt/ocf/share/environment/.bashrc
-    fi
-    ;;
-CS.Berkeley.EDU | EECS.Berkeley.EDU)
-    [[ -z ${MASTER} ]] && export MASTER=${LOGNAME%-*}
-    [[ -z ${MASTERDIR} ]] && export MASTERDIR=$(eval echo ~${MASTER})
-    ;;
-esac
-
-##################
 # Aliases
-##################
-
 LS='ls -lhALHF --color=auto --group-directories-first'
 
 case $OSTYPE in
@@ -41,30 +15,11 @@ case $OSTYPE in
 esac
 
 alias clears="clear; echo -ne '\e[3J'"
-alias iotop='iotop -oPd 0.5'
 alias ltmux="(cd $HOME; if tmux has 2> /dev/null; then tmux -u attach -t 0; else tmux -u new; fi)"
+alias sctl=systemctl
+alias g=git
 
-if [[ "ocf.berkeley.edu" == $DOMAIN ]]; then
-    alias plogout="pkill -u $(whoami)"
-    alias server-status='ssh death wget -qO - http://localhost/server-status?auto'
-    alias print-stats="ssh -t printhost print/stats.py"
-    alias kinit-forever="kinit -l52w"
-    alias create="sudo /opt/ocf/packages/create/create.py"
-
-    ldapsearch_campus() {
-        ldapsearch -xh nds.berkeley.edu -b dc=berkeley,dc=edu $@
-    }
-
-fi
-
-if [[ -d "~.git" ]]; then # This machine is git controlled
-    alias update-git="ssh-agent sh -c 'cd /; ssh-add ~/.ssh/id_rsa_gitcontrol; git pull'"
-fi
-
-##################
 # Exports
-##################
-
 export PATH=$HOME/.local/bin:$PATH
 export EDITOR=vim
 
@@ -74,19 +29,7 @@ export EDITOR=vim
 # Only export screen if we're in tmux.
 [[ -n "$TMUX" ]] && export TERM=screen-256color
 
-# Then fix if we're on Solaris.
-[[ "solaris2.10" == "$OSTYPE" ]] && export TERM=xterm
-
-case $DOMAIN in
-warosu.org)
-    alias update-upgrade='aptitude update; aptitude upgrade -DWVZ'
-    [[ "melon" == $(hostname) ]] && export PHABRICATOR_ENV='custom/local'
-    ;;
-ocf.berkeley.edu)
-    export PATH=$HOME/ocf-utils:$PATH
-    export PATH=$HOME/utils-bin:$PATH
-    ;;
-esac
+# Terminal configuration
 
 # So much overhead! It hurts!
 function parse_git_branch {
@@ -96,34 +39,13 @@ function parse_git_branch {
 # Begone, colors!
 PS1='[\D{%m/%d %R:%S}] \u \[$(tput bold)\]\w $(parse_git_branch)$ \[$(tput sgr0)\]'
 
-# tmux start tests -- only for supernova.ocf.berkeley.edu and tomato.warosu.org
-if [ -z "$TMUX" ]; then
-    case $DOMAIN in
-    ocf.berkeley.edu)  [ "supernova" == $(hostname) ] && ltmux ;;
-    warosu.org)  [ "tomato" == $(hostname) ] && ltmux ;;
-    esac
-fi
-
-# kinit for ocf
-if [ "$SSH_TTY" -a `hostname` = "supernova" ]; then
-    klist &> /dev/null
-    if [ $? == "1" ] ; then
-        echo Requesting new ticket
-        kinit -l 26w -r 52w
-        klist -v
-    fi
-    kinit --renew
-fi
+# Standard(tm) window titles
+TILDE="~"
+PROMPT_TITLE='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/${TILDE}}\007"'
+PROMPT_COMMAND="history -a; $PROMPT_TITLE; $PROMPT_COMMAND"
 
 # Multi-terminal history
 shopt -s histappend
-
-# Standard(tm) window titles
-
-TILDE="~"
-PROMPT_TITLE='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/${TILDE}}\007"'
-
-PROMPT_COMMAND="history -a; $PROMPT_TITLE; $PROMPT_COMMAND"
 
 # Disable flow control
 stty ixany
@@ -133,4 +55,4 @@ stty ixoff -ixon
 [[ $RANDOM -lt 3276 ]] && git --git-dir $HOME/.git --work-tree $HOME pull && git --git-dir $HOME/.git --work-tree $HOME submodule update
 
 # Source any local changes
-[[ -e "$HOME/.bashrc_local" ]] && [[ -z "$_SOURCED_LOCAL" ]] && source $HOME/.bashrc_local
+[[ -e "$HOME/.bashrc_local" ]] && source $HOME/.bashrc_local
