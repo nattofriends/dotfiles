@@ -99,6 +99,8 @@ set relativenumber
 
 set scrolloff=1
 
+set list listchars=tab:>>,trail:.,precedes:<,extends:>
+
 " NERDTree
 let NERDTreeChDirMode=2
 let NERDTreeMouseMode=2
