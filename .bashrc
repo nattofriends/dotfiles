@@ -20,8 +20,12 @@ alias sctl=systemctl
 alias g=git
 
 # Exports
-export PATH=$HOME/.local/bin:$PATH
 export EDITOR=vim
+# Stop adding .local/bin so much.
+echo $PATH | grep $HOME/.local/bin > /dev/null
+if [[ "$?" == "1" ]]; then
+    export PATH=$HOME/.local/bin:$PATH
+fi
 
 # Don't export xterm if we already exported screen (probably remote ssh)
 [[ "$TERM" != "screen-256color" ]] && export TERM='xterm-256color'
