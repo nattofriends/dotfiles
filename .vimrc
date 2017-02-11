@@ -5,6 +5,11 @@ execute pathogen#infect()
 filetype plugin indent on
 syntax on
 
+" In Windows it inherits the environment, i.e. cp932
+set encoding=utf-8
+set fileencoding=utf-8
+set fileformats=unix,dos
+
 " Better command-line completion
 set wildmode=longest,list,full
 set wildmenu
@@ -61,6 +66,20 @@ else
 end
 set mouse=a
 
+if has('gui_running')
+    set guifont=Consolas:h9:cANSI:qDRAFT
+    set guifontwide=MS_Gothic
+    set lines=58
+    set columns=213
+    set guioptions-=T
+    set guioptions-=t
+    set guioptions+=c
+    set iminsert=0
+    set imsearch=0
+    set noimcmdline
+    let g:jedi#force_py_version = 2
+endif
+
 " Set the command window height to 2 lines, to avoid many cases of having to
 " "press <Enter> to continue"
 set cmdheight=2
@@ -106,6 +125,8 @@ let NERDTreeChDirMode=2
 let NERDTreeMouseMode=2
 let NERDTreeIgnore = ['\.pyc$']
 let g:nerdtree_tabs_focus_on_files=1
+let g:nerdtree_tabs_open_on_gui_startup=0
+
 
 " NERDCommenter
 let NERDSpaceDelims = 1
