@@ -169,6 +169,7 @@ let g:syntastic_python_flake8_args = '--ignore=E265,E301,E501,F812'
 
 " Jedi
 autocmd FileType python setlocal completeopt-=preview
+let g:jedi#smart_auto_mappings = 0
 
 " Keyboard stuff
 let mapleader=","
