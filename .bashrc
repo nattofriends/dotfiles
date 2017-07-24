@@ -49,7 +49,7 @@ PROMPT_TITLE='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/${TILDE}}\00
 PROMPT_COMMAND="history -a; $PROMPT_TITLE; $PROMPT_COMMAND"
 
 if [[ -n "$TMUX" ]]; then
-    PROMPT_COMMAND="eval "`tmux showenv -s SSH_AUTH_SOCK`" $PROMPT_COMMAND"
+    PROMPT_COMMAND='eval "`tmux showenv -s SSH_AUTH_SOCK`";'" $PROMPT_COMMAND"
 fi
 
 # Multi-terminal history
