@@ -54,6 +54,10 @@ fi
 
 # Multi-terminal history
 shopt -s histappend
+shopt -s cmdhist
+HISTTIMEFORMAT='%F %T '
+HISTFILESIZE=1000000
+HISTSIZE=1000000
 
 # Disable flow control
 stty ixany
