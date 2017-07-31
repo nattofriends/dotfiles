@@ -102,10 +102,28 @@ set lazyredraw
 
 set nobomb
 
-set t_Co=256
-set background=dark
-let g:solarized_termcolors=256
-colorscheme solarized
+" For 24bit support
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+
+function DeepColorToggle()
+    " It's currently 1. Make it 0, i.e. use old solarized
+    if g:deep_color
+        set notermguicolors
+        set background=dark
+        let g:solarized_termcolors=256
+        colorscheme solarized
+    else
+        set termguicolors
+        set background=dark
+        colorscheme NeoSolarized
+    endif
+    let g:deep_color = (g:deep_color + 1) % 2
+endfunction
+
+" Default 0, so we initially call with 1
+let g:deep_color=1
+call DeepColorToggle()
 
 set showtabline=2
 
@@ -176,6 +194,8 @@ let mapleader=","
 
 " Set a shortcut for showing the tagbar.
 nnoremap <leader>t :TagbarToggle <cr>
+
+nnoremap <leader>d :call DeepColorToggle()<cr>
 
 " This unsets the "last search pattern" register by hitting return
 nnoremap <CR> :noh<CR><CR>

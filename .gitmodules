@@ -57,3 +57,6 @@
 [submodule ".vim/bundle/vim-javascript"]
 	path = .vim/bundle/vim-javascript
 	url = https://github.com/pangloss/vim-javascript
+[submodule ".vim/bundle/NeoSolarized"]
+	path = .vim/bundle/NeoSolarized
+	url = https://github.com/icymind/NeoSolarized
