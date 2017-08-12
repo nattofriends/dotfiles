@@ -1,5 +1,8 @@
 # Unified .bashrc for natto
 
+# Pre-hook
+[[ -e "$HOME/.bashrc_prelocal" ]] && source $HOME/.bashrc_prelocal
+
 # Nothing interesting? Get the fuck out
 if [[ $- != *i* ]] ; then
     return
@@ -64,7 +67,10 @@ stty ixany
 stty ixoff -ixon
 
 # Try to automatically update 10% of the time
-[[ $RANDOM -lt 3276 ]] && git --git-dir $HOME/.git --work-tree $HOME pull && git --git-dir $HOME/.git --work-tree $HOME submodule update
+if [[ "$NO_UPDATE" != "1" && $RANDOM -lt 3276 ]]; then
+    git --git-dir $HOME/.git --work-tree $HOME pull
+    git --git-dir $HOME/.git --work-tree $HOME submodule update --init --recursive
+fi
 
 # Source any local changes
 [[ -e "$HOME/.bashrc_local" ]] && source $HOME/.bashrc_local
