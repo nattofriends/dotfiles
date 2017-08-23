@@ -18,7 +18,7 @@ case $OSTYPE in
 esac
 
 alias clears="clear; echo -ne '\e[3J'"
-alias ltmux="(cd $HOME; if tmux has 2> /dev/null; then tmux -u attach -t 0; else tmux -u new; fi)"
+alias ltmux="(cd $HOME; if tmux has 2> /dev/null; then exec tmux -u attach -t 0; else exec tmux -u new; fi)"
 alias sctl=systemctl
 alias g=git
 
