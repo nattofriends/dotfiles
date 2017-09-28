@@ -12,7 +12,7 @@ fi
 LS='ls -lhALHF --color=auto --group-directories-first'
 
 case $OSTYPE in
-    solaris2.10)  alias ls='g$LS' ;;
+    darwin*)  alias ls='g$LS' ;;
     linux-gnu)  alias ls='$LS' ;;
     *)  alias ls='$LS' ;;
 esac
