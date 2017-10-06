@@ -38,7 +38,6 @@ set autoindent
 " While this behaviour deviates from that of Vi, it does what most users
 " coming from other editors would expect.
 set nostartofline
-
 " Display the cursor position on the last line of the screen or in the status
 " line of a window
 set ruler
@@ -278,3 +277,6 @@ set undofile
 if !empty(glob("~/.vimrc_local"))
     exec 'source' glob("~/.vimrc_local")
 endif
+
+" requirements.txt filetype
+autocmd FileType requirements setlocal commentstring=#\ %s
