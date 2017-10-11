@@ -5,6 +5,7 @@
 	ui = true
 [core]
 	autocrlf = false
+    excludesfile = ~/.gitignore_global
 [push]
 	default = simple
 [include]
