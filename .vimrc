@@ -5,6 +5,9 @@ execute pathogen#infect()
 filetype plugin indent on
 syntax on
 
+" Important in some environments...
+set nocompatible
+
 " In Windows it inherits the environment, i.e. cp932
 set encoding=utf-8
 set fileencoding=utf-8
