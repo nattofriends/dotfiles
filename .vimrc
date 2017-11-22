@@ -231,6 +231,9 @@ nnoremap <leader>7 7gt
 nnoremap <leader>8 8gt
 nnoremap <leader>9 9gt
 
+" OSC 52 yank
+vnoremap <leader>y y:call SendViaOSC52(getreg('"'))<CR>
+
 set pastetoggle=<leader>p
 
 " Tabby tabline
