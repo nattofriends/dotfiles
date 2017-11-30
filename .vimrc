@@ -192,6 +192,7 @@ let g:syntastic_check_on_wq = 0
 
 let g:syntastic_python_checkers = ['flake8']
 let g:syntastic_python_flake8_args = '--ignore=E265,E301,E501,F812'
+let g:syntastic_sh_shellcheck_args = '-e SC2046 -e SC2086'
 
 " Jedi
 autocmd FileType python setlocal completeopt-=preview
