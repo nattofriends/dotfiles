@@ -209,6 +209,13 @@ nnoremap <leader>d :call DeepColorToggle()<cr>
 " This unsets the "last search pattern" register by hitting return
 nnoremap <CR> :noh<CR><CR>
 
+" Some different <Esc> alternatives we can try...
+inoremap jk <Esc>
+inoremap ;; <Esc>
+inoremap <Leader><Leader> <Esc>
+
+" 20171203: The following maps seem to be infrequently used
+
 " Toggling relative number mode.
 nnoremap <silent><leader>n :set rnu! rnu? <cr>
 
