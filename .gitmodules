@@ -63,3 +63,6 @@
 [submodule ".vim/bundle/osc52"]
 	path = .vim/bundle/osc52
 	url = https://github.com/fcpg/vim-osc52
+[submodule ".vim/bundle/qf_resize"]
+	path = .vim/bundle/qf_resize
+	url = https://github.com/blueyed/vim-qf_resize
