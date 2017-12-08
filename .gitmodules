@@ -63,3 +63,9 @@
 [submodule ".vim/bundle/qf_resize"]
 	path = .vim/bundle/qf_resize
 	url = https://github.com/blueyed/vim-qf_resize
+[submodule ".vim/bundle/polyglot"]
+	path = .vim/bundle/polyglot
+	url = https://github.com/sheerun/vim-polyglot
+[submodule ".vim/bundle/rooter"]
+	path = .vim/bundle/rooter
+	url = https://github.com/airblade/vim-rooter
