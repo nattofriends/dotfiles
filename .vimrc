@@ -153,9 +153,9 @@ let NERDTreeIgnore = ['\.pyc$']
 let g:nerdtree_tabs_focus_on_files=1
 let g:nerdtree_tabs_open_on_gui_startup=0
 
-
 " NERDCommenter
 let NERDSpaceDelims = 1
+let NERDDefaultAlign = 'left'
 
 " Airline
 let g:airline_left_sep=''
