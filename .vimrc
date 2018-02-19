@@ -161,6 +161,7 @@ let g:airline_left_sep=''
 let g:airline_right_sep=''
 let g:airline_theme='solarized'
 let g:airline_solarized_bg='dark'
+let g:airline#extensions#branch#enabled = 0
 
 " CtrlP
 let g:ctrlp_by_filename = 1
