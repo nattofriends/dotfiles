@@ -104,33 +104,29 @@ set lazyredraw
 
 set nobomb
 
+set background=dark
+
 " For 24bit support
+function! RetoggleTermguicolors()
+    if len($TMUX) == 0
+        let l:isprompt2 = $TERM_PROGRAM == "Prompt_2"
+    else  " We are running inside tmux
+        let l:activeenviron = system("cat /proc/$(tmux list-clients -F \"#{client_activity} #{client_pid}\" | sort -r | head -n 1 | cut -d ' ' -f 2)/environ")
+        let l:isprompt2 = match(l:activeenviron, "TERM_PROGRAM=Prompt_2") > -1
+    endif
+
+    if l:isprompt2
+        set notermguicolors
+    else
+        set termguicolors
+    endif
+endfunction
+
 if has("termguicolors")
+    autocmd VimResized * call RetoggleTermguicolors()
     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-
-    function DeepColorToggle()
-        " It's currently 1. Make it 0, i.e. use old solarized
-        if g:deep_color
-            set notermguicolors
-            set background=dark
-            let g:solarized_termcolors=256
-            colorscheme solarized
-        else
-            set termguicolors
-            set background=dark
-            colorscheme NeoSolarized
-        endif
-        let g:deep_color = (g:deep_color + 1) % 2
-    endfunction
-
-    " Default 0, so we initially call with 1
-    let g:deep_color=1
-    call DeepColorToggle()
-else
-    set background=dark
-    let g:solarized_termcolors=256
-    colorscheme solarized
+    call RetoggleTermguicolors()
 endif
 
 set showtabline=2
