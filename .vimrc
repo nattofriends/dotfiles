@@ -154,8 +154,11 @@ let g:nerdtree_tabs_focus_on_files=1
 let g:nerdtree_tabs_open_on_gui_startup=0
 
 " NERDCommenter
-let NERDSpaceDelims = 1
-let NERDDefaultAlign = 'left'
+let g:NERDSpaceDelims = 1
+" Left aligned linewise commenting.
+let g:NERDDefaultAlign = 'left'
+" Enable block commenting using triple-quoted strings via <Leader>cm
+let g:NERDCustomDelimiters = { 'python': { 'left': '# ', 'leftAlt': '"""', 'rightAlt': '"""' } }
 
 " Airline
 let g:airline_left_sep=''
