@@ -3,7 +3,7 @@
 # Pre-hook
 [[ -e "$HOME/.bashrc_prelocal" ]] && source $HOME/.bashrc_prelocal
 
-# Nothing interesting? Get the fuck out
+# Not interactive? Get out early
 if [[ $- != *i* ]] ; then
     return
 fi
@@ -49,10 +49,32 @@ PS1='[\D{%m/%d %R:%S}] \u \[$(tput bold)\]\w $(parse_git_branch)$ \[$(tput sgr0)
 # Standard(tm) window titles
 TILDE="~"
 PROMPT_TITLE='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/${TILDE}}\007"'
-PROMPT_COMMAND="history -a; $PROMPT_TITLE; $PROMPT_COMMAND"
+PROMPT_COMMAND="history -a; $PROMPT_TITLE"
+
+# Sockminder
+
+# 1. Before every command, link .ssh/sock to the most recently active client.
+function relink_sock {
+    if [[ "$RELINK_DONE" == "1" ]]; then
+        return
+    fi
+
+    # Link the sock to the most recent client
+    # If the client didn't have a SSH_AUTH_SOCK, this will be just empty.
+    ln -sf $(grep -aPo '(?<=SSH_AUTH_SOCK=)[^\0]+' /proc/$(tmux list-clients -F "#{client_activity} #{client_pid}" | sort -r | head -n 1 | cut -d ' ' -f 2)/environ) ~/.ssh/sock
+
+    RELINK_DONE=1
+}
+
+# 2. Clear the early return out once all prompt commands (which constitute the bulk of
+# extra DEBUG traps are done)
+function reset_relink_done {
+    RELINK_DONE=0
+}
 
 if [[ -n "$TMUX" ]]; then
-    PROMPT_COMMAND='eval "$(tmux showenv | grep ^SSH_AUTH_SOCK || echo \":\"); export SSH_AUTH_SOCK";'" $PROMPT_COMMAND"
+    trap relink_sock DEBUG
+    PROMPT_COMMAND="$PROMPT_COMMAND; reset_relink_done"
 fi
 
 # Multi-terminal history
