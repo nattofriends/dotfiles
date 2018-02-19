@@ -1,6 +1,6 @@
-# Unified .bashrc for natto
+# .bashrc everywhere
 
-# Pre-hook
+# Pre-hook (.bashrc_prelocal) {{{1
 [[ -e "$HOME/.bashrc_prelocal" ]] && source $HOME/.bashrc_prelocal
 
 # Not interactive? Get out early
@@ -8,7 +8,7 @@ if [[ $- != *i* ]] ; then
     return
 fi
 
-# Aliases
+# Aliases {{{1
 LS='ls -lhALHF --color=auto --group-directories-first'
 
 case $OSTYPE in
@@ -22,7 +22,7 @@ alias ltmux="(cd $HOME; if tmux has 2> /dev/null; then exec tmux -u attach -t 0;
 alias sctl=systemctl
 alias g=git
 
-# Exports
+# Exports {{{1
 export EDITOR=vim
 # Stop adding .local/bin so much.
 echo $PATH | grep $HOME/.local/bin > /dev/null
@@ -36,7 +36,7 @@ fi
 # Only export screen if we're in tmux.
 [[ -n "$TMUX" ]] && export TERM=screen-256color
 
-# Terminal configuration
+# Terminal configuration {{{1
 
 # So much overhead! It hurts!
 function parse_git_branch {
@@ -51,7 +51,7 @@ TILDE="~"
 PROMPT_TITLE='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/${TILDE}}\007"'
 PROMPT_COMMAND="history -a; $PROMPT_TITLE"
 
-# Sockminder
+# Sockminder {{{1
 
 # 1. Before every command, link .ssh/sock to the most recently active client.
 function relink_sock {
@@ -77,6 +77,7 @@ if [[ -n "$TMUX" ]]; then
     PROMPT_COMMAND="$PROMPT_COMMAND; reset_relink_done"
 fi
 
+# Misc {{{1
 # Multi-terminal history
 shopt -s histappend
 shopt -s cmdhist
@@ -94,5 +95,7 @@ if [[ "$NO_UPDATE" != "1" && $RANDOM -lt 3276 ]]; then
     git --git-dir $HOME/.git --work-tree $HOME submodule update --init --recursive
 fi
 
-# Source any local changes
+# Source .bashrc_local {{{1
 [[ -e "$HOME/.bashrc_local" ]] && source $HOME/.bashrc_local
+
+# vim: foldmethod=marker foldlevel=0

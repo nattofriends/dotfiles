@@ -1,3 +1,4 @@
+" Vim options {{{1
 " Pathogen load
 runtime bundle/vim-pathogen/autoload/pathogen.vim
 execute pathogen#infect()
@@ -79,7 +80,6 @@ if has('gui_running')
     set iminsert=0
     set imsearch=0
     set noimcmdline
-    let g:jedi#force_py_version = 2
 endif
 
 " Set the command window height to 2 lines, to avoid many cases of having to
@@ -92,9 +92,6 @@ set number
 " Quickly time out on keycodes, but never time out on mappings
 set notimeout ttimeout ttimeoutlen=200
 
-" Use <F11> to toggle between 'paste' and 'nopaste'
-" set pastetoggle=<F11>
-
 set showmatch
 set cursorline
 hi cursorline cterm=NONE ctermbg=darkblue ctermfg=white guibg=darkgrey guifg=white
@@ -104,7 +101,23 @@ set lazyredraw
 
 set nobomb
 
+set showtabline=2
+
+set expandtab       " Tab key indents with spaces
+set tabstop=4       " display width of a physical tab character
+set shiftwidth=0    " auto-indent (e.g. >>) width; 0 = use tabstop
+set softtabstop=-1  " disable part-tab-part-space tabbing; < 0 = use tabstop
+
+set relativenumber
+
+set scrolloff=1
+
+set list listchars=tab:>>,trail:.,precedes:<,extends:>
+
+" Colorscheme {{{1
 set background=dark
+
+colorscheme solarized
 
 " For 24bit support
 function! RetoggleTermguicolors()
@@ -129,48 +142,34 @@ if has("termguicolors")
     call RetoggleTermguicolors()
 endif
 
-set showtabline=2
-
-set expandtab       " Tab key indents with spaces
-set tabstop=4       " display width of a physical tab character
-set shiftwidth=0    " auto-indent (e.g. >>) width; 0 = use tabstop
-set softtabstop=-1  " disable part-tab-part-space tabbing; < 0 = use tabstop
-
-set relativenumber
-
-set scrolloff=1
-
-set list listchars=tab:>>,trail:.,precedes:<,extends:>
-
-" NERDTree
+" Plugin options {{{1
+" NERDTree {{{2
 let NERDTreeChDirMode=2
 let NERDTreeMouseMode=2
 let NERDTreeIgnore = ['\.pyc$']
 let g:nerdtree_tabs_focus_on_files=1
 let g:nerdtree_tabs_open_on_gui_startup=0
 
-" NERDCommenter
+" NERDCommenter {{{2
 let g:NERDSpaceDelims = 1
 " Left aligned linewise commenting.
 let g:NERDDefaultAlign = 'left'
 " Enable block commenting using triple-quoted strings via <Leader>cm
 let g:NERDCustomDelimiters = { 'python': { 'left': '# ', 'leftAlt': '"""', 'rightAlt': '"""' } }
 
-" Airline
+" Airline {{{2
 let g:airline_left_sep=''
 let g:airline_right_sep=''
-let g:airline_theme='solarized'
-let g:airline_solarized_bg='dark'
 let g:airline#extensions#branch#enabled = 0
 
-" CtrlP
+" CtrlP {{{2
 let g:ctrlp_by_filename = 1
 let g:ctrlp_working_path_mode = 'r'
 let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
 let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
 
-" Tagbar
+" Tagbar {{{2
 let g:tagbar_compact = 1
 let g:tagbar_iconchars = ['+', '-']
 " Fold imports and put them down there
@@ -185,7 +184,7 @@ let g:tagbar_type_python = {
     \ ],
 \ }
 
-" Syntastic
+" Syntastic {{{2
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_wq = 0
@@ -197,34 +196,25 @@ let g:syntastic_python_flake8_args = '--ignore=E265,E301,E501,F812'
 " SC2086: Double quote to prevent globbing and word splitting
 let g:syntastic_sh_shellcheck_args = '-e SC2006 -e SC2046 -e SC2086'
 
-" Rooter
+" Rooter {{{2
 let g:rooter_use_lcd = 1
 
-" Keyboard stuff
+" Maps and other garbage {{{1
 let mapleader=","
-
-" Set a shortcut for showing the tagbar.
-nnoremap <leader>t :TagbarToggle <cr>
-
-nnoremap <leader>d :call DeepColorToggle()<cr>
-
-" This unsets the "last search pattern" register by hitting return
-nnoremap <CR> :noh<CR><CR>
+set pastetoggle=<leader>p
 
 " Some different <Esc> alternatives we can try...
 inoremap jk <Esc>
 inoremap ;; <Esc>
 inoremap <Leader><Leader> <Esc>
 
-" 20171203: The following maps seem to be infrequently used
+" This unsets the "last search pattern" register by hitting return
+nnoremap <CR> :noh<CR><CR>
 
-" Toggling relative number mode.
-nnoremap <silent><leader>n :set rnu! rnu? <cr>
+" Set a shortcut for showing the tagbar.
+nnoremap <leader>t :TagbarToggle <cr>
 
-" File browser
-nnoremap <leader>f :NERDTreeTabsToggle <cr>
-
-" Bidirectional search jump
+" Easymotion: Search two characters, either direction
 nmap <leader>s <Plug>(easymotion-s2)
 
 " Anti-ideological navigation
@@ -243,8 +233,6 @@ nnoremap <leader>9 9gt
 
 " OSC 52 yank
 vnoremap <leader>y y:call SendViaOSC52(getreg('"'))<CR>
-
-set pastetoggle=<leader>p
 
 " Tabby tabline
 if exists("+showtabline")
@@ -285,14 +273,28 @@ if exists("+showtabline")
   set tabline=%!MyTabLine()
 endif
 
+" requirements.txt filetype
+autocmd FileType requirements setlocal commentstring=#\ %s
+
+" 20171203: The following maps seem to be infrequently used {{{2
+
+" Toggling relative number mode.
+nnoremap <silent><leader>n :set rnu! rnu? <cr>
+
+" File browser
+nnoremap <leader>f :NERDTreeTabsToggle <cr>
+
+" Bidirectional search jump
+command Pfve PairFileVSplitEdit
+
 " Directory for undo file
 silent !mkdir ~/.vim/undos > /dev/null 2>&1
 set undodir=~/.vim/undos
 set undofile
 
+" Source .vimrc_local {{{2
 if !empty(glob("~/.vimrc_local"))
     exec 'source' glob("~/.vimrc_local")
 endif
 
-" requirements.txt filetype
-autocmd FileType requirements setlocal commentstring=#\ %s
+" vim: foldmethod=marker foldlevel=0
