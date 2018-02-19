@@ -117,7 +117,7 @@ set list listchars=tab:>>,trail:.,precedes:<,extends:>
 " Colorscheme {{{1
 set background=dark
 
-colorscheme solarized
+colorscheme onedark
 
 " For 24bit support
 function! RetoggleTermguicolors()

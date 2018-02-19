@@ -66,3 +66,6 @@
 [submodule ".vim/bundle/rooter"]
 	path = .vim/bundle/rooter
 	url = https://github.com/airblade/vim-rooter
+[submodule ".vim/bundle/onedark"]
+	path = .vim/bundle/onedark
+	url = https://github.com/joshdick/onedark.vim
