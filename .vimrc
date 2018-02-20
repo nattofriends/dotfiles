@@ -121,10 +121,16 @@ colorscheme onedark
 
 " For 24bit support
 function! RetoggleTermguicolors()
+    " Disable 24-bit color when the most recent client is Panic Prompt 2,
+    " which does not support it. Luckily for us, Prompt 2 sets the value of
+    " TERM_PROGRAM when it connects. We look for this env var in the client
+    " tmux's environ.
     if len($TMUX) == 0
         let l:isprompt2 = $TERM_PROGRAM == "Prompt_2"
     else  " We are running inside tmux
-        let l:activeenviron = system("cat /proc/$(tmux list-clients -F \"#{client_activity} #{client_pid}\" | sort -r | head -n 1 | cut -d ' ' -f 2)/environ")
+        let l:tmuxclients = reverse(sort(systemlist("tmux list-clients -F \"#{client_activity} #{client_pid}\"")))[0]
+        let l:activetmuxclient = split(l:tmuxclients)[1]
+        let l:activeenviron = readfile("/proc/" . l:activetmuxclient . "/environ")
         let l:isprompt2 = match(l:activeenviron, "TERM_PROGRAM=Prompt_2") > -1
     endif
 
