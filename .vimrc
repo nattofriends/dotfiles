@@ -167,6 +167,12 @@ let g:NERDCustomDelimiters = { 'python': { 'left': '# ', 'leftAlt': '"""', 'righ
 let g:airline_left_sep=''
 let g:airline_right_sep=''
 let g:airline#extensions#branch#enabled = 0
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#tab_nr_type = 1 " tabnr
+let g:airline#extensions#tabline#show_buffers = 0
+let g:airline#extensions#tabline#show_splits = 0
+" They're all tabs
+let g:airline#extensions#tabline#show_tab_type = 0
 
 " CtrlP {{{2
 let g:ctrlp_by_filename = 1
@@ -227,57 +233,12 @@ nmap <leader>s <Plug>(easymotion-s2)
 nnoremap <leader>. :tabprevious<CR>
 nnoremap <leader>/ :tabnext<CR>
 nnoremap <C-t> :tabnew<CR>
-nnoremap <leader>1 1gt
-nnoremap <leader>2 2gt
-nnoremap <leader>3 3gt
-nnoremap <leader>4 4gt
-nnoremap <leader>5 5gt
-nnoremap <leader>6 6gt
-nnoremap <leader>7 7gt
-nnoremap <leader>8 8gt
-nnoremap <leader>9 9gt
+for i in range(1, 9)
+    execute "nnoremap <leader>" . i . " " . i . "gt"
+endfor
 
 " OSC 52 yank
 vnoremap <leader>y y:call SendViaOSC52(getreg('"'))<CR>
-
-" Tabby tabline
-if exists("+showtabline")
-  function! MyTabLine()
-    let s = ''
-    for i in range(tabpagenr('$'))
-      " set up some oft-used variables
-      let tab = i + 1 " range() starts at 0
-      let winnr = tabpagewinnr(tab) " gets current window of current tab
-      let buflist = tabpagebuflist(tab) " list of buffers associated with the windows in the current tab
-      let bufnr = buflist[winnr - 1] " current buffer number
-      let bufname = bufname(bufnr) " gets the name of the current buffer in the current window of the current tab
-
-      let s .= '%' . tab . 'T' " start a tab
-      let s .= (tab == tabpagenr() ? '%#TabLineSel#' : '%#TabLine#') " if this tab is the current tab...set the right highlighting
-      let s .= ' ' . tab " current tab number
-      let n = tabpagewinnr(tab,'$') " get the number of windows in the current tab
-      if n > 1
-        let s .= ':' . n " if there's more than one, add a colon and display the count
-      endif
-      let bufmodified = getbufvar(bufnr, "&mod")
-      if bufmodified
-        let s .= ' +'
-      endif
-      if bufname != ''
-        let s .= ' ' . pathshorten(bufname) . ' ' " outputs the one-letter-path shorthand & filename
-      else
-        let s .= ' [No Name] '
-      endif
-    endfor
-    let s .= '%#TabLineFill#' " blank highlighting between the tabs and the righthand close 'X'
-    let s .= '%T' " resets tab page number?
-    let s .= '%=' " seperate left-aligned from right-aligned
-    let s .= '%#TabLine#' " set highlight for the 'X' below
-    let s .= '%999XX' " places an 'X' at the far-right
-    return s
-  endfunction
-  set tabline=%!MyTabLine()
-endif
 
 " requirements.txt filetype
 autocmd FileType requirements setlocal commentstring=#\ %s
