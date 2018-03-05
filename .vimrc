@@ -124,14 +124,20 @@ function! RetoggleTermguicolors()
     " Disable 24-bit color when the most recent client is Panic Prompt 2,
     " which does not support it. Luckily for us, Prompt 2 sets the value of
     " TERM_PROGRAM when it connects. We look for this env var in the client
-    " tmux's environ.
+    " tmux's environ, if it is supported. Getting the client pid is only
+    " supported starting from tmux 2.1.
     if len($TMUX) == 0
         let l:isprompt2 = $TERM_PROGRAM == "Prompt_2"
     else  " We are running inside tmux
-        let l:tmuxclients = reverse(sort(systemlist("tmux list-clients -F \"#{client_activity} #{client_pid}\"")))[0]
-        let l:activetmuxclient = split(l:tmuxclients)[1]
-        let l:activeenviron = readfile("/proc/" . l:activetmuxclient . "/environ")
-        let l:isprompt2 = match(l:activeenviron, "TERM_PROGRAM=Prompt_2") > -1
+        " We can't access client_pid: just give up for now
+        if g:tmuxversion >= 21
+            let l:tmuxclients = reverse(sort(systemlist("tmux list-clients -F \"#{client_activity} #{client_pid}\"")))[0]
+            let l:activetmuxclient = split(l:tmuxclients)[1]
+            let l:activeenviron = readfile("/proc/" . l:activetmuxclient . "/environ")
+            let l:isprompt2 = match(l:activeenviron, "TERM_PROGRAM=Prompt_2") > -1
+        else
+            let l:isprompt2 = 1
+        endif
     endif
 
     if l:isprompt2
@@ -142,6 +148,8 @@ function! RetoggleTermguicolors()
 endfunction
 
 if has("termguicolors")
+    let g:tmuxversion = substitute(system('tmux -V'), "[^0-9]", '', 'g')
+
     autocmd VimResized * call RetoggleTermguicolors()
     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
