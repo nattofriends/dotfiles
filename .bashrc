@@ -59,9 +59,17 @@ function relink_sock {
         return
     fi
 
+    if [[ "$_TMUX_SUPPORTS_CLIENT_PID" == "0" ]]; then
+        sock=$(grep $(tmux list-clients -F "#{client_activity} #{client_tty}" | sort -r | head -n 1 | cut -d ' ' -f 2) < $TMPDIR/.sockminder.$USER | cut -d ' ' -f 2)
+    else
+        sock=$(grep -aPo '(?<=SSH_AUTH_SOCK=)[^\0]+' /proc/$(tmux list-clients -F "#{client_activity} #{client_pid}" | sort -r | head -n 1 | cut -d ' ' -f 2)/environ) 
+    fi
+
     # Link the sock to the most recent client
     # If the client didn't have a SSH_AUTH_SOCK, this will be just empty.
-    ln -sf $(grep -aPo '(?<=SSH_AUTH_SOCK=)[^\0]+' /proc/$(tmux list-clients -F "#{client_activity} #{client_pid}" | sort -r | head -n 1 | cut -d ' ' -f 2)/environ) ~/.ssh/sock
+    if [[ "$sock" != "" ]]; then
+        ln -sf $sock ~/.ssh/sock
+    fi
 
     RELINK_DONE=1
 }
@@ -72,9 +80,27 @@ function reset_relink_done {
     RELINK_DONE=0
 }
 
+# Cleanup function when using the file method
+function clean_sockminder {
+    # Remove disconnected clients from the sockminder
+    SOCKMINDER=$TMPDIR/.sockminder.$USER
+    (grep -P $(who | sed -r "/^$USER/! d; s/.*(pts\/[[:digit:]]+).*/\1/" | paste -sd '|') $SOCKMINDER > $SOCKMINDER.tmp && mv $SOCKMINDER.tmp $SOCKMINDER) & disown
+}
+
+[ $(tmux -V | tr -dc '0-9') -le 20 ]
+_TMUX_SUPPORTS_CLIENT_PID=$?
+
+# Install the hooks if we are inside tmux.
 if [[ -n "$TMUX" ]]; then
     trap relink_sock DEBUG
     PROMPT_COMMAND="$PROMPT_COMMAND; reset_relink_done"
+else
+    if [[ "$_TMUX_SUPPORTS_CLIENT_PID" == "0" ]]; then
+        echo "Warning: tmux too old to support sock relinking using client_pid method, using file method"
+        SOCKMINDER=$TMPDIR/.sockminder.$USER
+        sort -u <(grep -v $(tty) $SOCKMINDER) <(echo $(tty) $SSH_AUTH_SOCK) > $SOCKMINDER.tmp && mv $SOCKMINDER.tmp $SOCKMINDER
+        clean_sockminder
+    fi
 fi
 
 # Misc {{{1
