@@ -114,6 +114,11 @@ if [[ "$ENABLE_SOCKMINDER" == "1" ]]; then
             write_sockminder
         fi
     fi
+else
+    # Fallback to last-login-wins
+    if [[ -z "$TMUX" && -n "$SSH_AUTH_SOCK" ]]; then
+        ln -sf $SSH_AUTH_SOCK ~/.ssh/sock
+    fi
 fi
 
 # Misc {{{1
