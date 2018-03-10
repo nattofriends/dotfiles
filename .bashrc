@@ -87,8 +87,17 @@ function clean_sockminder {
     (grep -P $(who | sed -r "/^$USER/! d; s/.*(pts\/[[:digit:]]+).*/\1/" | paste -sd '|') $SOCKMINDER > $SOCKMINDER.tmp && mv $SOCKMINDER.tmp $SOCKMINDER) & disown
 }
 
+function write_sockminder {
+    SOCKMINDER=$TMPDIR/.sockminder.$USER
+    sort -u <(grep -v $(tty) $SOCKMINDER) <(echo $(tty) $SSH_AUTH_SOCK) > $SOCKMINDER.tmp && mv $SOCKMINDER.tmp $SOCKMINDER
+    clean_sockminder
+}
+
 [ $(tmux -V | tr -dc '0-9') -le 20 ]
 _TMUX_SUPPORTS_CLIENT_PID=$?
+
+[ -e "/proc" ]
+_SYSTEM_SUPPORTS_PROCFS=$?
 
 # Install the hooks if we are inside tmux.
 if [[ -n "$TMUX" ]]; then
@@ -97,9 +106,10 @@ if [[ -n "$TMUX" ]]; then
 else
     if [[ "$_TMUX_SUPPORTS_CLIENT_PID" == "0" ]]; then
         echo "Warning: tmux too old to support sock relinking using client_pid method, using file method"
-        SOCKMINDER=$TMPDIR/.sockminder.$USER
-        sort -u <(grep -v $(tty) $SOCKMINDER) <(echo $(tty) $SSH_AUTH_SOCK) > $SOCKMINDER.tmp && mv $SOCKMINDER.tmp $SOCKMINDER
-        clean_sockminder
+        write_sockminder
+    elif [[ "$_SYSTEM_SUPPORTS_PROCFS" == "1" ]]; then
+        echo "Warning: system does not support procfs (/proc), using file method"
+        write_sockminder
     fi
 fi
 
