@@ -53,6 +53,8 @@ PROMPT_COMMAND="history -a; $PROMPT_TITLE"
 
 # Sockminder {{{1
 
+# To enable, export ENABLE_SOCKMINDER=1 in .bashrc_prelocal.
+
 # 1. Before every command, link .ssh/sock to the most recently active client.
 function relink_sock {
     if [[ "$RELINK_DONE" == "1" ]]; then
@@ -99,17 +101,18 @@ _TMUX_SUPPORTS_CLIENT_PID=$?
 [ -e "/proc" ]
 _SYSTEM_SUPPORTS_PROCFS=$?
 
-# Install the hooks if we are inside tmux.
-if [[ -n "$TMUX" ]]; then
-    trap relink_sock DEBUG
-    PROMPT_COMMAND="$PROMPT_COMMAND; reset_relink_done"
-else
-    if [[ "$_TMUX_SUPPORTS_CLIENT_PID" == "0" ]]; then
-        echo "Warning: tmux too old to support sock relinking using client_pid method, using file method"
-        write_sockminder
-    elif [[ "$_SYSTEM_SUPPORTS_PROCFS" == "1" ]]; then
-        echo "Warning: system does not support procfs (/proc), using file method"
-        write_sockminder
+if [[ "$ENABLE_SOCKMINDER" == "1" ]]; then
+    if [[ -n "$TMUX" ]]; then
+        trap relink_sock DEBUG
+        PROMPT_COMMAND="$PROMPT_COMMAND; reset_relink_done"
+    else
+        if [[ "$_TMUX_SUPPORTS_CLIENT_PID" == "0" ]]; then
+            echo "Warning: tmux too old to support sock relinking using client_pid method, using file method"
+            write_sockminder
+        elif [[ "$_SYSTEM_SUPPORTS_PROCFS" == "1" ]]; then
+            echo "Warning: system does not support procfs (/proc), using file method"
+            write_sockminder
+        fi
     fi
 fi
 
