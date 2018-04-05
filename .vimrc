@@ -114,6 +114,9 @@ set scrolloff=1
 
 set list listchars=tab:>>,trail:.,precedes:<,extends:>
 
+set splitbelow
+set splitright
+
 " Colorscheme {{{1
 set background=dark
 
