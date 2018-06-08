@@ -222,8 +222,9 @@ let g:syntastic_sh_shellcheck_args = '-e SC2006 -e SC2046 -e SC2086'
 " Rooter {{{2
 let g:rooter_use_lcd = 1
 
-" Argwrap {{{2
-let g:argwrap_tail_comma = 1
+" splitjoin {{{2
+let g:splitjoin_python_brackets_on_separate_lines = 1
+let g:splitjoin_trailing_comma = 1
 
 " Maps and other garbage {{{1
 
@@ -265,9 +266,6 @@ nmap <leader>s <Plug>(easymotion-s2)
 
 " OSC52: yank
 vnoremap <leader>y y:call SendViaOSC52(getreg('"'))<CR>
-
-" Argwrap:
-nnoremap <leader>s :ArgWrap<CR>
 
 " 20171203: The following maps seem to be infrequently used {{{2
 
