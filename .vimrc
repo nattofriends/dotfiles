@@ -212,7 +212,7 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_wq = 0
 
-let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_python_checkers = ['flake8', 'mypy']
 let g:syntastic_python_flake8_args = '--ignore=E265,E301,E501,F812'
 " SC2006: Use $() instead of legacy ``
 " SC2046: Quote this to avoid word splitting
@@ -222,7 +222,12 @@ let g:syntastic_sh_shellcheck_args = '-e SC2006 -e SC2046 -e SC2086'
 " Rooter {{{2
 let g:rooter_use_lcd = 1
 
+" Argwrap {{{2
+let g:argwrap_tail_comma = 1
+
 " Maps and other garbage {{{1
+
+" Vim native functionality {{{2
 let mapleader=","
 set pastetoggle=<leader>p
 
@@ -234,12 +239,6 @@ inoremap <Leader><Leader> <Esc>
 " This unsets the "last search pattern" register by hitting return
 nnoremap <CR> :noh<CR><CR>
 
-" Set a shortcut for showing the tagbar.
-nnoremap <leader>t :TagbarToggle <cr>
-
-" Easymotion: Search two characters, either direction
-nmap <leader>s <Plug>(easymotion-s2)
-
 " Anti-ideological navigation
 nnoremap <leader>. :tabprevious<CR>
 nnoremap <leader>/ :tabnext<CR>
@@ -248,11 +247,27 @@ for i in range(1, 9)
     execute "nnoremap <leader>" . i . " " . i . "gt"
 endfor
 
-" OSC 52 yank
-vnoremap <leader>y y:call SendViaOSC52(getreg('"'))<CR>
-
 " requirements.txt filetype
 autocmd FileType requirements setlocal commentstring=#\ %s
+
+" Command line abbrevation for current file's directory
+" See http://vim.wikia.com/wiki/Easy_edit_of_files_in_the_same_directory
+cabbr <expr> %% expand('%:p:h')
+
+
+" Plugin specific maps {{{2
+
+" Tagbar: Set a shortcut for showing the tagbar.
+nnoremap <leader>t :TagbarToggle <cr>
+
+" Easymotion: Search two characters, either direction
+nmap <leader>s <Plug>(easymotion-s2)
+
+" OSC52: yank
+vnoremap <leader>y y:call SendViaOSC52(getreg('"'))<CR>
+
+" Argwrap:
+nnoremap <leader>s :ArgWrap<CR>
 
 " 20171203: The following maps seem to be infrequently used {{{2
 
@@ -270,7 +285,7 @@ silent !mkdir ~/.vim/undos > /dev/null 2>&1
 set undodir=~/.vim/undos
 set undofile
 
-" Source .vimrc_local {{{2
+" Source .vimrc_local {{{1
 if !empty(glob("~/.vimrc_local"))
     exec 'source' glob("~/.vimrc_local")
 endif
