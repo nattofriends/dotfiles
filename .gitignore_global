@@ -1,3 +1,6 @@
 __pycache__/
 *.swp
 *.swo
+*.pyc
+cscope.out
+tags
