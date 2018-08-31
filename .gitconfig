@@ -6,7 +6,10 @@
 [core]
 	autocrlf = false
     excludesfile = ~/.gitignore_global
+[fetch]
+    prune = true
 [push]
 	default = simple
+
 [include]
     path = .gitconfig_local
