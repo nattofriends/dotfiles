@@ -13,3 +13,6 @@
 
 [include]
     path = .gitconfig_local
+[user]
+	name = nattofriends
+	email = nattofriends@gmail.com
