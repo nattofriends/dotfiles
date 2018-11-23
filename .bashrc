@@ -21,6 +21,7 @@ alias clears="clear; echo -ne '\e[3J'"
 alias ltmux="(cd $HOME; if tmux has 2> /dev/null; then exec tmux -u attach -t 0; else exec tmux -u new; fi)"
 alias sctl=systemctl
 alias g=git
+alias apt-dance='apt update; apt upgrade; apt autoremove; apt autoclean'
 
 # Exports {{{1
 export EDITOR=vim
