@@ -10,9 +10,8 @@
     prune = true
 [push]
 	default = simple
-
-[include]
-    path = .gitconfig_local
 [user]
 	name = nattofriends
 	email = nattofriends@gmail.com
+[include]
+    path = .gitconfig_local
