@@ -72,3 +72,6 @@
 [submodule ".vim/bundle/FastFold"]
 	path = .vim/bundle/FastFold
 	url = https://github.com/Konfekt/FastFold
+[submodule ".vim/bundle/sleuth"]
+	path = .vim/bundle/sleuth
+	url = https://github.com/tpope/vim-sleuth
