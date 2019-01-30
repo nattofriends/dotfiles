@@ -197,12 +197,12 @@ let g:tagbar_compact = 1
 let g:tagbar_iconchars = ['+', '-']
 " Fold imports and put them down there
 let g:tagbar_foldlevel = 1
+let g:tagbar_case_insensitive = 1
 let g:tagbar_type_python = {
     \ 'kinds' : [
         \ 'c:classes',
         \ 'f:functions',
         \ 'm:members',
-        \ 'i:imports:1:0',
         \ 'v:variables:0:0',
     \ ],
 \ }
