@@ -126,9 +126,11 @@ fi
 # Multi-terminal history
 shopt -s histappend
 shopt -s cmdhist
-HISTTIMEFORMAT='%F %T '
+HISTCONTROL=ignoreboth
 HISTFILESIZE=1000000
+HISTIGNORE='ls:bg:fg:history'
 HISTSIZE=1000000
+HISTTIMEFORMAT='%F %T '
 
 # Disable flow control
 stty ixany
