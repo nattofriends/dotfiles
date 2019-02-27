@@ -50,7 +50,7 @@ PS1='[\D{%m/%d %R:%S}] \u \[$(tput bold)\]\w $(parse_git_branch)$ \[$(tput sgr0)
 # Standard(tm) window titles
 TILDE="~"
 PROMPT_TITLE='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/${TILDE}}\007"'
-PROMPT_COMMAND="history -a -n; $PROMPT_TITLE"
+PROMPT_COMMAND="history -a; history -c; history -n; $PROMPT_TITLE"
 
 # Sockminder {{{1
 
