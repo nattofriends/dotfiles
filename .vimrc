@@ -232,11 +232,6 @@ let g:splitjoin_trailing_comma = 1
 let mapleader=","
 set pastetoggle=<leader>p
 
-" Some different <Esc> alternatives we can try...
-inoremap jk <Esc>
-inoremap ;; <Esc>
-inoremap <Leader><Leader> <Esc>
-
 " This unsets the "last search pattern" register by hitting return
 nnoremap <CR> :noh<CR><CR>
 
@@ -266,17 +261,6 @@ nmap <leader>s <Plug>(easymotion-s2)
 
 " OSC52: yank
 vnoremap <leader>y y:call SendViaOSC52(getreg('"'))<CR>
-
-" 20171203: The following maps seem to be infrequently used {{{2
-
-" Toggling relative number mode.
-nnoremap <silent><leader>n :set rnu! rnu? <cr>
-
-" File browser
-nnoremap <leader>f :NERDTreeTabsToggle <cr>
-
-" Bidirectional search jump
-command Pfve PairFileVSplitEdit
 
 " Directory for undo file
 silent !mkdir ~/.vim/undos > /dev/null 2>&1
