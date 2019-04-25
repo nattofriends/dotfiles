@@ -257,7 +257,7 @@ cabbr <expr> %% expand('%:p:h')
 nnoremap <leader>t :TagbarToggle <cr>
 
 " Easymotion: Search two characters, either direction
-nmap <leader>s <Plug>(easymotion-s2)
+map <leader>s <Plug>(easymotion-s2)
 
 " OSC52: yank
 vnoremap <leader>y y:call SendViaOSC52(getreg('"'))<CR>
