@@ -41,7 +41,7 @@ fi
 
 # So much overhead! It hurts!
 function parse_git_branch {
-  [[ -e `which git` && $HOME != `git rev-parse --show-toplevel 2>/dev/null` ]] && git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1) /'
+  [[ -e $(which git) && $HOME != $(git rev-parse --show-toplevel 2>/dev/null) ]] && git symbolic-ref --short HEAD 2>/dev/null || (echo -n "detached at " ; git rev-parse --short HEAD)
 }
 
 # Begone, colors!

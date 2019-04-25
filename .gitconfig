@@ -10,6 +10,8 @@
     prune = true
 [push]
 	default = simple
+[submodule]
+    fetchJobs = 4
 [user]
 	name = nattofriends
 	email = nattofriends@gmail.com
