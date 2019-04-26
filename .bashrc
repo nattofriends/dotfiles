@@ -40,12 +40,17 @@ fi
 # Terminal configuration {{{1
 
 # So much overhead! It hurts!
-function parse_git_branch {
-  [[ -e $(which git) && $HOME != $(git rev-parse --show-toplevel 2>/dev/null) ]] && git symbolic-ref --short HEAD 2>/dev/null || (echo -n "detached at " ; git rev-parse --short HEAD)
+__HAS_GIT=$(which git)
+function git_branch {
+  if [[ -n "$__HAS_GIT" && $HOME != $(git rev-parse --show-toplevel 2>/dev/null) ]]; then
+    echo -n '('
+    (git symbolic-ref --short HEAD 2>/dev/null || (echo -n "detached at " ; git rev-parse --short HEAD)) | tr -d '\n'
+    echo -n ') '
+  fi
 }
 
 # Begone, colors!
-PS1='[\D{%m/%d %R:%S}] \u \[$(tput bold)\]\w $(parse_git_branch)$ \[$(tput sgr0)\]'
+PS1='[\D{%m/%d %R:%S}] \u \[$(tput bold)\]\w $(git_branch)$ \[$(tput sgr0)\]'
 
 # Standard(tm) window titles
 TILDE="~"
