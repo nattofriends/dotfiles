@@ -136,7 +136,7 @@ shopt -s histverify
 HISTCONTROL=ignoreboth
 HISTFILESIZE=1000000
 HISTIGNORE='ls:bg:fg:history'
-HISTSIZE=1000000
+HISTSIZE=10000
 HISTTIMEFORMAT='%F %T '
 
 # Disable flow control

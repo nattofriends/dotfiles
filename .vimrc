@@ -17,7 +17,7 @@ set fileformats=unix,dos
 " Better command-line completion
 set wildmode=longest,list,full
 set wildmenu
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc
+set wildignore+=*/tmp/*,*/__pycache__/*,*.so,*.swp,*.pyc,*.pyo,*.gif,*.jpg,*.png
 
 " Show partial commands in the last line of the screen
 set showcmd
@@ -211,9 +211,10 @@ let g:tagbar_type_python = {
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_wq = 0
+let g:syntastic_aggregate_errors = 1
 
 let g:syntastic_python_checkers = ['flake8', 'mypy']
-let g:syntastic_python_flake8_args = '--ignore=E265,E301,E501,F812'
+let g:syntastic_python_flake8_args = '--extend-ignore=E265,E301,E501,F812'
 " SC2006: Use $() instead of legacy ``
 " SC2046: Quote this to avoid word splitting
 " SC2086: Double quote to prevent globbing and word splitting
