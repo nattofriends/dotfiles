@@ -227,6 +227,9 @@ let g:rooter_use_lcd = 1
 let g:splitjoin_python_brackets_on_separate_lines = 1
 let g:splitjoin_trailing_comma = 1
 
+" indentLine {{{2
+let g:indentLine_concealcursor = ''
+
 " Maps and other garbage {{{1
 
 " Vim native functionality {{{2
