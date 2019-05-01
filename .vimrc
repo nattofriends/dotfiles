@@ -161,8 +161,8 @@ endif
 
 " Plugin options {{{1
 " NERDTree {{{2
-let NERDTreeChDirMode=2
-let NERDTreeMouseMode=2
+let NERDTreeChDirMode = 2
+let NERDTreeMouseMode = 2
 let NERDTreeIgnore = ['\.pyc$']
 let g:nerdtree_tabs_focus_on_files=1
 let g:nerdtree_tabs_open_on_gui_startup=0
@@ -186,11 +186,15 @@ let g:airline#extensions#tabline#show_splits = 0
 let g:airline#extensions#tabline#show_tab_type = 0
 
 " CtrlP {{{2
-let g:ctrlp_by_filename = 1
-let g:ctrlp_working_path_mode = 'r'
 let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
 let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
+let g:ctrlp_match_window = 'results:50'
+let g:ctrlp_tilde_homedir = 1
+let g:ctrlp_mruf_relative = 1
+let g:ctrlp_prompt_mappings = { 'ToggleMRURelative()': ['<F2>'] }  " What an unsatisfying map
+" We never use buffer mode
+let g:ctrlp_types = ['fil', 'mru']
 
 " Tagbar {{{2
 let g:tagbar_compact = 1
@@ -224,6 +228,7 @@ let g:syntastic_sh_shellcheck_args = '-e SC2006 -e SC2046 -e SC2086'
 let g:rooter_use_lcd = 1
 
 " splitjoin {{{2
+
 let g:splitjoin_python_brackets_on_separate_lines = 1
 let g:splitjoin_trailing_comma = 1
 
@@ -237,12 +242,11 @@ let mapleader=","
 set pastetoggle=<leader>p
 
 " This unsets the "last search pattern" register by hitting return
-nnoremap <CR> :noh<CR><CR>
+nnoremap <silent> <CR> :noh<CR><CR>
 
 " Anti-ideological navigation
 nnoremap <leader>. :tabprevious<CR>
 nnoremap <leader>/ :tabnext<CR>
-nnoremap <C-t> :tabnew<CR>
 for i in range(1, 9)
     execute "nnoremap <leader>" . i . " " . i . "gt"
 endfor
@@ -252,7 +256,7 @@ autocmd FileType requirements setlocal commentstring=#\ %s
 
 " Command line abbrevation for current file's directory
 " See http://vim.wikia.com/wiki/Easy_edit_of_files_in_the_same_directory
-cabbr <expr> %% expand('%:p:h')
+cabbr <expr> % expand('%:p:h')
 
 
 " Plugin specific maps {{{2
@@ -265,6 +269,16 @@ map <leader>s <Plug>(easymotion-s2)
 
 " OSC52: yank
 vnoremap <leader>y y:call SendViaOSC52(getreg('"'))<CR>
+
+" CtrlP: Fake :bro old
+function! GlobalCtrlPMRU()
+    " Hope no one will toggle MRU relative (make it go local -> global here)
+    call ctrlp#mrufiles#tgrel()
+    call ctrlp#init('mru')
+    call ctrlp#mrufiles#tgrel()
+endfunction
+
+map <leader>m :call GlobalCtrlPMRU()<CR>
 
 " Directory for undo file
 silent !mkdir ~/.vim/undos > /dev/null 2>&1
