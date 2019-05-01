@@ -101,7 +101,7 @@ function write_sockminder {
     clean_sockminder
 }
 
-[ $(tmux -V | tr -dc '0-9') -le 20 ]
+[ -n $(which tmux) -a $(tmux -V | tr -dc '0-9') -le 20 ]
 _TMUX_SUPPORTS_CLIENT_PID=$?
 
 [ -e "/proc" ]
