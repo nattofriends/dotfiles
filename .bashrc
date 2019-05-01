@@ -40,14 +40,26 @@ fi
 # Terminal configuration {{{1
 
 # So much overhead! It hurts!
-__HAS_GIT=$(which git)
-function git_branch {
-  if [[ -n "$__HAS_GIT" && $HOME != $(git rev-parse --show-toplevel 2>/dev/null) ]]; then
-    echo -n '('
-    (git symbolic-ref --short HEAD 2>/dev/null || (echo -n "detached at " ; git rev-parse --short HEAD)) | tr -d '\n'
-    echo -n ') '
-  fi
-}
+if [[ -n "$(which git)" ]]; then
+  function git_branch {
+    local TOPLEVEL
+    TOPLEVEL=$(git rev-parse --show-toplevel 2>/dev/null)
+    local TOPLEVELRC=$?
+    if [[ $TOPLEVELRC -eq 128 ]]; then
+      return
+    fi
+
+    if [[ $HOME != $TOPLEVEL ]]; then
+      echo -n '('
+      (git symbolic-ref --short HEAD 2>/dev/null || (echo -n "detached at " ; git rev-parse --short HEAD)) | tr -d '\n'
+      echo -n ') '
+    fi
+  }
+else
+  function git_branch {
+    return
+  }
+fi
 
 # Begone, colors!
 PS1='[\D{%m/%d %R:%S}] \u \[$(tput bold)\]\w $(git_branch)$ \[$(tput sgr0)\]'
