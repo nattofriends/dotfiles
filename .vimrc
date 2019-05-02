@@ -241,9 +241,6 @@ let g:indentLine_concealcursor = ''
 let mapleader=","
 set pastetoggle=<leader>p
 
-" This unsets the "last search pattern" register by hitting return
-nnoremap <silent> <CR> :noh<CR><CR>
-
 " Anti-ideological navigation
 nnoremap <leader>. :tabprevious<CR>
 nnoremap <leader>/ :tabnext<CR>
@@ -262,7 +259,7 @@ cabbr <expr> % expand('%:p:h')
 " Plugin specific maps {{{2
 
 " Tagbar: Set a shortcut for showing the tagbar.
-nnoremap <leader>t :TagbarToggle <cr>
+nnoremap <leader>t :TagbarToggle<CR>
 
 " Easymotion: Search two characters, either direction
 map <leader>s <Plug>(easymotion-s2)
@@ -279,6 +276,19 @@ function! GlobalCtrlPMRU()
 endfunction
 
 map <leader>m :call GlobalCtrlPMRU()<CR>
+map <leader>b :CtrlPBuffer<CR>
+
+" is: zv
+" See https://github.com/haya14busa/incsearch.vim/issues/44,
+" https://github.com/haya14busa/is.vim
+let g:is#do_default_mappings = 0
+map n <Plug>(is-n)zv
+map n <Plug>(is-n)zv
+map N <Plug>(is-N)zv
+map * <Plug>(is-*)zv
+map # <Plug>(is-#)zv
+map g* <Plug>(is-g*)zv
+map g# <Plug>(is-g#)zv
 
 " Directory for undo file
 silent !mkdir ~/.vim/undos > /dev/null 2>&1
