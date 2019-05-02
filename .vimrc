@@ -281,6 +281,11 @@ map <leader>b :CtrlPBuffer<CR>
 " is: zv
 " See https://github.com/haya14busa/incsearch.vim/issues/44,
 " https://github.com/haya14busa/is.vim
+" http://vimdoc.sourceforge.net/htmldoc/options.html#'foldopen'
+"   NOTE: When the command is part of a mapping this option is not used.
+"   Add the |zv| command to the mapping to get the same effect.
+"   (rationale: the mapping may want to control opening folds
+"   itself)
 let g:is#do_default_mappings = 0
 map n <Plug>(is-n)zv
 map n <Plug>(is-n)zv
