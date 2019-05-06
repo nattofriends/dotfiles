@@ -190,11 +190,9 @@ let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
 let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
 let g:ctrlp_match_window = 'results:50'
-let g:ctrlp_tilde_homedir = 1
 let g:ctrlp_mruf_relative = 1
 let g:ctrlp_prompt_mappings = { 'ToggleMRURelative()': ['<F2>'] }  " What an unsatisfying map
-" We never use buffer mode
-let g:ctrlp_types = ['fil', 'mru']
+let g:ctrlp_types = ['fil', 'mru', 'buf']
 
 " Tagbar {{{2
 let g:tagbar_compact = 1
@@ -251,6 +249,9 @@ endfor
 " requirements.txt filetype
 autocmd FileType requirements setlocal commentstring=#\ %s
 
+" Make CtrlPBuffer usable
+autocmd BufRead * setlocal bufhidden=delete
+
 " Command line abbrevation for current file's directory
 " See http://vim.wikia.com/wiki/Easy_edit_of_files_in_the_same_directory
 cabbr <expr> % expand('%:p:h')
@@ -259,7 +260,7 @@ cabbr <expr> % expand('%:p:h')
 " Plugin specific maps {{{2
 
 " Tagbar: Set a shortcut for showing the tagbar.
-nnoremap <leader>t :TagbarToggle<CR>
+nnoremap <silent> <leader>t :TagbarToggle<CR>
 
 " Easymotion: Search two characters, either direction
 map <leader>s <Plug>(easymotion-s2)
@@ -275,7 +276,8 @@ function! GlobalCtrlPMRU()
     call ctrlp#mrufiles#tgrel()
 endfunction
 
-map <leader>m :call GlobalCtrlPMRU()<CR>
+map <silent> <leader>o :call GlobalCtrlPMRU()<CR>
+map <leader>m :CtrlPMRUFiles<CR>
 map <leader>b :CtrlPBuffer<CR>
 
 " is: zv
