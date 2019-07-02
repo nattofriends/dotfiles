@@ -1,4 +1,12 @@
+# The global .gitignore which applies across any site where these dotfiles are deployed.
+
+# https://git-scm.com/docs/gitignore
+
+.mypy_cache/
+.pytest_cache/
+.tox/
 __pycache__/
+venv/
 *.swp
 *.swo
 *.pyc

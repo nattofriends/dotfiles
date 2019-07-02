@@ -1,0 +1,8 @@
+# The .gitignore for this repo, i.e. the dotfiles repo.
+
+# https://git-scm.com/docs/gitignore
+
+# Ignore basically everything to prevent chaos. Adding new files will need
+# to use -f.
+
+*
