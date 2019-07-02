@@ -2,18 +2,20 @@
     co = checkout
     sm = submodule
 [color]
-	ui = true
+    ui = true
 [core]
-	autocrlf = false
+    autocrlf = false
     excludesfile = ~/.gitignore_global
 [fetch]
     prune = true
 [push]
-	default = simple
+    default = simple
 [submodule]
     fetchJobs = 4
 [user]
-	name = nattofriends
-	email = nattofriends@gmail.com
+    name = nattofriends
+    email = nattofriends@gmail.com
+[diff]
+    renames = copy
 [include]
     path = .gitconfig_local
