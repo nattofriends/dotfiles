@@ -215,12 +215,14 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_aggregate_errors = 1
 
-let g:syntastic_python_checkers = ['flake8', 'mypy']
+let g:syntastic_python_checkers = ['flake8']
 let g:syntastic_python_flake8_args = '--extend-ignore=E265,E301,E501,F812'
 " SC2006: Use $() instead of legacy ``
 " SC2046: Quote this to avoid word splitting
 " SC2086: Double quote to prevent globbing and word splitting
 let g:syntastic_sh_shellcheck_args = '-e SC2006 -e SC2046 -e SC2086'
+let g:syntastic_yaml_checkers = ['yamllint']
+let g:syntastic_yaml_yamllint_args = '-d "{extends: default, rules: {line-length: {max: 160}}}"'
 
 " Rooter {{{2
 let g:rooter_use_lcd = 1
@@ -267,6 +269,9 @@ map <leader>s <Plug>(easymotion-s2)
 
 " OSC52: yank
 vnoremap <leader>y y:call SendViaOSC52(getreg('"'))<CR>
+
+" Syntastic: add mypy when enabled
+autocmd FileType python if filereadable(getcwd() . "/mypy.ini") && expand("%:p") !~ '/virtualenv_run/\|/venv/' | let b:syntastic_checkers = add(copy(g:syntastic_python_checkers), 'mypy')
 
 " CtrlP: Fake :bro old
 function! GlobalCtrlPMRU()
