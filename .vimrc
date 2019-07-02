@@ -242,10 +242,10 @@ let mapleader=","
 set pastetoggle=<leader>p
 
 " Anti-ideological navigation
-nnoremap <leader>. :tabprevious<CR>
-nnoremap <leader>/ :tabnext<CR>
+nnoremap <silent> <leader>. :tabprevious<CR>
+nnoremap <silent> <leader>/ :tabnext<CR>
 for i in range(1, 9)
-    execute "nnoremap <leader>" . i . " " . i . "gt"
+    execute "nnoremap <silent> <leader>" . i . " " . i . "gt"
 endfor
 
 " requirements.txt filetype
