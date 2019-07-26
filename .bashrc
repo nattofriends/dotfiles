@@ -158,7 +158,7 @@ stty ixoff -ixon
 # Try to automatically update 10% of the time
 if [[ "$NO_UPDATE" != "1" && $RANDOM -lt 3276 ]]; then
     git --git-dir $HOME/.git --work-tree $HOME pull --no-edit
-    git --git-dir $HOME/.git --work-tree $HOME submodule update --init --recursive
+    (git --git-dir $HOME/.git --work-tree $HOME submodule update --init --recursive &)
 fi
 
 # Source .bashrc_local {{{1
