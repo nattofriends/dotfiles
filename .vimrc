@@ -133,14 +133,13 @@ function! RetoggleTermguicolors()
         let l:isprompt2 = $TERM_PROGRAM == "Prompt_2"
     else  " We are running inside tmux
         if g:tmuxversion >= 21
-            let l:platform = system("uname")
             let l:tmuxclients = reverse(sort(systemlist("tmux list-clients -F \"#{client_activity} #{client_pid}\"")))[0]
             let l:activetmuxclient = split(l:tmuxclients)[1]
 
             let l:activeenviron = ""
-            if l:platform == "Linux"
+            if g:platform == "Linux"
                 let l:activeenviron = readfile("/proc/" . l:activetmuxclient . "/environ")
-            elseif l:platform == "Darwin"
+            elseif g:platform == "Darwin"
                 let l:activeenviron = system("ps eww -o command= -p " . l:activetmuxclient)
             endif
 
@@ -160,6 +159,7 @@ endfunction
 
 if has("termguicolors")
     let g:tmuxversion = substitute(system('tmux -V'), "[^0-9]", '', 'g')
+    let g:platform = system("uname")
 
     autocmd VimResized * call RetoggleTermguicolors()
     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
