@@ -132,13 +132,21 @@ function! RetoggleTermguicolors()
     if len($TMUX) == 0
         let l:isprompt2 = $TERM_PROGRAM == "Prompt_2"
     else  " We are running inside tmux
-        " We can't access client_pid: just give up for now
         if g:tmuxversion >= 21
+            let l:platform = system("uname")
             let l:tmuxclients = reverse(sort(systemlist("tmux list-clients -F \"#{client_activity} #{client_pid}\"")))[0]
             let l:activetmuxclient = split(l:tmuxclients)[1]
-            let l:activeenviron = readfile("/proc/" . l:activetmuxclient . "/environ")
+
+            let l:activeenviron = ""
+            if l:platform == "Linux"
+                let l:activeenviron = readfile("/proc/" . l:activetmuxclient . "/environ")
+            elseif l:platform == "Darwin"
+                let l:activeenviron = system("ps eww -o command= -p " . l:activetmuxclient)
+            endif
+
             let l:isprompt2 = match(l:activeenviron, "TERM_PROGRAM=Prompt_2") > -1
         else
+            " We can't access client_pid: just give up for now
             let l:isprompt2 = 1
         endif
     endif
