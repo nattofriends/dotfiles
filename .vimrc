@@ -17,7 +17,7 @@ set fileformats=unix,dos
 " Better command-line completion
 set wildmode=longest,list,full
 set wildmenu
-set wildignore+=*/tmp/*,*/__pycache__/*,*.so,*.swp,*.pyc,*.pyo,*.gif,*.jpg,*.png
+set wildignore+=*/tmp/*,*/__pycache__/*,*/.mypy_cache/*,*.so,*.swp,*.pyc,*.pyo,*.gif,*.jpg,*.png
 
 " Show partial commands in the last line of the screen
 set showcmd
