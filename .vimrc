@@ -62,10 +62,12 @@ set visualbell
 set t_vb=
 
 " Enable use of the mouse for all modes
-if has("mouse_sgr")
-    set ttymouse=sgr
-else
-    set ttymouse=xterm2
+if !has('nvim')
+    if has("mouse_sgr")
+        set ttymouse=sgr
+    else
+        set ttymouse=xterm2
+    end
 end
 set mouse=a
 
