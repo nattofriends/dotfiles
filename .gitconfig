@@ -6,7 +6,7 @@
         set +x; \
         git sm deinit -f $1; \
         rm -rf $(git rev-parse --show-toplevel)/.git/modules/$1; \
-        git sm update init --recursive -- $1 \
+        git sm update --init --recursive -- $1; \
     }; f"
 [color]
     ui = true
