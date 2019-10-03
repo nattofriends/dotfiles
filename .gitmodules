@@ -81,3 +81,6 @@
 [submodule ".vim/bundle/lastplace"]
 	path = .vim/bundle/lastplace
 	url = https://github.com/farmergreg/vim-lastplace
+[submodule ".vim/bundle/osc52"]
+	path = .vim/bundle/osc52
+	url = https://github.com/ShikChen/osc52.vim
