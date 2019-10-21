@@ -119,17 +119,10 @@ set list listchars=tab:>>,trail:.,precedes:<,extends:>
 set splitbelow
 set splitright
 
-" Force italic support because I'm too stupid to understand terminfo
-let &t_ZH="\e[3m"
-let &t_ZR="\e[23m"
-
 " Colorscheme {{{1
 set background=dark
 
 colorscheme onedark
-
-" Comments get highlights
-highlight Comment cterm=italic
 
 " For 24bit support
 function! RetoggleTermguicolors()
