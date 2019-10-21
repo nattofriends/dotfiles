@@ -124,8 +124,8 @@ set background=dark
 
 colorscheme onedark
 
-" Comments get highlights
-highlight Comment cterm=italic
+" Comments get italics. Vim considers TUI as cterm; Neovim reads gui.
+highlight Comment cterm=italic gui=italic
 
 " For 24bit support
 function! RetoggleTermguicolors()
