@@ -124,6 +124,9 @@ set background=dark
 
 colorscheme onedark
 
+" Comments get highlights
+highlight Comment cterm=italic
+
 " For 24bit support
 function! RetoggleTermguicolors()
     " Disable 24-bit color when the most recent client is Panic Prompt 2,
