@@ -120,12 +120,14 @@ set splitbelow
 set splitright
 
 " Colorscheme {{{1
+" If something goes horribly wrong, still use the built in dark colors.
 set background=dark
 
-colorscheme onedark
-
 " Comments get italics. Vim considers TUI as cterm; Neovim reads gui.
-highlight Comment cterm=italic gui=italic
+autocmd ColorScheme * highlight Comment cterm=italic gui=italic
+
+" Don't forget me, beautiful `taxicab`
+colorscheme onedark
 
 " For 24bit support
 function! RetoggleTermguicolors()
