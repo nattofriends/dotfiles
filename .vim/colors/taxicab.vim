@@ -17,13 +17,14 @@ hi Label guifg=#000000 guibg=NONE cterm=bold
 hi Operator guifg=#000000 guibg=NONE cterm=bold
 hi Repeat guifg=#000000 guibg=NONE cterm=bold
 
-" Italic: Data
-hi Comment guifg=#000000 cterm=italic
-hi Constant guifg=#000000 guibg=NONE cterm=italic
-hi Number guifg=#000000 guibg=NONE cterm=italic
+" Italic: comments
+" Comment and SpecialComment go together?
+hi Comment guifg=#000000 guibg=#ffdf41 cterm=italic
 hi SpecialComment guifg=#000000 guibg=#ffdf41 cterm=italic
 
-" Special
+" Inverted: data
+hi Constant guifg=#ffdf41 guibg=#000000
+hi Number guifg=#ffdf41 guibg=#000000
 hi String guifg=#ffdf41 guibg=#000000
 
 " Everything else
@@ -53,8 +54,10 @@ hi ColorColumn guibg=#000000
 " Skip: Conceal, Cursor, CursorIM
 hi Conceal guibg=#ffdf41 guifg=#000000
 hi CursorColumn guibg=#ffdf41 guifg=#000000
-hi CursorLine guibg=#ffdf41 guifg=#000000
-hi CursorLineNr guifg=#000000 guibg=NONE
+
+" No additional color for CursorLine, sorry.
+hi CursorLine guifg=NONE guibg=NONE
+hi CursorLineNr guifg=#ffdf41 guibg=#000000 cterm=NONE
 
 hi Folded cterm=bold guibg=#ffdf41 guifg=#000000
 hi LineNr cterm=italic guifg=#000000 guibg=#ffdf41
