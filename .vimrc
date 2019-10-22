@@ -213,6 +213,7 @@ let g:tagbar_iconchars = ['+', '-']
 " Fold imports and put them down there
 let g:tagbar_foldlevel = 1
 let g:tagbar_case_insensitive = 1
+let g:tagbar_show_visibility = 0
 let g:tagbar_type_python = {
     \ 'kinds' : [
         \ 'c:classes',
@@ -247,6 +248,7 @@ let g:splitjoin_trailing_comma = 1
 
 " indentLine {{{2
 let g:indentLine_concealcursor = ''
+let g:indentLine_setColors = 0
 
 " Maps and other garbage {{{1
 
