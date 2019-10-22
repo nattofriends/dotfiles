@@ -31,12 +31,6 @@ if [[ "$?" == "1" ]]; then
     export PATH=$HOME/.local/bin:$PATH
 fi
 
-# Don't export xterm if we already exported screen (probably remote ssh)
-[[ "$TERM" != "screen-256color" ]] && export TERM='xterm-256color'
-
-# Only export screen if we're in tmux.
-[[ -n "$TMUX" ]] && export TERM=screen-256color
-
 # Terminal configuration {{{1
 
 # So much overhead! It hurts!
