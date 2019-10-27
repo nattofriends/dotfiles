@@ -6,6 +6,8 @@ let s:reverse = [ '#000000', '#ffcd00', '16', '220' ]
 let g:airline#themes#taxicab#palette.normal = airline#themes#generate_color_map(s:normal, s:reverse, s:reverse)
 
 let g:airline#themes#taxicab#palette.normal.airline_warning = s:reverse
+let g:airline#themes#taxicab#palette.normal.airline_error = s:reverse
+let g:airline#themes#taxicab#palette.normal.airline_term = s:reverse
 
 " From dark_minimal
 let pal = g:airline#themes#taxicab#palette

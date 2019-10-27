@@ -75,7 +75,7 @@ for highlight_group in [
     \"ColorColumn", "Cursor","CursorIM", "CursorColumn", "CursorLineNr", "DiffAdd",
     \"DiffChange", "DiffDelete", "ErrorMsg", "FoldColumn", "PMenu", "PMenuThumb",
     \"Question", "Search", "SpecialKey", "TabLineSel", "TabLineFill", "Visual",
-    \"VertSplit", "Warning"
+    \"VertSplit", "WarningMsg"
 \]
     call s:h(highlight_group, s:reverse)
 endfor
