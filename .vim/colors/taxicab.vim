@@ -87,7 +87,7 @@ call s:h("LineNr", { "attrs": "italic" })
 
 " Plugin highlighting groups {{{1
 " TagBar
-for highlight_group in ["TagBarVisivilityPublic", "TagBarVisibilityProtected", "TagBarVisibilityPrivate"]
+for highlight_group in ["TagBarVisibilityPublic", "TagBarVisibilityProtected", "TagBarVisibilityPrivate"]
     call s:h(highlight_group, s:normal)
 endfor
 
