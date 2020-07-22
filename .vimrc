@@ -248,7 +248,7 @@ let g:syntastic_yaml_checkers = ['yamllint']
 let g:syntastic_yaml_yamllint_args = '-d "{extends: default, rules: {line-length: {max: 160}}}"'
 
 " Rooter {{{2
-let g:rooter_use_lcd = 1
+let g:rooter_cd_cmd = "lcd"
 
 " splitjoin {{{2
 
