@@ -243,6 +243,12 @@ let g:tagbar_type_groovy = {
         \ 'f:fields:1'
     \ ]
 \ }
+let g:tagbar_type_make = {
+    \ 'kinds': [
+        \ 'm:macros',
+        \ 't:targets'
+    \ ]
+\ }
 
 " Syntastic {{{2
 let g:syntastic_always_populate_loc_list = 1
