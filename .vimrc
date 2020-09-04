@@ -231,6 +231,17 @@ let g:tagbar_type_python = {
         \ 'v:variables:0:0',
     \ ],
 \ }
+let g:tagbar_type_groovy = {
+    \ 'kinds'     : [
+        \ 'p:package:1',
+        \ 'c:classes',
+        \ 'i:interfaces',
+        \ 't:traits',
+        \ 'e:enums',
+        \ 'm:methods',
+        \ 'f:fields:1'
+    \ ]
+\ }
 
 " Syntastic {{{2
 let g:syntastic_always_populate_loc_list = 1

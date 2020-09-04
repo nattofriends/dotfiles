@@ -1,0 +1,7 @@
+--langdef=groovy
+--langmap=groovy:.groovy
+
+--regex-C=/$x/x/x/e/ Started from https://bitbucket.org/sw-samuraj/vim-gradle/src/628cf97bb86b807759519e93ccc88ec24da229a0/ctags/groovy.ctags?at=default&fileviewer=file-view-default, now we here
+--regex-C=/$x/x/x/e/ Removed most regexes because they don't pertain to Jenkinsfiles
+
+--regex-groovy=/^[(abstract|final|static) \t]*((def|void|byte|int|short|long|float|double|boolean|char|[A-Z][a-zA-Z0-9_]*)[ \t]+)?([a-zA-Z0-9_]+\((([a-zA-Z0-9<>]+[ \t]+)?[a-zA-Z0-9$]+([ \t]*=.*+)?[ \t,]*)*\))[ \t]+/\3/m,package method/
