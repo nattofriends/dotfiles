@@ -263,7 +263,7 @@ let g:syntastic_python_flake8_args = '--extend-ignore=E265,E301,E501,F812'
 " SC2086: Double quote to prevent globbing and word splitting
 let g:syntastic_sh_shellcheck_args = '-e SC2006 -e SC2046 -e SC2086'
 let g:syntastic_yaml_checkers = ['yamllint']
-let g:syntastic_yaml_yamllint_args = '-d "{extends: default, rules: {line-length: {max: 160}}}"'
+let g:syntastic_yaml_yamllint_args = '-d "{extends: relaxed, rules: {line-length: {max: 160}}}"'
 
 " Rooter {{{2
 let g:rooter_cd_cmd = "lcd"
