@@ -84,3 +84,6 @@
 [submodule ".vim/bundle/osc52"]
 	path = .vim/bundle/osc52
 	url = https://github.com/ShikChen/osc52.vim
+[submodule ".vim/bundle/groovyindent-unix"]
+	path = .vim/bundle/groovyindent-unix
+	url = https://github.com/vim-scripts/groovyindent-unix
