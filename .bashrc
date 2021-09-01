@@ -6,7 +6,7 @@ if [[ $- != *i* ]] ; then
 fi
 
 # Source pre-hook (.bashrc_prelocal) {{{1
-[[ -e "~/.bashrc_prelocal" ]] && . ~/.bashrc_prelocal
+[[ -f "$HOME/.bashrc_prelocal" ]] && . ~/.bashrc_prelocal
 
 # Source parts
 if [[ -d ~/.bashrc.d ]]; then
