@@ -310,7 +310,7 @@ nnoremap <silent> <leader>t :TagbarToggle<CR>
 map <leader>s <Plug>(easymotion-s2)
 
 " OSC52: yank
-vnoremap <leader>c :OSCYank<CR>
+vnoremap <leader>y y:call SendViaOSC52(getreg('"'))<CR>
 
 " Syntastic: add mypy when enabled
 autocmd FileType python if filereadable(getcwd() . "/mypy.ini") && expand("%:p") !~ '/virtualenv_run/\|/venv/' | let b:syntastic_checkers = add(copy(g:syntastic_python_checkers), 'mypy')
