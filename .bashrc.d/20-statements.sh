@@ -11,6 +11,9 @@ HISTTIMEFORMAT='%F %T '
 # Disable flow control
 stty ixany ixoff -ixon
 
+# Enable readline and history for Python interactive
+export PYTHONSTARTUP=~/.pythonrc.py
+
 # Begone, colors!
 PS1='[\D{%m/%d %R:%S}] \u \[$(tput bold)\]\w $(git_branch)$ \[$(tput sgr0)\]'
 
