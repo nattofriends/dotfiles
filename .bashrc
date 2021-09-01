@@ -1,12 +1,12 @@
 # .bashrc everywhere
 
-# Source pre-hook (.bashrc_prelocal) {{{1
-[[ -e "~/.bashrc_prelocal" ]] && . ~/.bashrc_prelocal
-
 # Not interactive? Get out early
 if [[ $- != *i* ]] ; then
     return
 fi
+
+# Source pre-hook (.bashrc_prelocal) {{{1
+[[ -e "~/.bashrc_prelocal" ]] && . ~/.bashrc_prelocal
 
 # Source parts
 if [[ -d ~/.bashrc.d ]]; then
