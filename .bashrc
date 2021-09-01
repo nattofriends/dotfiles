@@ -55,6 +55,10 @@ else
   }
 fi
 
+function pbcopy {
+    printf "\033]52;c;$(base64 | tr -d '\r\n')\a"
+}
+
 # Begone, colors!
 PS1='[\D{%m/%d %R:%S}] \u \[$(tput bold)\]\w $(git_branch)$ \[$(tput sgr0)\]'
 
@@ -135,10 +139,7 @@ fi
 
 # Misc {{{1
 # Multi-terminal history
-shopt -s cmdhist
-shopt -s histappend
-shopt -s histreedit
-shopt -s histverify
+shopt -s cmdhist histappend histreedit histverify
 HISTCONTROL=ignoreboth
 HISTFILESIZE=1000000
 HISTIGNORE='ls:bg:fg:history'
@@ -146,8 +147,7 @@ HISTSIZE=10000
 HISTTIMEFORMAT='%F %T '
 
 # Disable flow control
-stty ixany
-stty ixoff -ixon
+stty ixany ixoff -ixon
 
 # Try to automatically update 10% of the time
 if [[ "$NO_UPDATE" != "1" && $RANDOM -lt 3276 ]]; then
