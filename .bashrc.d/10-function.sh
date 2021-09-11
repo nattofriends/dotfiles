@@ -1,4 +1,3 @@
-# So much overhead! It hurts!
 if command -v git >/dev/null; then
   function git_branch {
     local TOPLEVEL
