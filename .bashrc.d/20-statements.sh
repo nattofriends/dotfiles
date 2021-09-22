@@ -22,4 +22,4 @@ TILDE="~"
 PROMPT_TITLE='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/${TILDE}}\007"'
 PROMPT_COMMAND="history -a; $PROMPT_TITLE"
 
-pathadd $HOME/.metapath
+pathprepend $HOME/.metapath
