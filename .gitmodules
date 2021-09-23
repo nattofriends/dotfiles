@@ -64,9 +64,6 @@
 	path = .vim/bundle/onedark
 	url = https://github.com/joshdick/onedark.vim
 	branch = main
-[submodule ".vim/bundle/splitjoin"]
-	path = .vim/bundle/splitjoin
-	url = https://github.com/AndrewRadev/splitjoin.vim
 [submodule ".vim/bundle/FastFold"]
 	path = .vim/bundle/FastFold
 	url = https://github.com/Konfekt/FastFold
