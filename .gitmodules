@@ -64,9 +64,6 @@
 	path = .vim/bundle/onedark
 	url = https://github.com/joshdick/onedark.vim
 	branch = main
-[submodule ".vim/bundle/splitjoin"]
-	path = .vim/bundle/splitjoin
-	url = https://github.com/AndrewRadev/splitjoin.vim
 [submodule ".vim/bundle/FastFold"]
 	path = .vim/bundle/FastFold
 	url = https://github.com/Konfekt/FastFold
@@ -88,3 +85,6 @@
 [submodule ".vim/bundle/groovyindent-unix"]
 	path = .vim/bundle/groovyindent-unix
 	url = https://github.com/vim-scripts/groovyindent-unix
+[submodule ".vim/bundle/argwrap"]
+	path = .vim/bundle/argwrap
+	url = https://github.com/FooSoft/vim-argwrap

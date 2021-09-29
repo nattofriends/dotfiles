@@ -344,6 +344,9 @@ map # <Plug>(is-#)zv
 map g* <Plug>(is-g*)zv
 map g# <Plug>(is-g#)zv
 
+" ArgWrap: no default bindings
+nmap <silent> <leader>a <Plug>(ArgWrapToggle)
+
 " Directory for undo file
 silent !mkdir ~/.vim/undos > /dev/null 2>&1
 set undodir=~/.vim/undos
