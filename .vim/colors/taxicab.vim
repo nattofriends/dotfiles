@@ -34,7 +34,8 @@ let s:reverse = { "fg": s:yellow, "bg": s:black }
 
 call s:h("Normal", s:normal)
 
-" Syntax Groups {{{1
+" Syntax Groups (Highlight groups for common language items) {{{1
+" http://vimdoc.sourceforge.net/htmldoc/syntax.html#{group-name}
 " Bold: keywords
 for highlight_group in ["Conditional", "Exception", "Function", "Identifier", "Label", "Operator", "Repeat"]
     call s:h(highlight_group, extend(copy(s:normal), { "attrs": "bold" }))
@@ -55,12 +56,13 @@ endfor
 for highlight_group in [
     \"Debug", "Define", "Delimiter", "Error", "Include", "Keyword", "Macro", "MatchParen",
     \"PreCondit", "PreProc", "Special", "SpecialChar", "Statement", "Storage", "Tag",
-    \"Title", "Todo", "Type"
+    \"Title", "Todo", "Type", "Underlined"
 \]
     call s:h(highlight_group, s:normal)
 endfor
 
-" Highlighting Groups {{{1
+" Highlighting Groups (non-syntax) {{{1
+" http://vimdoc.sourceforge.net/htmldoc/syntax.html#highlight-groups
 
 for highlight_group in [
     \"Conceal", "DiffText", "Directory", "Folded", "LineNr", "MoreMsg", "NonText",
@@ -86,12 +88,12 @@ call s:h("Folded", { "attrs": "bold" })
 call s:h("LineNr", { "attrs": "italic" })
 
 " Plugin highlighting groups {{{1
-" TagBar
+" TagBar {{{2
 for highlight_group in ["TagBarVisibilityPublic", "TagBarVisibilityProtected", "TagBarVisibilityPrivate"]
     call s:h(highlight_group, s:normal)
 endfor
 
-" EasyMotion
+" EasyMotion {{{2
 call s:h("EasyMotionTarget", extend(copy(s:reverse), { "attrs": "italic,underline" }))
 call s:h("EasyMotionShade", s:normal)
 

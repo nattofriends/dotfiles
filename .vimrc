@@ -290,6 +290,11 @@ for i in range(1, 9)
     execute "nnoremap <silent> <leader>" . i . " " . i . "gt"
 endfor
 
+" Send to delete register
+nnoremap x "_x
+nnoremap dd "_dd
+vnoremap d "_d
+
 " requirements.txt filetype
 autocmd FileType requirements setlocal commentstring=#\ %s
 
