@@ -19,6 +19,20 @@ else
   }
 fi
 
+if command -v tmux >/dev/null; then
+  function ltmux {
+    if tmux has-session -t 0; then
+      tmux -u attach -t 0
+    else
+      tmux -u new
+    fi
+  }
+else
+  function ltmux {
+    echo tmux is not installed
+  }
+fi
+
 function pbcopy {
     printf "\033]52;c;$(base64 | tr -d '\r\n')\a"
 }
