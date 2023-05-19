@@ -27,4 +27,14 @@ fi
 # Source .bashrc_local {{{1
 [[ -e "$HOME/.bashrc_local" ]] && source $HOME/.bashrc_local
 
+# Source post parts
+if [[ -d ~/.bashrc.d/post ]]; then
+  for i in ~/.bashrc.d/post/*.sh; do
+    if [ -r $i ]; then
+      . $i
+    fi
+  done
+  unset i
+fi
+
 # vim: foldmethod=marker foldlevel=0
