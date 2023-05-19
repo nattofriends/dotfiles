@@ -1,7 +1,0 @@
-KSPLICE_ACCESS=7bc0f78bfc2bc95137d65c3083db2583672eb337f5aa4ebc527bd999252addfa
-
-echo deb http://www.ksplice.com/apt precise ksplice > /etc/apt/sources.list.d/ksplice.list
-wget -qO- https://www.ksplice.com/apt/ksplice-archive.asc | apt-key add -
-echo uptrack uptrack/accesskey string $KSPLICE_ACCESS | sudo debconf-set-selections
-aptitude update
-aptitude install uptrack -y
