@@ -61,12 +61,6 @@
 [submodule ".vim/bundle/sleuth"]
 	path = .vim/bundle/sleuth
 	url = https://github.com/tpope/vim-sleuth
-[submodule ".vim/bundle/terraform"]
-	path = .vim/bundle/terraform
-	url = https://github.com/hashivim/vim-terraform
-[submodule ".vim/bundle/terraform-completion"]
-	path = .vim/bundle/terraform-completion
-	url = https://github.com/juliosueiras/vim-terraform-completion
 [submodule ".vim/bundle/undotree"]
 	path = .vim/bundle/undotree
 	url = https://github.com/mbbill/undotree
