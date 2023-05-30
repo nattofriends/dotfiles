@@ -61,6 +61,9 @@ set visualbell
 " is unset, this does nothing.
 set t_vb=
 
+set ssop-=options
+set ssop-=folds
+
 " Enable use of the mouse for all modes
 if !has('nvim')
     if has("mouse_sgr")
