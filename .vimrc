@@ -61,6 +61,9 @@ set visualbell
 " is unset, this does nothing.
 set t_vb=
 
+set ssop-=options
+set ssop-=folds
+
 " Enable use of the mouse for all modes
 if !has('nvim')
     if has("mouse_sgr")
@@ -133,8 +136,7 @@ set background=dark
 " Comments get italics. Vim considers TUI as cterm; Neovim reads gui.
 autocmd ColorScheme * highlight Comment cterm=italic gui=italic
 
-" Don't forget me, beautiful `taxicab`
-colorscheme onedark
+colorscheme taxicab
 
 " For 24bit support
 function! RetoggleTermguicolors()
@@ -183,6 +185,7 @@ endif
 
 " Plugin options {{{1
 " NERDTree {{{2
+let NERDTreeShowHidden = 1
 let NERDTreeChDirMode = 2
 let NERDTreeMouseMode = 2
 let NERDTreeIgnore = ['\.pyc$']
@@ -219,21 +222,15 @@ let g:ctrlp_types = ['fil', 'mru', 'buf']
 
 " Tagbar {{{2
 let g:tagbar_compact = 1
+let g:tagbar_ctags_bin = '/usr/bin/ctags-universal'
 let g:tagbar_iconchars = ['+', '-']
 " Fold imports and put them down there
 let g:tagbar_foldlevel = 1
 let g:tagbar_case_insensitive = 1
 let g:tagbar_show_visibility = 0
-let g:tagbar_type_python = {
-    \ 'kinds' : [
-        \ 'c:classes',
-        \ 'f:functions',
-        \ 'm:members',
-        \ 'v:variables:0:0',
-    \ ],
-\ }
+
 let g:tagbar_type_groovy = {
-    \ 'kinds'     : [
+    \ 'kinds': [
         \ 'p:package:1',
         \ 'c:classes',
         \ 'i:interfaces',
@@ -243,39 +240,84 @@ let g:tagbar_type_groovy = {
         \ 'f:fields:1'
     \ ]
 \ }
+let g:tagbar_type_python = {
+    \ 'kinds': [
+        \ 'c:classes',
+        \ 'f:functions',
+        \ 'm:members',
+        \ 'v:variables:0:0',
+    \ ],
+\ }
 let g:tagbar_type_make = {
     \ 'kinds': [
         \ 'm:macros',
         \ 't:targets'
     \ ]
 \ }
+let g:tagbar_type_terraform = {
+    \ 'ctagstype': 'terraform',
+    \ 'kinds': [
+        \ 'r:resources',
+        \ 'd:data',
+        \ 'v:variables',
+        \ 'p:providers',
+        \ 'o:outputs',
+        \ 'm:modules',
+        \ 'f:tfvars'
+    \ ],
+\ }
+let g:tagbar_type_yaml = {
+    \ 'ctagsbin': 'yamlctags',
+    \ 'ctagsargs': '',
+    \ 'kinds': [
+        \ 'i:items'
+    \ ]
+\ }
+let g:tagbar_type_jinja = {
+    \ 'ctagstype': 'jinja',
+    \ 'kinds': [
+        \ 'i:imports',
+        \ 'm:macros',
+        \ 'b:blocks',
+    \ ],
+\ }
 
-" Syntastic {{{2
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_aggregate_errors = 1
 
-let g:syntastic_python_checkers = ['flake8']
-let g:syntastic_python_flake8_args = '--extend-ignore=E265,E301,E501,F812'
-" SC2006: Use $() instead of legacy ``
-" SC2046: Quote this to avoid word splitting
-" SC2086: Double quote to prevent globbing and word splitting
-let g:syntastic_sh_shellcheck_args = '-e SC2006 -e SC2046 -e SC2086'
-let g:syntastic_yaml_checkers = ['yamllint']
-let g:syntastic_yaml_yamllint_args = '-d "{extends: relaxed, rules: {line-length: {max: 160}}}"'
+" ALE {{{2
+let g:ale_lint_on_enter = 0
+let g:ale_lint_on_text_changed = 0
+let g:ale_lint_on_insert_leave = 0
+let g:ale_fix_on_save = 1
+let g:ale_open_list = 1
+
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'python': ['black', 'reorder-python-imports'],
+\}
+
+let g:ale_python_auto_virtualenv = 1
+let g:ale_virtualenv_dir_names = ['venv', 'virtualenv_run']
+let g:ale_yaml_yamllint_options = '-d "{extends: relaxed, rules: {line-length: {max: 300}}}"'
 
 " Rooter {{{2
 let g:rooter_cd_cmd = "lcd"
 
-" splitjoin {{{2
+" For Terraform
+let g:rooter_patterns = ['terraform.tfvars', '.git', '.git/']
 
+" splitjoin {{{2
 let g:splitjoin_python_brackets_on_separate_lines = 1
 let g:splitjoin_trailing_comma = 1
 
 " indentLine {{{2
 let g:indentLine_concealcursor = ''
 let g:indentLine_setColors = 0
+
+" undotree {{{2
+let g:undotree_DiffAutoOpen = 0
+let g:undotree_DiffCommand = 'diff -u'
+let g:undotree_ShortIndicators = 1
+let g:undotree_SetFocusWhenToggle = 1
 
 " Maps and other garbage {{{1
 
@@ -289,6 +331,14 @@ nnoremap <silent> <leader>/ :tabnext<CR>
 for i in range(1, 9)
     execute "nnoremap <silent> <leader>" . i . " " . i . "gt"
 endfor
+
+cnoreabbrev qw wq
+cnoreabbrev qwa wqa
+
+" Delete until space
+nmap <leader>d dT x
+" Copy this import
+nmap <leader>ic Yp$dT xA
 
 " Send to delete register
 nnoremap x "_x
@@ -305,6 +355,25 @@ autocmd BufRead * setlocal bufhidden=delete
 " See http://vim.wikia.com/wiki/Easy_edit_of_files_in_the_same_directory
 cabbr <expr> % expand('%:p:h')
 
+" Oddly specific, surely we can do better than this
+"
+function! OpenContainingDirectory()
+    let l:dir = expand('%:p:h')
+    execute 'tabedit ' . l:dir
+endfunction
+
+map <silent> <leader>e :call OpenContainingDirectory()<CR>
+
+function PasteOverEmpty()
+    let l:isempty = getline('.') =~ '^\s*$'
+    normal! p
+    if l:isempty
+        normal! "_dvk
+    endif
+endfunction
+
+nnoremap <silent> p :call PasteOverEmpty()<CR>
+
 
 " Plugin specific maps {{{2
 
@@ -316,9 +385,6 @@ map <leader>s <Plug>(easymotion-s2)
 
 " OSC52: yank
 vnoremap <leader>y y:call SendViaOSC52(getreg('"'))<CR>
-
-" Syntastic: add mypy when enabled
-autocmd FileType python if filereadable(getcwd() . "/mypy.ini") && expand("%:p") !~ '/virtualenv_run/\|/venv/' | let b:syntastic_checkers = add(copy(g:syntastic_python_checkers), 'mypy')
 
 " CtrlP: Fake :bro old
 function! GlobalCtrlPMRU()
@@ -356,6 +422,9 @@ nmap <silent> <leader>a <Plug>(ArgWrapToggle)
 silent !mkdir ~/.vim/undos > /dev/null 2>&1
 set undodir=~/.vim/undos
 set undofile
+
+" Undotree
+nnoremap <leader>u :UndotreeToggle<cr>
 
 " Source .vimrc_local {{{1
 if !empty(glob("~/.vimrc_local"))

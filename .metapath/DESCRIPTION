@@ -1,3 +1,0 @@
-This directory is a symlink holding pen for the PATH, which generates symlinks
-to target directories of whitelisted targets. Sometimes we don't want all the
-new binaries that may be installed by curses, or what have you.

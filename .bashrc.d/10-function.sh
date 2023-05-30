@@ -34,7 +34,7 @@ else
 fi
 
 function pbcopy {
-    printf "\033]52;c;$(base64 | tr -d '\r\n')\a"
+    printf "\033]52;c;$(head -c 74994 - | base64 | tr -d '\n\r')\a"
 }
 
 function pathcheck {
