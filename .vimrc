@@ -273,6 +273,14 @@ let g:tagbar_type_yaml = {
         \ 'i:items'
     \ ]
 \ }
+let g:tagbar_type_jinja = {
+    \ 'ctagstype': 'jinja',
+    \ 'kinds': [
+        \ 'i:imports',
+        \ 'm:macros',
+        \ 'b:blocks',
+    \ ],
+\ }
 
 
 " ALE {{{2
