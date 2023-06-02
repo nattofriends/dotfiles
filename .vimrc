@@ -421,10 +421,11 @@ nmap <silent> <leader>a <Plug>(ArgWrapToggle)
 
 " Directory for undo file
 silent !mkdir ~/.vim/{undos,swap,backup} > /dev/null 2>&1
-let undodir=$HOME . '/.vim/undos'
+let &undodir=$HOME . '/.vim/undos'
+let &undodir=expand("~/.vim/undos")
 set undofile
-let directory=$HOME . '/.vim/swap'
-let backupdir=$HOME . '/.vim/backup'
+let &directory=expand("~/.vim/swap")
+let &backupdir=expand("~/.vim/backup")
 
 " Undotree
 nnoremap <leader>u :UndotreeToggle<cr>
