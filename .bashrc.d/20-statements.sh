@@ -22,4 +22,6 @@ TILDE="~"
 PROMPT_TITLE='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/${TILDE}}\007"'
 PROMPT_COMMAND="history -a; $PROMPT_TITLE"
 
+export npm_config_prefix='~/.npm-prefix'
+
 pathprepend $HOME/.metaenv/bin

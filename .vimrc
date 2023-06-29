@@ -61,6 +61,9 @@ set visualbell
 " is unset, this does nothing.
 set t_vb=
 
+set ssop-=options
+set ssop-=folds
+
 " Enable use of the mouse for all modes
 if !has('nvim')
     if has("mouse_sgr")
@@ -125,6 +128,7 @@ set list listchars=tab:>>,trail:.,precedes:<,extends:>
 
 set splitbelow
 set splitright
+
 
 " Colorscheme {{{1
 " If something goes horribly wrong, still use the built in dark colors.
@@ -270,6 +274,14 @@ let g:tagbar_type_yaml = {
         \ 'i:items'
     \ ]
 \ }
+let g:tagbar_type_jinja = {
+    \ 'ctagstype': 'jinja',
+    \ 'kinds': [
+        \ 'i:imports',
+        \ 'm:macros',
+        \ 'b:blocks',
+    \ ],
+\ }
 
 
 " ALE {{{2
@@ -281,7 +293,7 @@ let g:ale_open_list = 1
 
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\   'python': ['black', 'reorder-python-imports'],
+\   'python': ['black', 'reorder-python-imports', 'autopep8'],
 \}
 
 let g:ale_python_auto_virtualenv = 1
@@ -408,9 +420,15 @@ map g# <Plug>(is-g#)zv
 nmap <silent> <leader>a <Plug>(ArgWrapToggle)
 
 " Directory for undo file
-silent !mkdir ~/.vim/undos > /dev/null 2>&1
-set undodir=~/.vim/undos
+silent !mkdir ~/.vim/{undos,swap,backup} > /dev/null 2>&1
+let &undodir=$HOME . '/.vim/undos'
+let &undodir=expand("~/.vim/undos")
 set undofile
+let &directory=expand("~/.vim/swap")
+let &backupdir=expand("~/.vim/backup")
+
+" Undotree
+nnoremap <leader>u :UndotreeToggle<cr>
 
 " Undotree
 nnoremap <leader>u :UndotreeToggle<cr>

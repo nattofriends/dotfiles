@@ -1,0 +1,5 @@
+--langdef=jinja
+--langmap=jinja:.jinja2
+--regex-jinja=/\{%[[:space:]]*block[[:space:]]*([a-zA-Z0-9_\-]+)/\1/b,block/
+--regex-jinja=/\{%[[:space:]]*macro[[:space:]]*([a-zA-Z0-9_\-]+)/\1/m,macro/
+--regex-jinja=/\{%[[:space:]]*import[[:space:]]*([a-zA-Z0-9_\-\".]+)/\1/i,import/
