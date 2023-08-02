@@ -1,10 +1,10 @@
 MAKEFLAGS += --jobs=4
 
 .PHONY: all
-all: cargo python3.8 python3.9 python3.10 brew npm
+all: cargo python3.8 python3.9 python3.10 python3.11 brew npm
 
 .PHONY: upgrade
-upgrade: cargo-upgrade python3.8-upgrade python3.9-upgrade python3.10-upgrade brew-upgrade npm-upgrade
+upgrade: cargo-upgrade python3.8-upgrade python3.9-upgrade python3.10-upgrade python3.11-upgrade brew-upgrade npm-upgrade
 
 .PHONY: clean
 clean: cargo-clean python-clean brew-clean npm-clean
@@ -17,8 +17,12 @@ cargo:
 		cargo install $$i; \
 		done < cargo.txt || echo "prerequisite not installed, skipping"
 
+cargo-bootstrap:
+	curl https://sh.rustup.rs -sSf | sh -s -- --no-modify-path -y
+
 .PHONY: cargo-upgrade
 cargo-upgrade:
+	command -v rustup && rustup update || echo "rustup not installed, skipping"
 	command -v cargo && cargo install-update --all || echo "cargo not installed, skipping"
 
 cargo-clean:
