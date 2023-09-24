@@ -1,20 +1,16 @@
 RC_DEBUG=0
-
-# Not interactive? Get out early
-if [[ $- != *i* ]] ; then
-    return
-fi
+RC_NOPLUGIN=0
 
 main() {
-    rc_log "Using bash"
+    rc_log "Using zsh"
     rc_debug "RC_DEBUG=$RC_DEBUG"
 
-    source_file ~/.bashrc_prelocal
+    source_file ~/.zshrc_prelocal
     source_dir ~/.bashrc.d/pre
 
     source_dir ~/.bashrc.d
 
-    source_file ~/.bashrc_local
+    source_file ~/.zshrc_local
     source_dir ~/.bashrc.d/post
 }
 
@@ -22,8 +18,9 @@ source_dir () {
     local dir=$1
 
     if [[ -d "$dir" ]]; then
-        for i in $dir/*.{bash,sh}; do
+        for i in $dir/*.(zsh|sh); do
             if [ -r $i ]; then
+                rc_debug "Sourcing $i"
               . $i
             fi
           done
@@ -34,7 +31,7 @@ source_dir () {
 . .bashrc.d/lib
 
 main
-unset RC_DEBUG
-unset rc_log rc_log source_file source_dir main
+unset RC_DEBUG RC_NOPLUGIN
+unset rc_log rc_debug source_file source_dir main
 
 # vim: foldmethod=marker foldlevel=0

@@ -94,3 +94,27 @@
 [submodule ".vim/bundle/vim-tagbar"]
 	path = .vim/bundle/vim-tagbar
 	url = https://github.com/majutsushi/tagbar
+[submodule ".zsh/autosuggestions"]
+	path = .zsh/plugin/90-autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions
+	branch = master
+[submodule ".zsh/completions"]
+	path = .zsh/plugin/90-completions
+	url = https://github.com/zsh-users/zsh-completions
+	branch = master
+[submodule ".zsh/90-syntax-highlighting"]
+	path = .zsh/plugin/90-syntax-highlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting
+	branch = master
+[submodule ".zsh/91-history-substring-search"]
+	path = .zsh/plugin/91-history-substring-search
+	url = https://github.com/zsh-users/zsh-history-substring-search
+	branch = master
+[submodule ".zsh/50-defer"]
+	path = .zsh/plugin/50-defer
+	url = https://github.com/romkatv/zsh-defer
+	branch = master
+[submodule ".zsh/plugin/fast-syntax-highlighting"]
+	path = .zsh/plugin/90-fast-syntax-highlighting
+	url = https://github.com/zdharma-continuum/fast-syntax-highlighting
+	branch = master

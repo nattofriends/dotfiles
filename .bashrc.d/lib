@@ -1,0 +1,19 @@
+rc_log() {
+    >&2 printf "\033[1;30m$1\033[0m\n"
+}
+
+rc_debug() {
+    if [[ $RC_DEBUG -eq 1 ]]; then
+        rc_log "$1"
+    fi
+}
+
+source_file () {
+    local file=$1
+
+    if [[ -e "$file" ]]; then
+        source $file
+    else
+        rc_debug "File $file does not exist, skipping"
+    fi
+}
