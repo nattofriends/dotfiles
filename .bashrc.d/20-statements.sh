@@ -11,5 +11,3 @@ stty ixany ixoff -ixon
 export PYTHONSTARTUP=~/.pythonrc.py
 
 export npm_config_prefix='~/.npm-prefix'
-
-pathprepend $HOME/.metaenv/bin

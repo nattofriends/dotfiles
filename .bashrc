@@ -20,15 +20,20 @@ main() {
 
 source_dir () {
     local dir=$1
+    shopt -s extglob
 
     if [[ -d "$dir" ]]; then
-        for i in $dir/*.{bash,sh}; do
+        local files=$(echo "${dir}/*.@(sh|bash)")
+        for i in $files; do
             if [ -r $i ]; then
-              . $i
+                rc_debug "Sourcing $i"
+                . $i
             fi
           done
         unset i
     fi
+
+    shopt -u extglob
 }
 
 . .bashrc.d/lib

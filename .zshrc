@@ -21,7 +21,7 @@ source_dir () {
         for i in $dir/*.(zsh|sh); do
             if [ -r $i ]; then
                 rc_debug "Sourcing $i"
-              . $i
+                . $i
             fi
           done
         unset i

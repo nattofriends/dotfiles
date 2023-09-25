@@ -1,19 +1,9 @@
-bindkey -e
-
 autoload -Uz compinit bashcompinit
 compinit
 bashcompinit
 
-# Source system bash completions
-# if [ -f /usr/share/bash-completion/bash_completion ]; then
-#   . /usr/share/bash-completion/bash_completion
-# elif [ -f /etc/bash_completion ]; then
-#   . /etc/bash_completion
-# fi
-
 if [[ ! -d ~/.zsh/cache ]]; then
-    mkdir -p ~/.zsh/cache &
-    rc_log "Created ~/.zsh/cache"
+    mkdir -p ~/.zsh/cache
 fi
 
 # Shift-Tab
