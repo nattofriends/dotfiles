@@ -12,6 +12,9 @@ fi
 
 PS1='[%D{%m/%d %R:%S}] %B%~ $(git_branch)${PROMPT_CHAR} %b'
 
+# Reset to Emacs mode, which is way more popular and normal for shells
+bindkey -e
+
 # Make macOS Home and End keys work through SSH
 bindkey "^[[1~" beginning-of-line
 bindkey "^[[4~" end-of-line
