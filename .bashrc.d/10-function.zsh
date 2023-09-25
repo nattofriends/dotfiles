@@ -1,15 +1,16 @@
 if command -v git >/dev/null; then
   function git_branch {
-    local toplevel=$(git rev-parse --show-toplevel 2>/dev/null)
-
-    if [[ $? -eq 128 ]]; then
+    local TOPLEVEL
+    TOPLEVEL=$(git rev-parse --show-toplevel 2>/dev/null)
+    local TOPLEVELRC=$?
+    if [[ $TOPLEVELRC -eq 128 ]]; then
       return
     fi
 
-    if [[ $HOME != $toplevel ]]; then
-      printf "("
-      (git symbolic-ref --short HEAD 2>/dev/null || (printf "detached at %s" $(git rev-parse --short HEAD)))
-      printf ") "
+    if [[ $HOME != $TOPLEVEL ]]; then
+      echo -n '('
+      (git symbolic-ref --short HEAD 2>/dev/null || (echo -n "detached at " ; git rev-parse --short HEAD)) | tr -d '\n'
+      echo -n ') '
     fi
   }
 else
