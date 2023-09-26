@@ -36,7 +36,7 @@ source_dir () {
     shopt -u extglob
 }
 
-. .bashrc.d/lib
+. ~/.bashrc.d/lib
 
 main
 unset RC_DEBUG

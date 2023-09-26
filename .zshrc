@@ -28,7 +28,7 @@ source_dir () {
     fi
 }
 
-. .bashrc.d/lib
+. ~/.bashrc.d/lib
 
 main
 unset RC_DEBUG RC_NOPLUGIN
