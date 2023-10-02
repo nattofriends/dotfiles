@@ -53,3 +53,11 @@ function envinstall {
   touch .env
   ln -s ~/.envrc.d/.envrc .envrc || true
 }
+
+function dc {
+  if [[ -d "$1" ]]; then
+    cd "$1"
+  else
+    command dc "$@"
+  fi
+}
