@@ -13,6 +13,7 @@ source_file () {
 
     if [[ -e "$file" ]]; then
         source $file
+        rc_debug "Sourcing $file"
     else
         rc_debug "File $file does not exist, skipping"
     fi

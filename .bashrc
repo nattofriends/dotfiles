@@ -9,6 +9,10 @@ main() {
     rc_log "Using bash"
     rc_debug "RC_DEBUG=$RC_DEBUG"
 
+    local extglob_restore
+    shopt -q extglob
+    extglob_restore=$?
+
     source_file ~/.bashrc_prelocal
     source_dir ~/.bashrc.d/pre
 
@@ -16,11 +20,16 @@ main() {
 
     source_file ~/.bashrc_local
     source_dir ~/.bashrc.d/post
+
+    if [[ "$extglob_restore" == "1" ]]; then
+        # extglob was off. Need to restore
+        rc_debug "Disabling extglob"
+        shopt -u extglob
+    fi
 }
 
 source_dir () {
     local dir=$1
-    shopt -s extglob
 
     if [[ -d "$dir" ]]; then
         local files=$(echo "${dir}/*.@(sh|bash)")
@@ -31,9 +40,9 @@ source_dir () {
             fi
           done
         unset i
+    else
+        rc_debug "Directory $dir does not exist, not sourcing"
     fi
-
-    shopt -u extglob
 }
 
 . ~/.bashrc.d/lib
