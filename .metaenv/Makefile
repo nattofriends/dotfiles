@@ -77,6 +77,17 @@ npm-upgrade:
 npm-clean:
 	rm -rf ${HOME}/.npm-prefix
 
+.PHONY: go
+go: GOPATH=${HOME}/.go
+go:
+	command -v go && set -x && while read i; do \
+		go get -v $$i && go install -v $$i@latest; \
+		done < $@.txt || echo "prerequisite not installed, skipping"
+
+.PHONY: go-clean
+go-clean:
+	rm -rf ${HOME}/.go
+
 .PHONY: metapath
 metapath:
 	mkdir -p bin
