@@ -48,3 +48,9 @@ function pathprepend {
 function pathappend {
     pathcheck "$1" && PATH="${PATH}:$1"
 }
+
+function envinstall {
+  echo -e "/.env\n/.envrc" >> .git/info/exclude
+  touch .env
+  ln -s ~/.envrc.d/.envrc .envrc || true
+}
