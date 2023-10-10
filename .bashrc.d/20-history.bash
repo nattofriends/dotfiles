@@ -9,7 +9,7 @@ export PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"
 
 if command -v hstr >/dev/null; then
     export HSTR_CONFIG=hicolor,prompt-bottom,help-on-opposite-side
-    export HSTR_PROMPT="$ "
+    export HSTR_PROMPT="> "
     _hstr () {
         hstr -- $READLINE_LINE
     }

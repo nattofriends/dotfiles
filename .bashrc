@@ -12,6 +12,7 @@ main() {
     local extglob_restore
     shopt -q extglob
     extglob_restore=$?
+    shopt -s extglob
 
     source_file ~/.bashrc_prelocal
     source_dir ~/.bashrc.d/pre
