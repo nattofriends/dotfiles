@@ -127,10 +127,6 @@
 	path = .zsh/plugin/90-completions
 	url = https://github.com/zsh-users/zsh-completions
 	branch = master
-[submodule ".zsh/90-syntax-highlighting"]
-	path = .zsh/plugin/90-syntax-highlighting
-	url = https://github.com/zsh-users/zsh-syntax-highlighting
-	branch = master
 [submodule ".zsh/91-history-substring-search"]
 	path = .zsh/plugin/91-history-substring-search
 	url = https://github.com/zsh-users/zsh-history-substring-search
