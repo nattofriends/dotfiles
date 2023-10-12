@@ -33,7 +33,6 @@
 [submodule ".vim/bundle/lastplace"]
 	branch = master
 	path = .vim/bundle/lastplace
-	branch = master
 	url = https://github.com/farmergreg/vim-lastplace
 [submodule ".vim/bundle/NeoSolarized"]
 	branch = master
