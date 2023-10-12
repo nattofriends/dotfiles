@@ -34,7 +34,7 @@ else
 fi
 
 function pbcopy {
-    printf "\033]52;c;$(head -c 74994 - | base64 | tr -d '\n\r')\a"
+    printf "\033]52;c;$(base64 | tr -d '\r\n')\a"
 }
 
 function pathcheck {
@@ -47,4 +47,10 @@ function pathprepend {
 
 function pathappend {
     pathcheck "$1" && PATH="${PATH}:$1"
+}
+
+function envinstall {
+  echo -e "/.env\n/.envrc" >> .git/info/exclude
+  touch .env
+  ln -s ~/.envrc.d/.envrc .envrc || true
 }

@@ -17,6 +17,7 @@ cargo:
 		cargo install $$i; \
 		done < cargo.txt || echo "prerequisite not installed, skipping"
 
+.PHONY: cargo-bootstrap
 cargo-bootstrap:
 	curl https://sh.rustup.rs -sSf | sh -s -- --no-modify-path -y
 
@@ -75,6 +76,17 @@ npm-upgrade:
 .PHONY: npm-clean
 npm-clean:
 	rm -rf ${HOME}/.npm-prefix
+
+.PHONY: go
+go: GOPATH=${HOME}/.go
+go:
+	command -v go && set -x && while read i; do \
+		go get -v $$i && go install -v $$i@latest; \
+		done < $@.txt || echo "prerequisite not installed, skipping"
+
+.PHONY: go-clean
+go-clean:
+	rm -rf ${HOME}/.go
 
 .PHONY: metapath
 metapath:

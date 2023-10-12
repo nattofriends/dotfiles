@@ -223,7 +223,14 @@ let g:ctrlp_types = ['fil', 'mru', 'buf']
 
 " Tagbar {{{2
 let g:tagbar_compact = 1
-let g:tagbar_ctags_bin = '/usr/bin/ctags-universal'
+
+for ctags in ['/usr/bin/ctags-universal', '/opt/homebrew/bin/ctags']
+    if filereadable(ctags)
+        let g:tagbar_ctags_bin = ctags
+        break
+    endif
+endfor
+
 let g:tagbar_iconchars = ['+', '-']
 " Fold imports and put them down there
 let g:tagbar_foldlevel = 1
@@ -426,6 +433,9 @@ let &undodir=expand("~/.vim/undos")
 set undofile
 let &directory=expand("~/.vim/swap")
 let &backupdir=expand("~/.vim/backup")
+
+" Undotree
+nnoremap <leader>u :UndotreeToggle<cr>
 
 " Undotree
 nnoremap <leader>u :UndotreeToggle<cr>
