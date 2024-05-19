@@ -119,6 +119,7 @@ set expandtab       " Tab key indents with spaces
 set tabstop=4       " display width of a physical tab character
 set shiftwidth=0    " auto-indent (e.g. >>) width; 0 = use tabstop
 set softtabstop=-1  " disable part-tab-part-space tabbing; < 0 = use tabstop
+autocmd BufRead * DetectIndent
 
 set relativenumber
 

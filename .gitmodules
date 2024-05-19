@@ -74,10 +74,6 @@
 	branch = master
 	path = .vim/bundle/SimpylFold
 	url = https://github.com/tmhedberg/SimpylFold
-[submodule ".vim/bundle/sleuth"]
-	branch = master
-	path = .vim/bundle/sleuth
-	url = https://github.com/tpope/vim-sleuth
 [submodule ".vim/bundle/undotree"]
 	branch = master
 	path = .vim/bundle/undotree
@@ -138,3 +134,7 @@
 	path = .zsh/plugin/90-fast-syntax-highlighting
 	url = https://github.com/zdharma-continuum/fast-syntax-highlighting
 	branch = master
+[submodule ".vim/bundle/yadi"]
+	path = .vim/bundle/yadi
+	url = https://github.com/timakro/vim-yadi
+	branch = main

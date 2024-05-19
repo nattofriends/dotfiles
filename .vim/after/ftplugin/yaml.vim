@@ -22,15 +22,8 @@ function! YamlFolds()
   return next_level
 endfunction
 
-function! YamlFoldText()
-  let lines = v:foldend - v:foldstart
-  return getline(v:foldstart)
-endfunction
-
-
 setlocal foldmethod=expr
 setlocal foldexpr=YamlFolds()
-setlocal foldtext=YamlFoldText()
 
 let b:undo_ftplugin =
       \ exists('b:undo_ftplugin')
