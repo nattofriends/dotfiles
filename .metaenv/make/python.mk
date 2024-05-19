@@ -6,7 +6,7 @@ install: python
 python3:
 	command -v pipx && command -v $@ && set -x && while read i; do \
 		[[ "$$i" != \#* ]] && sh -xc "pipx install --verbose --index-url=https://pypi.org/simple/ $$i"; \
-		done < <(cat $@.txt $@-local.txt) || echo "prerequisite not installed, skipping"
+		done < <(cat global/$@.txt local/$@.txt) || echo "prerequisite not installed, skipping"
 
 upgrade: python3-upgrade
 python3-upgrade:

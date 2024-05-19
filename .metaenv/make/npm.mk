@@ -2,7 +2,7 @@ install: npm
 npm:
 	command -v npm && set -x && while read i; do \
 		[[ "$$i" != \#* ]] && sh -xc "npm install -g $$i"; \
-		done < <(cat $@.txt $@-local.txt) || echo "npm not installed, skipping"
+		done < <(cat global/$@.txt local/$@.txt) || echo "npm not installed, skipping"
 
 upgarde: npm-upgrade
 npm-upgrade:
