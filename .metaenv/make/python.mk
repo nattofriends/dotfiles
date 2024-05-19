@@ -5,10 +5,10 @@ export USE_EMOJI := false
 install: python
 python3:
 	command -v pipx && command -v $@ && set -x && while read i; do \
-		[[ "$$i" != \#* ]] && sh -xc "pipx install --verbose $$i"; \
-		done < <(cat $@{,-local}.txt) || echo "prerequisite not installed, skipping"
+		[[ "$$i" != \#* ]] && sh -xc "pipx install --verbose --index-url=https://pypi.org/simple/ $$i"; \
+		done < <(cat $@.txt $@-local.txt) || echo "prerequisite not installed, skipping"
 
-upgrade: python-upgrade
+upgrade: python3-upgrade
 python3-upgrade:
 	command -v pipx && command -v python3 && \
 		pipx upgrade-all --verbose && \
