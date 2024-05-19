@@ -1,5 +1,6 @@
 export HOMEBREW_PREFIX := ${HOME}/.homebrew/bin
 export HOMEBREW_NO_AUTO_UPDATE := 1
+export HOMEBREW_NO_INSTALL_FROM_API := 1
 
 install: brew
 brew:
@@ -13,7 +14,7 @@ upgrade: brew-upgrade
 brew-upgrade:
 	${HOME}/.homebrew/bin/brew update --force
 	${HOME}/.homebrew/bin/brew bundle --verbose --file Brewfile
-	${HOME}/.homebrew/bin/brew bundle --verbose --file Brewfile-local
+	-${HOME}/.homebrew/bin/brew bundle --verbose --file Brewfile-local
 
 clean: brew-clean
 brew-clean:
