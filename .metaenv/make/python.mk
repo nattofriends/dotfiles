@@ -6,14 +6,14 @@ install: python
 python3:
 	command -v pipx && command -v $@ && set -x && while read i; do \
 		[[ "$$i" != \#* ]] && sh -xc "pipx install --verbose --index-url=https://pypi.org/simple/ $$i"; \
-		done < <(cat global/$@.txt local/$@.txt) || echo "prerequisite not installed, skipping"
+		done < <(cat global/$@.txt local/$@.txt) || echo "prerequisite not installed, skipping $@"
 
 upgrade: python3-upgrade
 python3-upgrade:
 	command -v pipx && command -v python3 && \
 		pipx upgrade-all --verbose && \
 		pipx list --short \
-		|| echo "prerequisite not installed, skipping"
+		|| echo "prerequisite not installed, skipping $@"
 
 clean: python3-clean
 python3-clean:
@@ -24,7 +24,11 @@ pyenv-bootstrap:
 	git clone https://github.com/pyenv/pyenv.git ${HOME}/.pyenv ||:
 	cd ${HOME}/.pyenv && src/configure && make -C src
 
-pyenv-upgrade: pyenv-bootstrap
+pyenv-upgrade:
+	[ -d ${HOME}/.pyenv ] && \
+		cd ${HOME}/.pyenv && \
+		git pull && \
+		$(MAKE) pyenv-bootstrap || echo "prerequisite not installed, skipping $@"
 
 clean: pyenv-clean
 pyenv-clean:

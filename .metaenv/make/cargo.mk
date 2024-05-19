@@ -3,7 +3,7 @@ install: cargo
 cargo:
 	command -v cargo && set -x && while read i; do \
 		[[ "$$i" != \#* ]] && sh -xc "cargo install $$i"; \
-		done < <(cat global/$@.txt local/$@.txt) || echo "prerequisite not installed, skipping"
+		done < <(cat global/$@.txt local/$@.txt) || echo "prerequisite not installed, skipping $@"
 
 .PHONY: cargo-bootstrap
 cargo-bootstrap:

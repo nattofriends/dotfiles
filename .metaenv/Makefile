@@ -14,6 +14,7 @@ upgrade:
 clean:
 	rm -rf bin
 
+metaenv: metapath
 .PHONY: metapath
 metapath:
 	mkdir -p bin
