@@ -185,6 +185,29 @@ if has("termguicolors")
     call RetoggleTermguicolors()
 endif
 
+" Hide filename if it's a loclist (should be always)
+if has('patch-8.2.0959')
+    "https://stackoverflow.com/questions/11199068/how-to-format-vim-quickfix-entries
+    function! CompactQFTF(info)
+        let ll = getloclist(a:info.winid, {'id': a:info.id, 'items': 0}).items
+        let lnum_width = range(a:info.start_idx - 1, a:info.end_idx - 1)
+            \ ->map({_, v -> ll[v].lnum})->max()->len()
+        let col_width = range(a:info.start_idx - 1, a:info.end_idx - 1)
+            \ ->map({_, v -> ll[v].col})->max()->len()
+        let lnum_col_width = lnum_width + col_width + 1
+        let formatted_lines = []
+        for idx in range(a:info.start_idx - 1, a:info.end_idx - 1)
+            let e = ll[idx]
+            let fname = a:info.quickfix == 0 ? "" : bufname(e.bufnr)
+            let line = printf('%s|% *s:% *s| %s', fname, lnum_width, e.lnum, col_width, e.col, e.text)
+            call add(formatted_lines, line)
+        endfor
+        return formatted_lines
+    endfunction
+
+    let &quickfixtextfunc = 'CompactQFTF'
+endif
+
 " Plugin options {{{1
 " NERDTree {{{2
 let NERDTreeShowHidden = 1
@@ -291,9 +314,7 @@ let g:tagbar_type_jinja = {
     \ ],
 \ }
 
-
 " ALE {{{2
-let g:ale_lint_on_enter = 0
 let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_insert_leave = 0
 let g:ale_fix_on_save = 1
