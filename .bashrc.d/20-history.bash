@@ -5,9 +5,10 @@ HISTSIZE=10000
 HISTFILESIZE=10000
 HISTTIMEFORMAT='%F %T '
 
-export PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"
+export PROMPT_COMMAND="history -a; ${PROMPT_COMMAND}"
 
 if command -v hstr >/dev/null; then
+    rc_log "integrating hstr"
     export HSTR_CONFIG=hicolor,prompt-bottom,help-on-opposite-side
     export HSTR_PROMPT="> "
     _hstr () {
