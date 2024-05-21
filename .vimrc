@@ -119,6 +119,7 @@ set expandtab       " Tab key indents with spaces
 set tabstop=4       " display width of a physical tab character
 set shiftwidth=0    " auto-indent (e.g. >>) width; 0 = use tabstop
 set softtabstop=-1  " disable part-tab-part-space tabbing; < 0 = use tabstop
+
 autocmd BufRead * DetectIndent
 
 set relativenumber
@@ -208,6 +209,16 @@ if has('patch-8.2.0959')
     let &quickfixtextfunc = 'CompactQFTF'
 endif
 
+function! StripTrailingWhitespace()
+  if !&binary && &filetype != 'diff'
+    let l:save = winsaveview()
+    keeppatterns %s/\s\+$//e
+    call winrestview(l:save)
+  endif
+endfun
+
+autocmd BufWritePre * | :call StripTrailingWhitespace()
+
 " Plugin options {{{1
 " NERDTree {{{2
 let NERDTreeShowHidden = 1
@@ -280,9 +291,11 @@ let g:tagbar_type_python = {
         \ 'v:variables:0:0',
     \ ],
 \ }
+
+" close macros fold by default
 let g:tagbar_type_make = {
     \ 'kinds': [
-        \ 'm:macros',
+        \ 'm:macros:1',
         \ 't:targets'
     \ ]
 \ }
@@ -320,14 +333,26 @@ let g:ale_lint_on_insert_leave = 0
 let g:ale_fix_on_save = 1
 let g:ale_open_list = 1
 
+let g:ale_echo_msg_format = '%severity%: %linter%: %code: %%s'
+
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\   'python': ['black', 'reorder-python-imports', 'autopep8'],
+\   'python': ['black', 'isort', 'autopep8'],
 \}
 
 let g:ale_python_auto_virtualenv = 1
 let g:ale_virtualenv_dir_names = ['venv', 'virtualenv_run']
-let g:ale_yaml_yamllint_options = '-d "{extends: relaxed, rules: {line-length: {max: 300}}}"'
+
+let g:ale_cspell_options = '--config ~/.config/cspell/cspell.yaml'
+" Disable shellcheck
+let g:ale_sh_shellcheck_executable = '/dev/null'
+
+let g:ale_python_autopep8_options = '--max-line-length=999'
+let g:ale_python_black_options = '--line-length=999'
+let g:ale_python_flake8_options = '--max-line-length=999'
+let g:ale_python_isort_options = '--profile=black --force-single-line-imports --line-length=999'
+
+let g:ale_yaml_yamllint_options = '-d "{extends: relaxed, rules: {line-length: {max: 999}, indentation: disable}}"'
 
 " Rooter {{{2
 let g:rooter_cd_cmd = "lcd"
@@ -348,6 +373,10 @@ let g:undotree_DiffAutoOpen = 0
 let g:undotree_DiffCommand = 'diff -u'
 let g:undotree_ShortIndicators = 1
 let g:undotree_SetFocusWhenToggle = 1
+
+" Make not inverted in taxicab
+hi def link UndotreeNode   Statement
+hi def link UndotreeBranch Statement
 
 " Maps and other garbage {{{1
 
