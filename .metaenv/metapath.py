@@ -16,7 +16,7 @@ def main():
             os.remove(full_file)
 
     conf = ConfigParser(allow_no_value=True)
-    conf.read('metapath.ini')
+    conf.read('global/metapath.ini')
 
     confs = [conf]
 

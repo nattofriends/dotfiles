@@ -1,0 +1,6 @@
+asciinema
+autoflake
+autopep8
+flake8
+mypy
+yamllint
