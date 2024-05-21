@@ -11,7 +11,6 @@ bindkey "^[[H" beginning-of-line
 bindkey "^[[F" end-of-line
 
 # https://stackoverflow.com/questions/890620/unable-to-have-bash-like-c-x-e-in-zsh
-# This does differ from bash behavior, command isn't run after quitting the EDITOR
 autoload edit-command-line
 zle -N edit-command-line
 

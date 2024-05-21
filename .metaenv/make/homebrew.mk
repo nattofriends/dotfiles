@@ -2,8 +2,10 @@ export HOMEBREW_NO_AUTO_UPDATE := 1
 export HOMEBREW_NO_INSTALL_FROM_API := 1
 export HOMEBREW_BUNDLE_NO_LOCK := 1
 
+UNAME := $(shell uname)
+
 # To be used on Linux only
-ifeq ($(shell uname),Linux)
+ifeq ($(UNAME),Linux)
 export HOMEBREW_PREFIX := ${HOME}/.homebrew/bin
 
 brew-bootstrap:
@@ -16,6 +18,11 @@ brew-bootstrap:
 clean: brew-clean
 brew-clean:
 	rm -rf ${HOME}/.homebrew
+
+else ifeq ($(UNAME),Darwin)
+brew-bootstrap:
+	# Use default install method for macOS
+	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 endif
 
 upgrade: brew-upgrade
