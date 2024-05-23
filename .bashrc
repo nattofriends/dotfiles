@@ -50,6 +50,6 @@ source_dir () {
 
 main
 unset RC_DEBUG
-unset rc_log rc_log source_file source_dir main
+unset rc_log rc_debug source_file source_dir main
 
 # vim: foldmethod=marker foldlevel=0

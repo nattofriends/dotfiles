@@ -1,6 +1,17 @@
 [alias]
+    # Shortenings
     co = checkout
     sm = submodule
+    # Typos
+    sttaus = status
+    brnach = branch
+    gpre = grep
+
+    # Show branch name
+    b = rev-parse --abbrev-ref HEAD
+    # Nice to have the relative date, which branch -v does not have
+    br = branch --sort=-committerdate --format='%(HEAD) %(refname:short) %(color:yellow)%(objectname:short)%(color:reset) (%(color:green)%(committerdate:relative)%(color:reset))'
+    bri = "!git checkout $(git br | fzy | tr -s ' ' | cut -f2 -d' ')"
 
     sm-reinit = "!f() { \
         set +x; \
@@ -8,20 +19,34 @@
         rm -rf $(git rev-parse --show-toplevel)/.git/modules/$1; \
         git sm update --init --recursive -- $1; \
     }; f"
+
+[branch]
+    sort = committerdate
 [color]
     ui = true
 [core]
     autocrlf = false
+    excludesFile = ~/.gitignore_global
+[credential]
+    helper = cache
+[diff]
+    renames = copy
 [fetch]
     prune = true
+[init]
+    defaultBranch = main
+[pull]
+    ff = true
+    rebase = false
 [push]
-    default = simple
+    default = current
+[safe]
+    directory = *
 [submodule]
     fetchJobs = 4
 [user]
     name = nattofriends
     email = nattofriends@gmail.com
-[diff]
-    renames = copy
+
 [include]
-    path = .gitconfig_local
+    path = ~/.gitconfig_local

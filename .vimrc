@@ -121,6 +121,7 @@ set shiftwidth=0    " auto-indent (e.g. >>) width; 0 = use tabstop
 set softtabstop=-1  " disable part-tab-part-space tabbing; < 0 = use tabstop
 
 autocmd BufRead * DetectIndent
+autocmd FileType make set noexpandtab
 
 set relativenumber
 
@@ -349,10 +350,10 @@ let g:ale_sh_shellcheck_executable = '/dev/null'
 
 let g:ale_python_autopep8_options = '--max-line-length=999'
 let g:ale_python_black_options = '--line-length=999'
-let g:ale_python_flake8_options = '--max-line-length=999'
+let g:ale_python_flake8_options = '--max-line-length=999 --extend-ignore=E203'
 let g:ale_python_isort_options = '--profile=black --force-single-line-imports --line-length=999'
 
-let g:ale_yaml_yamllint_options = '-d "{extends: relaxed, rules: {line-length: {max: 999}, indentation: disable}}"'
+let g:ale_yaml_yamllint_options = '-d "{extends: relaxed, rules: {line-length: {max: 999}, indentation: disable, hyphens: disable}}"'
 
 " Rooter {{{2
 let g:rooter_cd_cmd = "lcd"

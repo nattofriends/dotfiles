@@ -1,3 +1,4 @@
+-include Makefile.pre
 SHELL := /bin/bash
 MAKEFLAGS += --jobs=4
 
@@ -26,4 +27,4 @@ include make/homebrew.mk
 include make/npm.mk
 include make/python.mk
 
--include Makefile.local
+-include Makefile.post

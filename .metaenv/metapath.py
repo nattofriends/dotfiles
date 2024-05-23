@@ -1,8 +1,7 @@
 #!/usr/bin/python3
-
-from configparser import ConfigParser
 import os.path
 import sys
+from configparser import ConfigParser
 
 
 def main():
@@ -34,10 +33,18 @@ def main():
                 assert os.path.exists(source_dir), source_dir
 
                 for item in conf[section]:
-                    os.symlink(
-                        os.path.join(source_dir, item),
-                        os.path.join(root, item),
-                    )
+                    if item.startswith("@"):
+                        item = item[1:]
+                        dest = os.path.join(source_dir, item)
+                        fn = os.path.join(root, item)
+                        with open(fn, 'w') as fh:
+                            fh.write(f'exec {dest} "$@"')
+                        os.chmod(fn, 0o755)
+                    else:
+                        os.symlink(
+                            os.path.join(source_dir, item),
+                            os.path.join(root, item),
+                        )
 
 
 if __name__ == '__main__':
