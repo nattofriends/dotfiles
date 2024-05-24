@@ -27,6 +27,8 @@ endif
 
 upgrade: brew-upgrade
 brew-upgrade:
-	-brew update
-	brew bundle --verbose --file global/Brewfile
-	-brew bundle --verbose --file local/Brewfile
+	command -v brew && \
+		(brew update ||: ) && \
+		brew bundle --verbose --file global/Brewfile && \
+		(brew bundle --verbose --file local/Brewfile ||:) \
+		|| echo "prerequisite not installed, skipping $@"
