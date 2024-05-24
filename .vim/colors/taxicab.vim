@@ -66,7 +66,7 @@ endfor
 
 for highlight_group in [
     \"Conceal", "DiffText", "Directory", "Folded", "LineNr", "MoreMsg", "NonText",
-    \"PMenuSel", "PMenuSbar", "SignColumn", "TabLine", "WildMenu"
+    \"PMenuSel", "PMenuSbar", "SignColumn", "SpecialKey", "TabLine", "WildMenu"
 \]
     call s:h(highlight_group, s:normal)
 endfor
@@ -76,7 +76,7 @@ endfor
 for highlight_group in [
     \"ColorColumn", "Cursor","CursorIM", "CursorColumn", "CursorLineNr", "DiffAdd",
     \"DiffChange", "DiffDelete", "ErrorMsg", "FoldColumn", "PMenu", "PMenuThumb",
-    \"Question", "Search", "SpecialKey", "TabLineSel", "TabLineFill", "Visual",
+    \"Question", "Search", "TabLineSel", "TabLineFill", "Visual",
     \"VertSplit", "WarningMsg"
 \]
     call s:h(highlight_group, s:reverse)
@@ -84,7 +84,6 @@ endfor
 
 " No additional color for CursorLine, sorry.
 call s:h("CursorLine", { "fg": s:none, "bg": s:none, "attrs": "underline" })
-call s:h("Folded", { "attrs": "bold" })
 call s:h("LineNr", { "attrs": "italic" })
 
 " Plugin highlighting groups {{{1
@@ -96,5 +95,10 @@ endfor
 " EasyMotion {{{2
 call s:h("EasyMotionTarget", extend(copy(s:reverse), { "attrs": "italic,underline" }))
 call s:h("EasyMotionShade", s:normal)
+
+for highlight_group in ["GitGutterAdd", "GitGutterChange", "GitGutterDelete"]
+    call s:h(highlight_group, s:normal)
+endfor
+
 
 " vim: foldmethod=marker foldlevel=0 sw=4

@@ -127,7 +127,22 @@ set relativenumber
 
 set scrolloff=1
 
-set list listchars=tab:>>,trail:.,precedes:<,extends:>
+set list
+
+set updatetime=250
+set signcolumn=yes
+autocmd FileType tagbar,nerdtree,qf,twiggy,undotree,ctrlp setlocal signcolumn=no
+
+let g:baselistchars = "tab:>>,trail:·,precedes:<,extends:>"
+let &listchars = g:baselistchars
+" Indent guide with (lead)multispace and reconfiguring when sw changes
+" let g:multispacelistchars = "multispace:┆"
+" let g:multispaceprefix = ""
+" if has('patch-8.2.0959')
+"     let g:multispaceprefix = "lead"
+" endif
+" let &listchars = g:baselistchars . ',' . g:multispaceprefix . g:multispacelistchars . '   '
+" autocmd OptionSet shiftwidth execute 'setlocal listchars=' . g:baselistchars . ',' . g:multispaceprefix . g:multispacelistchars . repeat('\ ', &sw - 1)
 
 set splitbelow
 set splitright
@@ -336,9 +351,14 @@ let g:ale_open_list = 1
 
 let g:ale_echo_msg_format = '%severity%: %linter%: %code: %%s'
 
+call ale#handlers#cspell#DefineLinter('groovy')
+let g:ale_linters = {
+\   'groovy': ['cspell', 'npm-groovy-lint'],
+\}
+
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\   'python': ['black', 'isort', 'autopep8'],
+\   'python': ['black', 'isort', 'autopep8', 'autoimport'],
 \}
 
 let g:ale_python_auto_virtualenv = 1
@@ -347,6 +367,8 @@ let g:ale_virtualenv_dir_names = ['venv', 'virtualenv_run']
 let g:ale_cspell_options = '--config ~/.config/cspell/cspell.yaml'
 " Disable shellcheck
 let g:ale_sh_shellcheck_executable = '/dev/null'
+
+let g:ale_groovy_npmgroovylint_options = '-r "LineLength{\"length\": 999}"'
 
 let g:ale_python_autopep8_options = '--max-line-length=999'
 let g:ale_python_black_options = '--line-length=999'
@@ -378,6 +400,13 @@ let g:undotree_SetFocusWhenToggle = 1
 " Make not inverted in taxicab
 hi def link UndotreeNode   Statement
 hi def link UndotreeBranch Statement
+
+" Twiggy
+let g:twiggy_local_branch_sort = 'mru'
+let g:twiggy_num_columns = 35
+let g:twiggy_remote_branch_sort = 'date'
+let g:twiggy_show_full_ui = 0
+let g:twiggy_icons = ['*', '=', '+', '-', '~', '%', 'x']
 
 " Maps and other garbage {{{1
 
@@ -491,6 +520,10 @@ nnoremap <leader>u :UndotreeToggle<cr>
 
 " Undotree
 nnoremap <leader>u :UndotreeToggle<cr>
+
+" Twiggy
+autocmd BufNewFile,BufReadPost,VimEnter * call FugitiveDetect()
+map <leader>b :Twiggy<CR>
 
 " Source .vimrc_local {{{1
 if !empty(glob("~/.vimrc_local"))
