@@ -142,3 +142,19 @@
 	path = .vim/bundle/qf
 	url = https://github.com/romainl/vim-qf
 	branch = master
+[submodule ".vim/bundle/ultisnips"]
+	path = .vim/bundle/ultisnips
+	url = https://github.com/SirVer/ultisnips
+	branch = master
+[submodule ".vim/bundle/gitgutter"]
+	path = .vim/bundle/gitgutter
+	url = https://github.com/airblade/vim-gitgutter
+	branch = main
+[submodule ".vim/bundle/twiggy"]
+	path = .vim/bundle/twiggy
+	url = https://github.com/sodapopcan/vim-twiggy
+	branch = master
+[submodule ".vim/bundle/fugitive"]
+	path = .vim/bundle/fugitive
+	url = https://github.com/tpope/vim-fugitive
+	branch = master
