@@ -30,7 +30,9 @@ def main():
 
             else:
                 source_dir = os.path.expandvars(os.path.expanduser(section))
-                assert os.path.exists(source_dir), source_dir
+                if not os.path.exists(source_dir):
+                    print(f"WARNING: Skipping source directory {source_dir} which does not exist")
+                    continue
 
                 for item in conf[section]:
                     if item.startswith("@"):
