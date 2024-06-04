@@ -461,6 +461,16 @@ function PasteOverEmpty()
     endif
 endfunction
 
+" Open all files in the argument list in tabs.
+augroup open-tabs
+    au!
+    if has('patch-8.2.3888')
+        au VimEnter * ++nested if !&diff | argded | tab all | tabfirst | endif
+    else
+        au VimEnter * ++nested if !&diff | tab all | tabfirst | endif
+    endif
+augroup end
+
 nnoremap <silent> p :call PasteOverEmpty()<CR>
 
 
@@ -530,4 +540,12 @@ if !empty(glob("~/.vimrc_local"))
     exec 'source' glob("~/.vimrc_local")
 endif
 
+" Version support tables
+" Ubuntu Bionic: 8.0.1453
+" Ubuntu Focal: 8.1.2269
+" Ubuntu Jammy: 8.2.3995
+" Ubuntu Noble: 9.1.0016
+" Debian Buster: 8.1.0875
+" Debian Bullseye: 8.2.2434
+" Debian Bookworm: 9.0.1378
 " vim: foldmethod=marker foldlevel=0
