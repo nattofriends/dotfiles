@@ -98,10 +98,6 @@
 	branch = master
 	path = .vim/bundle/vim-easymotion
 	url = https://github.com/Lokaltog/vim-easymotion
-[submodule ".vim/bundle/vim-fugitive"]
-	branch = master
-	path = .vim/bundle/vim-fugitive
-	url = https://github.com/tpope/vim-fugitive
 [submodule ".vim/bundle/vim-nerdtree-tabs"]
 	branch = master
 	path = .vim/bundle/vim-nerdtree-tabs
