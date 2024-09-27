@@ -22,7 +22,7 @@ brew-clean:
 else ifeq ($(UNAME),Darwin)
 brew-bootstrap:
 	# Use default install method for macOS
-	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+	/bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 endif
 
 upgrade: brew-upgrade
@@ -30,5 +30,6 @@ brew-upgrade:
 	command -v brew && \
 		(brew update ||: ) && \
 		brew bundle --verbose --file global/Brewfile && \
-		(brew bundle --verbose --file local/Brewfile ||:) \
+		(brew bundle --verbose --file local/Brewfile ||:) && \
+		brew upgrade \
 		|| echo "prerequisite not installed, skipping $@"

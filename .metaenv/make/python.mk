@@ -2,6 +2,7 @@ PIP_INDEX_URL ?= https://pypi.org/simple/
 
 export PIPX_HOME := ${HOME}/.pipx/pipx
 export PIPX_BIN_DIR := ${HOME}/.pipx/bin
+export PIPX_MAN_DIR := ${HOME}/.pipx/man
 export USE_EMOJI := false
 
 install: python
@@ -31,7 +32,7 @@ pyenv-upgrade:
 	[ -d ${HOME}/.pyenv ] && \
 		cd ${HOME}/.pyenv && \
 		git pull && \
-		$(MAKE) pyenv-bootstrap || echo "prerequisite not installed, skipping $@"
+		$(MAKE) -q pyenv-bootstrap || echo "prerequisite not installed, skipping $@"
 
 clean: pyenv-clean
 pyenv-clean:

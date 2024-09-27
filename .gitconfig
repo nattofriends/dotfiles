@@ -39,7 +39,8 @@
     ff = true
     rebase = false
 [push]
-    default = current
+    default = simple
+	autoSetupRemote = true
 [safe]
     directory = *
 [submodule]
