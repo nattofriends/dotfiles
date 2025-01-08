@@ -22,6 +22,7 @@ metapath:
 	./metapath.py bin
 
 include make/cargo.mk
+include make/ghdl.mk
 include make/go.mk
 include make/homebrew.mk
 include make/npm.mk

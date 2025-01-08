@@ -4,7 +4,7 @@ npm:
 		[[ "$$i" != \#* ]] && sh -xc "npm install -g $$i"; \
 		done < <(cat global/$@.txt local/$@.txt) || echo "npm not installed, skipping"
 
-upgarde: npm-upgrade
+upgrade: npm-upgrade
 npm-upgrade:
 	command -v npm && npm upgrade -g || echo "npm not installed, skipping"
 
