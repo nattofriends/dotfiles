@@ -45,6 +45,7 @@ def main():
         downloaded_tag = process(repo, tag, file, archive_member, existing_version)
         downloaded_versions[section] = downloaded_tag
 
+    versions_path.parent.mkdir(parents=True, exist_ok=True)
     versions_path.write_text(json.dumps(downloaded_versions, indent=2))
 
 
