@@ -29,10 +29,9 @@ pyenv-bootstrap:
 
 upgrade: pyenv-upgrade
 pyenv-upgrade:
-	[ -d ${HOME}/.pyenv ] && \
-		cd ${HOME}/.pyenv && \
-		git pull && \
-		$(MAKE) -q pyenv-bootstrap || echo "prerequisite not installed, skipping $@"
+	[ -d ${HOME}/.pyenv ] || (echo "prerequisite not installed, skipping $@" && false)
+	cd ${HOME}/.pyenv && git pull
+	$(MAKE) pyenv-bootstrap
 
 clean: pyenv-clean
 pyenv-clean:
