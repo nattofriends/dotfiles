@@ -147,6 +147,7 @@ let &listchars = g:baselistchars
 set splitbelow
 set splitright
 
+set diffopt+=internal,algorithm:patience
 
 " Colorscheme {{{1
 " If something goes horribly wrong, still use the built in dark colors.
