@@ -9,12 +9,12 @@ function relink_sock {
     if [[ "$_TMUX_SUPPORTS_CLIENT_PID" == "0" ]]; then
         sock=$(grep $(tmux list-clients -F "#{client_activity} #{client_tty}" | sort -r | head -n 1 | cut -d ' ' -f 2) < $TMPDIR/.sockminder.$USER | cut -d ' ' -f 2)
     else
-        sock=$(grep -aPo '(?<=SSH_AUTH_SOCK=)[^\0]+' /proc/$(tmux list-clients -F "#{client_activity} #{client_pid}" | sort -r | head -n 1 | cut -d ' ' -f 2)/environ) 
+        sock=$(grep -aPo '(?<=SSH_AUTH_SOCK=)[^\0]+' /proc/$(tmux list-clients -F "#{client_activity} #{client_pid}" | sort -r | head -n 1 | cut -d ' ' -f 2)/environ)
     fi
 
     # Link the sock to the most recent client
     # If the client didn't have a SSH_AUTH_SOCK, this will be just empty.
-    if [[ "$sock" != "" ]]; then
+    if [[ "$sock" == *agent.* ]]; then
         ln -sf $sock ~/.ssh/sock
     fi
 
@@ -47,6 +47,7 @@ _TMUX_SUPPORTS_CLIENT_PID=$?
 _SYSTEM_SUPPORTS_PROCFS=$?
 
 if [[ "$ENABLE_SOCKMINDER" == "1" ]]; then
+    rc_log "Enabling sockminder"
     if [[ -n "$TMUX" ]]; then
         trap relink_sock DEBUG
         PROMPT_COMMAND="$PROMPT_COMMAND; reset_relink_done"
@@ -61,6 +62,7 @@ if [[ "$ENABLE_SOCKMINDER" == "1" ]]; then
     fi
 else
     # Fallback to last-login-wins
+    rc_log "Not enabling sockminder (ENABLE_SOCKMINDER=${ENABLE_SOCKMINDER})"
     if [[ -z "$TMUX" && -n "$SSH_AUTH_SOCK" ]]; then
         ln -sf $SSH_AUTH_SOCK ~/.ssh/sock
     fi
