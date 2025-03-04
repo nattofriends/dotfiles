@@ -1,3 +1,4 @@
+"
 " Vim options {{{1
 " Pathogen load
 runtime bundle/vim-pathogen/autoload/pathogen.vim
@@ -63,6 +64,12 @@ set t_vb=
 
 set ssop-=options
 set ssop-=folds
+
+" Make netrw less terrible
+let loaded_nerd_tree = 1
+let g:netrw_liststyle = 3
+let g:netrw_banner = 0
+let g:netrw_browse_split = 3
 
 " Enable use of the mouse for all modes
 if !has('nvim')
@@ -359,7 +366,7 @@ let g:ale_linters = {
 
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\   'python': ['black', 'isort', 'autopep8', 'autoimport'],
+\   'python': ['autopep8'],
 \}
 
 let g:ale_python_auto_virtualenv = 1
@@ -371,10 +378,10 @@ let g:ale_sh_shellcheck_executable = '/dev/null'
 
 let g:ale_groovy_npmgroovylint_options = '-r "LineLength{\"length\": 999}"'
 
-let g:ale_python_autopep8_options = '--max-line-length=999'
+let g:ale_python_autopep8_options = '--ignore=E401,E402,E501,W503,W504 --max-line-length=999'
 let g:ale_python_black_options = '--line-length=999'
-let g:ale_python_flake8_options = '--max-line-length=999 --extend-ignore=E203'
-let g:ale_python_isort_options = '--profile=black --force-single-line-imports --line-length=999'
+let g:ale_python_flake8_options = '--max-line-length=999 --extend-ignore=E203,W391,W503,W504'
+let g:ale_python_isort_options = '--profile=black --force-single-line-imports --line-length=999 --float-to-top'
 
 let g:ale_yaml_yamllint_options = '-d "{extends: relaxed, rules: {line-length: {max: 999}, indentation: disable, hyphens: disable}}"'
 
@@ -452,7 +459,7 @@ function! OpenContainingDirectory()
     execute 'tabedit ' . l:dir
 endfunction
 
-map <silent> <leader>e :call OpenContainingDirectory()<CR>
+map <leader>e :call OpenContainingDirectory()<CR>
 
 function PasteOverEmpty()
     let l:isempty = getline('.') =~ '^\s*$'

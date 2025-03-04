@@ -25,6 +25,7 @@ def main():
         sections.extend(conf.sections())
 
     downloaded_versions = {}
+    BIN_DIR.mkdir(exist_ok=True)
     versions_path = BIN_DIR / "versions.json"
 
     if versions_path.exists():
