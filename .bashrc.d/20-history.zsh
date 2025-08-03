@@ -17,7 +17,7 @@ setopt share_history
 rc_history() {
     if command -v atuin >/dev/null; then
         rc_log "integrating atuin"
-        eval "$(atuin init zsh)"
+        eval "$(atuin init zsh --disable-up-arrow)"
         return
     else
         rc_log "atuin not found, not integrating"
