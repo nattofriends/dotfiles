@@ -2,6 +2,7 @@
 
 import json
 import os
+import shutil
 import platform
 import re
 from configparser import ConfigParser
@@ -38,12 +39,19 @@ def main():
         repo = conf[section]['repo']
         tag = conf[section]['tag'].format(**identifiers)
         file = conf[section]['file'].format(**identifiers)
-        # I hope no one needs renaming
-        archive_member = conf[section]['archive_member']
+        archive_member = conf[section].get('archive_member')
+        local_name = conf[section]['local_name']
 
         existing_version = downloaded_versions.get(section)
 
-        downloaded_tag = process(repo, tag, file, archive_member, existing_version)
+        downloaded_tag = process(
+            repo,
+            tag,
+            file,
+            archive_member,
+            local_name,
+            existing_version,
+        )
         downloaded_versions[section] = downloaded_tag
 
     versions_path.parent.mkdir(parents=True, exist_ok=True)
@@ -64,7 +72,7 @@ def get_identifiers():
     return {k: f'({v})' for k, v in identifiers.items()}
 
 
-def process(repo, tag_filter, file_filter, archive_member, existing_version):
+def process(repo, tag_filter, file_filter, archive_member, local_name, existing_version):
     releases = urlopen(RELEASE_API.format(repo))
     releases = json.load(releases)
 
@@ -86,14 +94,20 @@ def process(repo, tag_filter, file_filter, archive_member, existing_version):
 
     downloaded, _ = urlretrieve(asset['browser_download_url'])
 
+    target_path = BIN_DIR / local_name
+
     if asset['name'].endswith('.zip'):
         with ZipFile(downloaded) as zipf:
             target = zipf.read(archive_member)
 
-            target_path = BIN_DIR / archive_member
+            target_path = BIN_DIR / local_name
             target_path.write_bytes(target)
             target_path.chmod(0o755)
             print(f'Wrote {archive_member} to disk')
+    else:
+        shutil.move(downloaded, target_path)
+
+    target_path.chmod(0o755)
 
     return release['tag_name']
 
