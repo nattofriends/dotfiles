@@ -28,19 +28,24 @@
     autocrlf = false
     excludesFile = ~/.gitignore_global
 [credential]
-    helper = cache
+    helper = cache --timeout 2604800
+    helper = oauth -device
 [diff]
     renames = copy
 [fetch]
     prune = true
+[grep]
+    lineNumber = true
 [init]
     defaultBranch = main
 [pull]
     ff = true
     rebase = false
 [push]
-    default = simple
-	autoSetupRemote = true
+    default = current
+    autoSetupRemote = true
+[rerere]
+    enabled = true
 [safe]
     directory = *
 [submodule]
