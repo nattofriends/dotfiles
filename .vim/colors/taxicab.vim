@@ -5,7 +5,6 @@
 hi clear
 syntax reset
 let g:colors_name = "taxicab"
-set background=light
 set t_Co=256
 
 " Combine cterm and gui since it's 2019
@@ -27,7 +26,7 @@ endfunction
 " XXX: cterm values untested
 let s:none = { "gui": "NONE", "cterm": "NONE" }
 let s:black = { "gui": "#000000", "cterm": "16" }
-let s:yellow = { "gui": "#ffcd00", "cterm": "220" }
+let s:yellow = { "gui": "#ffcc00", "cterm": "220" }
 
 let s:normal = { "fg": s:black, "bg": s:yellow }
 let s:reverse = { "fg": s:yellow, "bg": s:black }
@@ -43,7 +42,7 @@ endfor
 
 " Italic: comments
 " Comment and SpecialComment go together?
-for highlight_group in ["Comment", "SpecialComment"]
+for highlight_group in ["Comment", "SpecialComment", "vimLineComment"]
     call s:h(highlight_group, extend(copy(s:normal), { "attrs": "italic" }))
 endfor
 
@@ -100,5 +99,6 @@ for highlight_group in ["GitGutterAdd", "GitGutterChange", "GitGutterDelete"]
     call s:h(highlight_group, s:normal)
 endfor
 
+set background=light
 
 " vim: foldmethod=marker foldlevel=0 sw=4
