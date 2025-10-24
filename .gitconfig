@@ -27,6 +27,7 @@
 [core]
     autocrlf = false
     excludesFile = ~/.gitignore_global
+    attributesFile = ~/.gitattributes_global
 [credential]
     helper = cache --timeout 2604800
     helper = oauth -device
