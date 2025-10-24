@@ -25,6 +25,7 @@ brew-bootstrap:
 	/bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 endif
 
+install: brew
 brew: brew-upgrade
 upgrade: brew-upgrade
 brew-upgrade:

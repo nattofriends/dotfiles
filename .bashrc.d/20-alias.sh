@@ -5,7 +5,7 @@ if command -v gls >/dev/null; then
     LS=gls
 fi
 
-alias ls="$LS --all --color=auto --dereference-command-line --dereference --human-readable --classify --group-directories-first -l -v"
+alias ls="$LS --all --color=auto --dereference-command-line --human-readable --classify --group-directories-first -l -v"
 
 unset LS
 
