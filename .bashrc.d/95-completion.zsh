@@ -1,5 +1,11 @@
 autoload -Uz compinit bashcompinit
-compinit
+
+if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
+    compinit;
+else
+    compinit -C;
+fi;
+
 bashcompinit
 
 if [[ ! -d ~/.zsh/cache ]]; then
