@@ -6,7 +6,8 @@ load_plugins() {
     rc_debug "Loading plugin $plugin"
     fpath+=$plugin
     initfile=($plugin/*.plugin.zsh)
-    (( $+functions[zsh-defer] )) && zsh-defer . $initfile || . $initfile
+    . $initfile
+    # (( $+functions[zsh-defer] )) && zsh-defer . $initfile || . $initfile
   done
 }
 
