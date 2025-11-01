@@ -5,7 +5,7 @@ export PIPX_BIN_DIR := ${HOME}/.pipx/bin
 export PIPX_MAN_DIR := ${HOME}/.pipx/man
 export USE_EMOJI := false
 
-install: python
+install: python3
 python3:
 	command -v pipx && command -v $@ && set -x && while read i; do \
 		[[ "$$i" != \#* ]] && sh -xc "pipx install --verbose --index-url=$(PIP_INDEX_URL) $$i"; \

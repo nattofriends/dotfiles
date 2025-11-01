@@ -11,6 +11,3 @@ else
 fi
 
 PS1='[%D{%m/%d %R:%S}] %B%~ $(git_branch)${PROMPT_CHAR} %b'
-
-ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-ZSH_AUTOSUGGEST_HISTORY_IGNORE="cd *"

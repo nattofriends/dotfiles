@@ -126,10 +126,6 @@
 	path = .zsh/plugin/50-defer
 	url = https://github.com/romkatv/zsh-defer
 	branch = master
-[submodule ".zsh/plugin/fast-syntax-highlighting"]
-	path = .zsh/plugin/90-fast-syntax-highlighting
-	url = https://github.com/zdharma-continuum/fast-syntax-highlighting
-	branch = master
 [submodule ".vim/bundle/yadi"]
 	path = .vim/bundle/yadi
 	url = https://github.com/timakro/vim-yadi

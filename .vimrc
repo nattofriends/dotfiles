@@ -66,7 +66,6 @@ set ssop-=options
 set ssop-=folds
 
 " Make netrw less terrible
-let loaded_nerd_tree = 1
 let g:netrw_liststyle = 3
 let g:netrw_banner = 0
 let g:netrw_browse_split = 3
@@ -252,6 +251,12 @@ let NERDTreeIgnore = ['\.pyc$']
 let g:nerdtree_tabs_focus_on_files=1
 let g:nerdtree_tabs_open_on_gui_startup=0
 
+" Exit Vim if NERDTree is the only window remaining in the only tab.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
+
+" Close the tab if NERDTree is the only window remaining in it.
+autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
+
 " NERDCommenter {{{2
 let g:NERDSpaceDelims = 1
 " Left aligned linewise commenting.
@@ -380,7 +385,7 @@ let g:ale_groovy_npmgroovylint_options = '-r "LineLength{\"length\": 999}"'
 
 let g:ale_python_autopep8_options = '--ignore=E401,E402,E501,W503,W504 --max-line-length=999'
 let g:ale_python_black_options = '--line-length=999'
-let g:ale_python_flake8_options = '--max-line-length=999 --extend-ignore=E203,W391,W503,W504'
+let g:ale_python_flake8_options = '--max-line-length=999 --extend-ignore=E203,W391,W503,W504,F403,F405'
 let g:ale_python_isort_options = '--profile=black --force-single-line-imports --line-length=999 --float-to-top'
 
 let g:ale_yaml_yamllint_options = '-d "{extends: relaxed, rules: {line-length: {max: 999}, indentation: disable, hyphens: disable}}"'
