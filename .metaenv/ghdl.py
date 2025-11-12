@@ -5,6 +5,7 @@ import os
 import shutil
 import platform
 import re
+import tarfile
 from configparser import ConfigParser
 from pathlib import Path
 from urllib.request import urlopen
@@ -104,6 +105,15 @@ def process(repo, tag_filter, file_filter, archive_member, local_name, existing_
             target_path.write_bytes(target)
             target_path.chmod(0o755)
             print(f'Wrote {archive_member} to disk')
+    if asset['name'].endswith('.tar.gz'):
+        with tarfile.open(downloaded) as tarf:
+            target = tarf.extractfile(tarf.getmember(archive_member))
+
+            target_path = BIN_DIR / local_name
+            target_path.write_bytes(target.read())
+            target_path.chmod(0o755)
+            print(f'Wrote {archive_member} to disk')
+
     else:
         shutil.move(downloaded, target_path)
 
