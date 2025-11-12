@@ -1,0 +1,7 @@
+cargo.lock diff=lockdiff
+go.sum diff=lockdiff
+package-lock.json diff=lockdiff
+poetry.lock diff=lockdiff
+requirements.txt diff=lockdiff
+requirements-dev.txt diff=lockdiff
+yarn.lock diff=lockdiff
