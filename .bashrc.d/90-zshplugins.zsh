@@ -11,7 +11,7 @@ load_plugins() {
   done
 }
 
-if [[ "$RC_NOPLUGIN" != 1 ]]; then
+if [[ "$RC_PLUGIN" != 0 ]]; then
   load_plugins
 else
   rc_log "Not loading plugins"

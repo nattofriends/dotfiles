@@ -20,3 +20,13 @@ source_file () {
         rc_debug "File $file does not exist, skipping"
     fi
 }
+
+compare_version () {
+    printf '%s\n%s' "$1" "$2" | sort -C -V
+}
+
+uninit () {
+    unset rc_log rc_debug source_file uninit
+}
+
+# vim: ft=sh

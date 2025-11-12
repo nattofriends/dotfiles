@@ -1,4 +1,5 @@
 RC_DEBUG=0
+RC_CACHING=1
 
 # Not interactive? Get out early
 if [[ $- != *i* ]] ; then
@@ -49,7 +50,7 @@ source_dir () {
 . ~/.bashrc.d/lib
 
 main
+uninit
 unset RC_DEBUG
-unset rc_log rc_debug source_file source_dir main
 
 # vim: foldmethod=marker foldlevel=0

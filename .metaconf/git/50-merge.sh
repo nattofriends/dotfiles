@@ -1,7 +1,3 @@
-compare_version() {
-    printf '%s\n%s' "$1" "$2" | sort -C -V
-}
-
 configure_merge() {
     local version=$(git --version | grep -o "\d.*\d")
     # feature added in git 2.5.5
@@ -15,5 +11,4 @@ configure_merge() {
 }
 
 configure_merge
-
-unset configure_merge compare_version
+unset configure_merge

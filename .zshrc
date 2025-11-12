@@ -1,5 +1,6 @@
 RC_DEBUG=0
-RC_NOPLUGIN=0
+RC_CACHING=1
+RC_PLUGIN=1
 
 main() {
     rc_log "Using zsh"
@@ -31,7 +32,7 @@ source_dir () {
 . ~/.bashrc.d/lib
 
 main
+uninit
 unset RC_DEBUG RC_NOPLUGIN
-unset rc_log rc_debug source_file source_dir main
 
 # vim: foldmethod=marker foldlevel=0

@@ -7,10 +7,6 @@ fi
 # Disable flow control
 stty ixany ixoff -ixon
 
-# https://stackoverflow.com/a/42056714/
-# https://unix.stackexchange.com/questions/184597/
-export LESS="-XRF --mouse"
-
 # Enable readline and history for Python interactive
 export PYTHONSTARTUP=~/.pythonrc.py
 
