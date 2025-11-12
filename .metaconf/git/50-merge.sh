@@ -3,7 +3,7 @@ compare_version() {
 }
 
 configure_merge() {
-    local version=$(git --version | grep -Po "\d+\.\d+\.\d+")
+    local version=$(git --version | grep -o "\d.*\d")
     # feature added in git 2.5.5
     if $(compare_version 2.5.4 $version); then
         rc_debug "Using zdiff3"
