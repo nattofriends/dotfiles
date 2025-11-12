@@ -1,0 +1,2 @@
+[core]
+    pager = 'perl /usr/share/doc/git/contrib/diff-highlight | less'

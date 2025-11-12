@@ -54,6 +54,7 @@
 [user]
     name = nattofriends
     email = nattofriends@gmail.com
-
-[include]
+[include "metaconf"]
+    path = ~/.metaconf/git/generated/config
+[include "local"]
     path = ~/.gitconfig_local
