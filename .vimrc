@@ -1,4 +1,3 @@
-"
 " Vim options {{{1
 " Pathogen load
 runtime bundle/vim-pathogen/autoload/pathogen.vim
@@ -434,6 +433,7 @@ for i in range(1, 9)
     execute "nnoremap <silent> <leader>" . i . " " . i . "gt"
 endfor
 
+" Typos
 cnoreabbrev qw wq
 cnoreabbrev qwa wqa
 
@@ -446,6 +446,9 @@ nmap <leader>ic Yp$dT xA
 nnoremap x "_x
 nnoremap dd "_dd
 vnoremap d "_d
+
+" Prevent Ex mode
+nnoremap Q <Nop>
 
 " requirements.txt filetype
 autocmd FileType requirements setlocal commentstring=#\ %s
