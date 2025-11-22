@@ -1,7 +1,7 @@
 configure_merge() {
-    local version=$(git --version | grep -o "\d.*\d")
-    # feature added in git 2.5.5
-    if $(compare_version 2.5.4 $version); then
+    local version=$(git --version | grep -o '[[:digit:]].*[[:digit:]]')
+    # feature added in git 2.35.0
+    if $(compare_version 2.34.999 $version); then
         rc_debug "Using zdiff3"
         cat git-zdiff3-config >> generated/config
     else

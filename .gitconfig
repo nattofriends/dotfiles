@@ -27,7 +27,7 @@
 [core]
     autocrlf = false
     excludesFile = ~/.gitignore_global
-    attributesFile = ~/.gitattributes_global
+    attributesFile = ~/.metaconf/git/generated/attributes
 [credential]
     helper = cache --timeout 2604800
     helper = oauth -device
@@ -54,7 +54,6 @@
 [user]
     name = nattofriends
     email = nattofriends@gmail.com
-[include "metaconf"]
+[include]
     path = ~/.metaconf/git/generated/config
-[include "local"]
     path = ~/.gitconfig_local
