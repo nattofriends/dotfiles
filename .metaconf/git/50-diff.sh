@@ -2,6 +2,7 @@ configure_diff() {
     if command -v difft >/dev/null; then
         rc_debug "enabling difftastic"
         cat difftastic-config >> generated/config
+        cat difftastic-attributes >> generated/attributes
     fi
 
     if command -v lockdiff >/dev/null; then

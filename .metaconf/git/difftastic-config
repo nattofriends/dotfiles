@@ -1,2 +1,2 @@
-[diff]
-    external = difft
+[diff "difft"]
+    command = difft
