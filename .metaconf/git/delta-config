@@ -1,0 +1,10 @@
+[core]
+    pager = "f() { local args; if [[ \"$COLUMNS\" -gt 80 ]]; then args='--side-by-side'; fi; delta $args; }; f"
+[interactive]
+    diffFilter = "f() { local args='--color-only'; if [[ \"$COLUMNS\" -gt 80 ]]; then args='--side-by-side'; fi; delta $args; }; f"
+[delta]
+    diff-highlight = true
+    navigate = true
+    navigate-regex = "^diff --git"
+    line-numbers-left-format = "{nm:^4}│ "
+    line-numbers-right-format = "{np:^4}│ "
