@@ -12,3 +12,5 @@ unset LS
 if command -v colordiff >/dev/null; then
     alias diff=colordiff
 fi
+
+alias g=git
