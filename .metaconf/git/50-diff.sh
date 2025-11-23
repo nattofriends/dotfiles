@@ -31,14 +31,14 @@ configure_diff() {
         cat delta-config >> generated/config
     elif [ -f /opt/homebrew/opt/git/share/git-core/contrib/diff-highlight/diff-highlight ]; then
         rc_debug "enabling diff-highlight (system homebrew)"
-        cat diff-generic-config | sed s~DIFF_TOOL~/opt/homebrew/opt/git/share/git-core/contrib/diff-highlight/diff-highlight~ >> generated/config
+        cat diff-generic-config | sed s~DIFF_TOOL~perl /opt/homebrew/opt/git/share/git-core/contrib/diff-highlight/diff-highlight~ >> generated/config
     elif [ -d /usr/share/doc/git/contrib/diff-highlight ]; then
         # Thanks Debian for not shipping diff-highlight in a usable form
         rc_debug "enabling diff-highlight (debian)"
         cat /usr/share/doc/git/contrib/diff-highlight/{DiffHighlight.pm,diff-highlight.perl} > generated/diff-highlight
         chmod +x generated/diff-highlight
         local abs=$(readlink -f generated/diff-highlight)
-        cat diff-generic-config | sed "s~DIFF_TOOL~${abs}~" >> generated/config
+        cat diff-generic-config | sed "s~DIFF_TOOL~perl ${abs}~" >> generated/config
     fi
 
 }
