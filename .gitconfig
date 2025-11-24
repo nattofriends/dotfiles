@@ -33,6 +33,7 @@
     helper = oauth -device
 [diff]
     renames = copy
+    colorMoved = default
 [fetch]
     prune = true
 [grep]

@@ -1,0 +1,4 @@
+[core]
+    pager = DIFF_TOOL | less
+[interactive]
+    diffFilter = DIFF_TOOL
