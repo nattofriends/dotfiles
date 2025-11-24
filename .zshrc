@@ -2,6 +2,11 @@ RC_DEBUG=0
 RC_CACHING=1
 RC_PLUGIN=1
 
+noninteractive() {
+    RC_DEBUG=0
+    source_dir ~/.bashrc.d/noninteractive
+}
+
 main() {
     rc_log "Using zsh"
     rc_debug "RC_DEBUG=$RC_DEBUG"
@@ -31,8 +36,13 @@ source_dir () {
 
 . ~/.bashrc.d/lib
 
-main
+if [[ $- != *i* ]] ; then
+    noninteractive
+else
+    main
+fi
+
 uninit
-unset RC_DEBUG RC_NOPLUGIN
+unset RC_DEBUG RC_CACHING RC_PLUGIN main noninteractive
 
 # vim: foldmethod=marker foldlevel=0

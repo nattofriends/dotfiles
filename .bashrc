@@ -1,10 +1,10 @@
 RC_DEBUG=0
 RC_CACHING=1
 
-# Not interactive? Get out early
-if [[ $- != *i* ]] ; then
-    return
-fi
+noninteractive() {
+    RC_DEBUG=0
+    source_dir ~/.bashrc.d/noninteractive
+}
 
 main() {
     rc_log "Using bash"
@@ -49,8 +49,13 @@ source_dir () {
 
 . ~/.bashrc.d/lib
 
-main
+if [[ $- != *i* ]] ; then
+    noninteractive
+else
+    main
+fi
+
 uninit
-unset RC_DEBUG
+unset RC_DEBUG RC_CACHING noninteractive main
 
 # vim: foldmethod=marker foldlevel=0
