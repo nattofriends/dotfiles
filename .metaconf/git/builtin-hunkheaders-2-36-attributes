@@ -1,0 +1,2 @@
+# Added in 2.36.0
+*.kt   text diff=kotlin

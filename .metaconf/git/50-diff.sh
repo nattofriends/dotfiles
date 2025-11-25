@@ -1,4 +1,6 @@
 configure_diff() {
+    local git_version=$(git --version | grep -o '[[:digit:]].*[[:digit:]]')
+
     # https://github.com/Wilfred/difftastic/issues/917
     # ???
     # if command -v difft >/dev/null; then
@@ -7,11 +9,17 @@ configure_diff() {
     #     cat difftastic-attributes >> generated/attributes
     # fi
 
+    # https://tekin.co.uk/2020/10/better-git-diff-output-for-ruby-python-elixir-and-more
+    cat builtin-hunkheaders-attributes >> generated/attributes
+
+    if $(compare_version 2.35.999 $git_version); then
+        cat builtin-hunkheaders-2-36-attributes >> generated/attributes
+    fi
+
     if command -v lockdiff >/dev/null; then
         rc_debug "enabling lockdiff"
         cat lockdiff-attributes >> generated/attributes
 
-        local git_version=$(git --version | grep -o '[[:digit:]].*[[:digit:]]')
         # https://stackoverflow.com/a/72339133, gets confused for git < 2.37
         if $(compare_version 2.36.999 $git_version); then
             rc_debug "using direct lockdiff"

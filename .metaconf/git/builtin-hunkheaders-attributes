@@ -1,0 +1,17 @@
+# Added in 2.30.0
+*.sh   text diff=bash
+*.zsh  text diff=bash
+*.bash text diff=bash
+
+# Added in 2.10.0
+*.css  text diff=css
+
+# Added in 2.17.0
+*.go   text diff=golang
+
+# Added in ancient times
+*.java text diff=java
+
+# Added in 1.6.1
+*.py   text diff=python
+*.pyi  text diff=python

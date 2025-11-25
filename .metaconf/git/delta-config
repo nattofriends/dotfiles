@@ -1,7 +1,7 @@
 [core]
     pager = "f() { local args; if [ \"$COLUMNS\" -gt 80 ]; then args=\"$args --side-by-side\"; fi; delta $args; }; f"
 [interactive]
-    diffFilter = "f() { local args='--color-only'; if [ \"$COLUMNS\" -gt 80 ]; then args=\"$args --side-by-side\"; fi; delta $args; }; f"
+    diffFilter = delta --color-only
 [delta]
     diff-highlight = true
     navigate = true
