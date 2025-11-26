@@ -448,6 +448,7 @@ nnoremap dd "_dd
 vnoremap d "_d
 
 " Prevent Ex mode
+nnoremap q <Nop>
 nnoremap Q <Nop>
 
 " requirements.txt filetype
