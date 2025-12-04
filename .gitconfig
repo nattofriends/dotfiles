@@ -51,7 +51,7 @@
 [safe]
     directory = *
 [submodule]
-    fetchJobs = 4
+    fetchJobs = 0
 [user]
     name = nattofriends
     email = nattofriends@gmail.com
