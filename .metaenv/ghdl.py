@@ -78,7 +78,7 @@ def process(repo, tag_filter, file_filter, archive_member, local_name, existing_
     releases = json.load(releases)
 
     for release in releases:
-        if re.search(tag_filter, release['tag_name'], flags=re.I):
+        if not release['prerelease'] and re.search(tag_filter, release['tag_name'], flags=re.I):
             print(f'Found matching release name: {release["tag_name"]}')
             break
 
@@ -94,7 +94,6 @@ def process(repo, tag_filter, file_filter, archive_member, local_name, existing_
     print(f'Downloading asset URL: {asset["browser_download_url"]}...')
 
     downloaded, _ = urlretrieve(asset['browser_download_url'])
-
     target_path = BIN_DIR / local_name
 
     if asset['name'].endswith('.zip'):
@@ -105,7 +104,7 @@ def process(repo, tag_filter, file_filter, archive_member, local_name, existing_
             target_path.write_bytes(target)
             target_path.chmod(0o755)
             print(f'Wrote {archive_member} to disk')
-    if asset['name'].endswith('.tar.gz'):
+    elif asset['name'].endswith('.tar.gz'):
         with tarfile.open(downloaded) as tarf:
             target = tarf.extractfile(tarf.getmember(archive_member))
 
@@ -113,7 +112,6 @@ def process(repo, tag_filter, file_filter, archive_member, local_name, existing_
             target_path.write_bytes(target.read())
             target_path.chmod(0o755)
             print(f'Wrote {archive_member} to disk')
-
     else:
         shutil.move(downloaded, target_path)
 
