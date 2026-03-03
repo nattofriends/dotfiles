@@ -21,6 +21,8 @@ zstyle ':completion:*' cache-path ~/.zsh/cache
 zstyle ':completion::complete:*' gain-privileges 1
 zstyle ':completion:*' squeeze-slashes true
 zstyle ':completion:*' menu select
+zstyle ':completion:*:make:*:targets' call-command true
+zstyle ':completion:*:*:make:*' tag-order 'targets'
 setopt MENU_COMPLETE
 setopt AUTO_LIST
 setopt COMPLETE_IN_WORD
