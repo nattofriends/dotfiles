@@ -1,10 +1,14 @@
+if [[ -d ~/.metaconf/zsh-completions/generated ]]; then
+    fpath+=(~/.metaconf/zsh-completions/generated)
+fi
+
 autoload -Uz compinit bashcompinit
 
 if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
-    compinit;
+    compinit -u
 else
-    compinit -C;
-fi;
+    compinit -u -C
+fi
 
 bashcompinit
 
