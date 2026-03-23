@@ -437,6 +437,8 @@ endfor
 cnoreabbrev qw wq
 cnoreabbrev qwa wqa
 
+inoreabbrev improt import
+
 " Delete until space
 nmap <leader>d dT x
 " Copy this import
