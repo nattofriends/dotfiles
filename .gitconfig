@@ -32,6 +32,7 @@
     helper = cache --timeout 2604800
     helper = oauth -device
 [diff]
+    algorithm = histogram
     renames = copy
     colorMoved = default
 [fetch]
