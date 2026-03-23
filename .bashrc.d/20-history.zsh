@@ -18,6 +18,9 @@ rc_history() {
     if command -v atuin >/dev/null; then
         rc_log "integrating atuin"
         eval "$(atuin init zsh --disable-up-arrow)"
+
+        # use up key mode for another binding
+        bindkey '^e' atuin-up-search
         return
     else
         rc_log "atuin not found, not integrating"
