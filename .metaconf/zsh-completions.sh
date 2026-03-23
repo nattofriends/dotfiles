@@ -5,7 +5,7 @@ RC_DEBUG=1
 
 main () {
     pushd zsh-completions >/dev/null
-    rm generated/*
+    rm -f generated/*
     local files=*.sh
     for i in $files; do
         if [ -r $i ]; then
