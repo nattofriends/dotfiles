@@ -1,5 +1,5 @@
 [core]
-    pager = "f() { local args; if [ \"$COLUMNS\" -gt 80 ]; then args=\"$args --side-by-side\"; fi; delta $args; }; f"
+    pager = delta
 [interactive]
     diffFilter = delta --color-only
 [delta]
