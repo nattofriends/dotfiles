@@ -8,7 +8,7 @@ export USE_EMOJI := false
 install: python3
 python3:
 	command -v pipx && command -v $@ && set -x && while read i; do \
-		[[ "$$i" != \#* ]] && sh -xc "pipx install --verbose --index-url=$(PIP_INDEX_URL) $$i"; \
+		[[ "$$i" != \#* ]] && sh -xc "pipx install --force --verbose --index-url=$(PIP_INDEX_URL) $$i"; \
 		done < <(cat global/$@.txt local/$@.txt) || echo "prerequisite not installed, skipping $@"
 
 upgrade: python3-upgrade

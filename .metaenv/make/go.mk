@@ -1,8 +1,8 @@
 install: go
-go: GOPATH=${HOME}/.go
+go: export GOPATH=${HOME}/.go
 go:
 	command -v go && set -x && while read i; do \
-		go get -v $$i && sh -xc "go install -v $$i@latest"; \
+		sh -c "go install -v $$i@latest"; \
 		done < <(cat global/$@.txt local/$@.txt) || echo "prerequisite not installed, skipping"
 
 clean: go-clean

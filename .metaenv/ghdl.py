@@ -104,7 +104,7 @@ def process(repo, tag_filter, file_filter, archive_member, local_name, existing_
             target_path.write_bytes(target)
             target_path.chmod(0o755)
             print(f'Wrote {archive_member} to disk')
-    elif asset['name'].endswith('.tar.gz'):
+    elif asset['name'].endswith('.tar.gz') or asset['name'].endswith('.tar.zst'):
         with tarfile.open(downloaded) as tarf:
             target = tarf.extractfile(tarf.getmember(archive_member))
 
