@@ -2,7 +2,7 @@ install: cargo
 # https://nickgerace.dev/post/how-to-manage-rust-tools-and-applications/
 cargo:
 	command -v cargo && set -x && while read i; do \
-		[[ "$$i" != \#* ]] && sh -xc "cargo install $$i"; \
+		[[ "$$i" != \#* ]] && sh -xc "cargo binstall --disable-telemetry --no-confirm --force $$i || cargo install $$i"; \
 		done < <(cat global/$@.txt local/$@.txt) || echo "prerequisite not installed, skipping $@"
 
 .PHONY: cargo-bootstrap
