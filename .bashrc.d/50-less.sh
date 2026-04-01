@@ -2,8 +2,8 @@ configure_less () {
     local cachedir=$HOME/.cache/.bashrc.d
     mkdir -p $cachedir
 
-    if [[ "$RC_CACHING" = 1 ]] && [[ -f $HOME/.bashrc.d/less ]]; then
-        export LESS=$(cat ${cachedir}/less)
+    if [[ "$RC_CACHING" = 1 ]] && [[ -f ${cachedir}/less ]]; then
+        source ${cachedir}/less
         return
     fi
 
@@ -19,7 +19,7 @@ configure_less () {
     export LESS=$less
 
     if [[ "$RC_CACHING" = 1 ]]; then
-        echo $less > ${cachedir}/less
+        echo "export LESS='${less}'" > ${cachedir}/less
     fi
 }
 

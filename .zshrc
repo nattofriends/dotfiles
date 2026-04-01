@@ -2,12 +2,12 @@ RC_DEBUG=0
 RC_CACHING=1
 RC_PLUGIN=1
 
-noninteractive() {
+noninteractive () {
     RC_DEBUG=0
     source_dir ~/.bashrc.d/noninteractive
 }
 
-main() {
+main () {
     rc_log "Using zsh"
     rc_debug "RC_DEBUG=$RC_DEBUG"
 
