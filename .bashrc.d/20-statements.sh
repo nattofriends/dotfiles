@@ -7,8 +7,6 @@ fi
 # Disable flow control
 stty ixany ixoff -ixon
 
-# Enable readline and history for Python interactive
-export PYTHONSTARTUP=~/.pythonrc.py
 export PIP_REQUIRE_VIRTUALENV=true
 
 export npm_config_prefix='~/.npm-prefix'
