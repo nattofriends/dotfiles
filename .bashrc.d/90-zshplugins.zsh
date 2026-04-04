@@ -5,9 +5,10 @@ zcompile_many() {
   for f; do zcompile -R -- "$f".zwc "$f"; done
 }
 
+
 load_plugins() {
   local initfile
-  for plugin in $HOME/.zsh/plugin/*; do
+  for plugin in $HOME/.zsh/plugin/*(N); do
     if [[ "$RC_PLUGIN_DISABLE" == *"${plugin:t}"* ]]; then
       rc_debug "Plugin ${plugin:t} disabled - not loading"
       continue
@@ -25,13 +26,12 @@ load_plugins() {
     setopt EXTENDED_GLOB
 
     # zcompile the completion cache; siginificant speedup.
-    for file in ${ZDOTDIR:-${HOME}}/.zcomp^(*.zwc)(.); do
+    for file in ${ZDOTDIR:-${HOME}}/.zcomp^(*.zwc)(.N); do
       zcompare ${file}
     done
 
     # zcompile .zshrc
     zcompare ${ZDOTDIR:-${HOME}}/.zshrc
-
   ) &!
 }
 

@@ -21,7 +21,7 @@ main () {
     source_dir ~/.bashrc.d/post
 }
 
-for lib in ~/.bashrc.d/lib.{sh,zsh}; do
+for lib in ~/.bashrc.d/lib/lib.{sh,zsh}; do
     . $lib
 done
 

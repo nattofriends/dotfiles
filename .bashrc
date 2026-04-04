@@ -30,7 +30,7 @@ main() {
     fi
 }
 
-for lib in ~/.bashrc.d/lib.{sh,bash}; do
+for lib in ~/.bashrc.d/lib/lib.{sh,bash}; do
     . $lib
 done
 
