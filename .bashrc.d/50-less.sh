@@ -1,9 +1,6 @@
 configure_less () {
-    local cachedir=$HOME/.cache/.bashrc.d
-    mkdir -p $cachedir
-
     if [[ "$RC_CACHING" = 1 ]]; then
-        local cachedir=$HOME/.cache/.bashrc.d
+        local cachedir=~/.cache/.bashrc.d
         local cachefile=$cachedir/less.zsh
         [[ -d "$cachedir" ]] || mkdir -p "$cachedir"
 
