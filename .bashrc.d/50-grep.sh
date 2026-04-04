@@ -8,20 +8,24 @@ configure_grep () {
     mkdir -p $cachedir
 
     if [[ "$RC_CACHING" = 1 ]] && [[ -f ${cachedir}/grep ]]; then
+        rc_debug "grep: using cached configuration"
         source ${cachedir}/grep
         wrap_grep
         return
     fi
 
     local version=$(grep --version | head -n 1)
+    rc_debug "grep: version is ${version}"
     local colors=""
 
     case "$version" in
         *"BSD grep"*)
+            rc_debug "grep: configuring for BSD grep"
             colors="export GREP_COLOR='${HIGHLIGHT_COLOR}'"
             ;;
         *"GNU grep"*)
             # Turns out that GNU grep still supports GREP_COLOR, but warns you every time about it
+            rc_debug "grep: configuring for GNU grep"
             colors="export GREP_COLORS='ms=${HIGHLIGHT_COLOR}'"
             ;;
         *)

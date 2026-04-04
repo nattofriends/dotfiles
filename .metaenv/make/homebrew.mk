@@ -34,5 +34,7 @@ brew-upgrade:
 		(brew update ||: ); \
 		brew bundle --verbose --file global/Brewfile; \
 		(brew bundle --verbose --file local/Brewfile ||:);  \
-		brew upgrade \
+		brew upgrade; \
+		brew autoremove; \
+		brew cleanup --scrub --prune=all \
 		|| echo "prerequisite not installed, skipping $@"
