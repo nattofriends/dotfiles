@@ -17,6 +17,8 @@ main () {
     popd >/dev/null
 }
 
-source $HOME/.bashrc.d/lib
+for lib in $HOME/.bashrc.d/lib/lib.{sh,bash}; do
+    source $lib
+done
 
 main
