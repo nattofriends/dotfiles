@@ -16,6 +16,7 @@ setopt share_history
 
 rc_history() {
     if command -v atuin >/dev/null; then
+        # Also see 89-zsh-autosuggestions.zsh
         rc_log "integrating atuin"
         eval "$(atuin init zsh --disable-up-arrow)"
 
