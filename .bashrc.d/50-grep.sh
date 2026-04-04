@@ -4,14 +4,16 @@ configure_grep () {
     # Bold white on red
     local -r HIGHLIGHT_COLOR='01;97;41'
 
-    local cachedir=$HOME/.cache/.bashrc.d
-    mkdir -p $cachedir
+    if [[ "$RC_CACHING" = 1 ]]; then
+        local cachedir=~/.cache/.bashrc.d
+        local cachefile=$cachedir/grep.zsh
 
-    if [[ "$RC_CACHING" = 1 ]] && [[ -f ${cachedir}/grep ]]; then
-        rc_debug "grep: using cached configuration"
-        source ${cachedir}/grep
-        wrap_grep
-        return
+        if [[ -s "$cachefile.zwc" ]]; then
+            rc_debug "grep: using cached configuration"
+            source $cachefile
+            wrap_grep
+            return
+        fi
     fi
 
     local version=$(grep --version | head -n 1)
@@ -34,8 +36,12 @@ configure_grep () {
     esac
 
     if [[ "${colors}" != "" ]] && [[ "$RC_CACHING" = 1 ]]; then
-        eval "${colors}"
-        echo $colors > ${cachedir}/grep
+        {
+            [[ -d "$cachedir" ]] || mkdir -p "$cachedir"
+            eval "${colors}"
+            echo $colors > $cachefile
+            zcompile -U $cachefile
+        } &!
     fi
 
     wrap_grep
