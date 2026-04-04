@@ -14,3 +14,5 @@ cscope.out
 tags
 
 *.zwc
+
+.envrc
