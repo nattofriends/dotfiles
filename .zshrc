@@ -1,6 +1,7 @@
 RC_DEBUG=0
 RC_CACHING=1
 RC_PLUGIN=1
+RC_PLUGIN_DISABLE=""
 
 noninteractive () {
     RC_DEBUG=0

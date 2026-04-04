@@ -8,6 +8,11 @@ zcompile_many() {
 load_plugins() {
   local initfile
   for plugin in $HOME/.zsh/plugin/*; do
+    if [[ "$RC_PLUGIN_DISABLE" == *"${plugin:t}"* ]]; then
+      rc_debug "Plugin ${plugin:t} disabled - not loading"
+      continue
+    fi
+
     rc_debug "Loading plugin $plugin"
     fpath+=$plugin
     initfile=($plugin/*.plugin.zsh)
