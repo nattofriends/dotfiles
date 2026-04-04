@@ -1,5 +1,5 @@
 if [[ -d ~/.metaconf/zsh-completions/generated ]]; then
-    fpath+=(~/.metaconf/zsh-completions/generated)
+    fpath=(~/.metaconf/zsh-completions/generated $fpath)
 fi
 
 autoload -Uz compinit bashcompinit

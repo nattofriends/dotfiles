@@ -5,7 +5,6 @@ zcompile_many() {
   for f; do zcompile -R -- "$f".zwc "$f"; done
 }
 
-
 load_plugins() {
   local initfile
   for plugin in $HOME/.zsh/plugin/*(N); do
