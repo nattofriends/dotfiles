@@ -14,17 +14,6 @@ rc_debug () {
     fi
 }
 
-source_file () {
-    local file=$1
-
-    if [[ -e "$file" ]]; then
-        source $file
-        rc_debug "Sourcing $file"
-    else
-        rc_debug "File $file does not exist, skipping"
-    fi
-}
-
 compare_version () {
     # true/success if $1 is lower than $2
     printf '%s\n%s' "$1" "$2" | sort -C -V

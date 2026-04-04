@@ -21,21 +21,9 @@ main () {
     source_dir ~/.bashrc.d/post
 }
 
-source_dir () {
-    local dir=$1
-
-    if [[ -d "$dir" ]]; then
-        for i in $dir/*.(zsh|sh); do
-            if [ -r $i ]; then
-                rc_debug "Sourcing $i"
-                . $i
-            fi
-          done
-        unset i
-    fi
-}
-
-. ~/.bashrc.d/lib
+for lib in ~/.bashrc.d/lib.{sh,zsh}; do
+    . $lib
+done
 
 if [[ $- != *i* ]] ; then
     noninteractive

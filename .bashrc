@@ -30,24 +30,9 @@ main() {
     fi
 }
 
-source_dir () {
-    local dir=$1
-
-    if [[ -d "$dir" ]]; then
-        local files=$(echo "${dir}/*.@(sh|bash)")
-        for i in $files; do
-            if [ -r $i ]; then
-                rc_debug "Sourcing $i"
-                . $i
-            fi
-          done
-        unset i
-    else
-        rc_debug "Directory $dir does not exist, not sourcing"
-    fi
-}
-
-. ~/.bashrc.d/lib
+for lib in ~/.bashrc.d/lib.{sh,bash}; do
+    . $lib
+done
 
 if [[ $- != *i* ]] ; then
     noninteractive

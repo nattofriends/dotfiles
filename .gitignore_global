@@ -12,3 +12,5 @@ venv/
 *.pyc
 cscope.out
 tags
+
+*.zwc
