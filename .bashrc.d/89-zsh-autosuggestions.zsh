@@ -3,7 +3,7 @@ ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=(expand-or-complete)
 
-if command -v atuin >/dev/null; then
+if (( ${+functions[_atuin_preexec]} )); then
     ZSH_AUTOSUGGEST_STRATEGY=(atuin)
 else
     ZSH_AUTOSUGGEST_STRATEGY=(history)
