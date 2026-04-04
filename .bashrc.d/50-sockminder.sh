@@ -47,7 +47,7 @@ _TMUX_SUPPORTS_CLIENT_PID=$?
 _SYSTEM_SUPPORTS_PROCFS=$?
 
 if [[ "$ENABLE_SOCKMINDER" == "1" ]]; then
-    rc_log "Enabling sockminder"
+    rc_debug "Enabling sockminder"
     if [[ -n "$TMUX" ]]; then
         trap relink_sock DEBUG
         PROMPT_COMMAND="$PROMPT_COMMAND; reset_relink_done"
@@ -62,7 +62,7 @@ if [[ "$ENABLE_SOCKMINDER" == "1" ]]; then
     fi
 else
     # Fallback to last-login-wins
-    rc_log "Not enabling sockminder (ENABLE_SOCKMINDER=${ENABLE_SOCKMINDER})"
+    rc_debug "Not enabling sockminder (ENABLE_SOCKMINDER=${ENABLE_SOCKMINDER})"
     if [[ -z "$TMUX" && -n "$SSH_AUTH_SOCK" ]]; then
         ln -sf $SSH_AUTH_SOCK ~/.ssh/sock
     fi

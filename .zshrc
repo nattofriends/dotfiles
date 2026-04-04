@@ -9,7 +9,7 @@ noninteractive () {
 }
 
 main () {
-    rc_log "Using zsh"
+    rc_log "using zsh"
     rc_debug "RC_DEBUG=$RC_DEBUG"
 
     source_file ~/.zshrc_prelocal

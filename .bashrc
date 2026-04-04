@@ -7,7 +7,7 @@ noninteractive() {
 }
 
 main() {
-    rc_log "Using bash"
+    rc_log "using bash"
     rc_debug "RC_DEBUG=$RC_DEBUG"
 
     local extglob_restore
