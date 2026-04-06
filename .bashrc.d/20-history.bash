@@ -8,7 +8,7 @@ HISTTIMEFORMAT='%F %T '
 export PROMPT_COMMAND="history -a; ${PROMPT_COMMAND}"
 
 if command -v hstr >/dev/null; then
-    rc_log "integrating hstr"
+    rc_debug "integrating hstr"
     export HSTR_CONFIG=hicolor,prompt-bottom,help-on-opposite-side
     export HSTR_PROMPT="> "
     _hstr () {
@@ -16,5 +16,5 @@ if command -v hstr >/dev/null; then
     }
     bind -x '"\C-r": "_hstr"'
 else
-    rc_log "hstr not found, not integrating"
+    rc_log "no history provider integrated"
 fi

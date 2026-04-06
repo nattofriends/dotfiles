@@ -1,10 +1,10 @@
 configure_less () {
     if [[ "$RC_CACHING" = 1 ]]; then
         local cachedir=~/.cache/.bashrc.d
-        local cachefile=$cachedir/less.zsh
+        local cachefile=$cachedir/less.sh
         [[ -d "$cachedir" ]] || mkdir -p "$cachedir"
 
-        if [[ -s "$cachefile.zwc" ]]; then
+        if [[ -s "$cachefile" ]]; then
             rc_debug "less: using cached configuration"
             source $cachefile
             return
@@ -26,11 +26,13 @@ configure_less () {
     export LESS=$less
 
     if [[ "$RC_CACHING" = 1 ]]; then
-        {
+        ( (
             [[ -d "$cachedir" ]] || mkdir -p "$cachedir"
             echo "export LESS='${less}'" > $cachefile
-            zcompile -U $cachefile
-        } &!
+            if command -v zcompile >/dev/null; then
+                zcompile -U $cachefile
+            fi
+            ) & )
     fi
 }
 

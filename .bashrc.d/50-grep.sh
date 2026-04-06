@@ -6,9 +6,9 @@ configure_grep () {
 
     if [[ "$RC_CACHING" = 1 ]]; then
         local cachedir=~/.cache/.bashrc.d
-        local cachefile=$cachedir/grep.zsh
+        local cachefile=$cachedir/grep.sh
 
-        if [[ -s "$cachefile.zwc" ]]; then
+        if [[ -s "$cachefile" ]]; then
             rc_debug "grep: using cached configuration"
             source $cachefile
             wrap_grep
@@ -36,12 +36,14 @@ configure_grep () {
     esac
 
     if [[ "${colors}" != "" ]] && [[ "$RC_CACHING" = 1 ]]; then
-        {
+        ( (
             [[ -d "$cachedir" ]] || mkdir -p "$cachedir"
             eval "${colors}"
             echo $colors > $cachefile
-            zcompile -U $cachefile
-        } &!
+            if command -v zcompile >/dev/null; then
+                zcompile -U $cachefile
+            fi
+        ) & )
     fi
 
     wrap_grep
