@@ -481,13 +481,31 @@ function PasteOverEmpty()
 endfunction
 
 " Open all files in the argument list in tabs.
+function! s:OpenTabsAndNerdTree()
+    " Exit early if in diff mode
+    if &diff
+        return
+    endif
+
+    " Apply patch-specific logic for argument list deduplication
+    if has('patch-8.2.3888')
+        argded
+    endif
+
+    " Open all arguments in individual tabs
+    tab all
+
+    " Iterate through each tab
+    " If the buffer is a directory, open NERDTree and make it the only window
+    tabdo if isdirectory(expand('%')) | execute 'NERDTree' expand('%') | only | endif
+
+    " Return focus to the first tab
+    tabfirst
+endfunction
+
 augroup open-tabs
     au!
-    if has('patch-8.2.3888')
-        au VimEnter * ++nested if !&diff | argded | tab all | tabfirst | endif
-    else
-        au VimEnter * ++nested if !&diff | tab all | tabfirst | endif
-    endif
+    au VimEnter * ++nested call s:OpenTabsAndNerdTree()
 augroup end
 
 nnoremap <silent> p :call PasteOverEmpty()<CR>
@@ -536,13 +554,26 @@ map g# <Plug>(is-g#)zv
 " ArgWrap: no default bindings
 nmap <silent> <leader>a <Plug>(ArgWrapToggle)
 
-" Directory for undo file
-silent !mkdir ~/.vim/{undos,swap,backup} > /dev/null 2>&1
-let &undodir=$HOME . '/.vim/undos'
-let &undodir=expand("~/.vim/undos")
-set undofile
+if has('persistent_undo')
+    let s:undo_path = expand('~/.vim/undodir')
+
+    if !isdirectory(s:undo_path)
+        call mkdir(s:undo_path, 'p', 0700)
+    endif
+
+    let &undodir = s:undo_path
+    set undofile
+endif
+
 let &directory=expand("~/.vim/swap")
+if !isdirectory(&directory)
+    call mkdir(&directory, 'p', 0700)
+endif
+
 let &backupdir=expand("~/.vim/backup")
+if !isdirectory(&backupdir)
+    call mkdir(&backupdir, 'p', 0700)
+endif
 
 " Undotree
 nnoremap <leader>u :UndotreeToggle<cr>
@@ -560,11 +591,9 @@ if !empty(glob("~/.vimrc_local"))
 endif
 
 " Version support tables
-" Ubuntu Bionic: 8.0.1453
-" Ubuntu Focal: 8.1.2269
-" Ubuntu Jammy: 8.2.3995
-" Ubuntu Noble: 9.1.0016
-" Debian Buster: 8.1.0875
-" Debian Bullseye: 8.2.2434
-" Debian Bookworm: 9.0.1378
+" Ubuntu Jammy (22.04): 8.2.3995
+" Ubuntu Noble (24.04): 9.1.0016
+" Debian Bullseye (11): 8.2.2434
+" Debian Bookworm (12): 9.0.1378
+" Debian Trixie (13): 9.1.1230
 " vim: foldmethod=marker foldlevel=0
