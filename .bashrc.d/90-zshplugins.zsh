@@ -2,7 +2,7 @@
 
 zcompile_many() {
   local f
-  for f; do zcompile -R -- "$f".zwc "$f"; done
+  for f; do zcompare "$f"; done
 }
 
 load_plugins() {
@@ -17,21 +17,11 @@ load_plugins() {
     fpath+=$plugin
     initfile=($plugin/*.plugin.zsh)
     . $initfile
-    zcompile_many $plugin/{*.plugin.zsh,**/*.zsh}
+    zcompile_many $plugin/{*.plugin.zsh,**/*.zsh} &!
+
+    # TODO: define deferrable plugins
     # (( $+functions[zsh-defer] )) && zsh-defer . $initfile || . $initfile
   done
-
-  (
-    setopt EXTENDED_GLOB
-
-    # zcompile the completion cache; siginificant speedup.
-    for file in ${ZDOTDIR:-${HOME}}/.zcomp^(*.zwc)(.N); do
-      zcompare ${file}
-    done
-
-    # zcompile .zshrc
-    zcompare ${ZDOTDIR:-${HOME}}/.zshrc
-  ) &!
 }
 
 if [[ "$RC_PLUGIN" != 0 ]]; then

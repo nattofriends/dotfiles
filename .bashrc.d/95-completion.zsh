@@ -4,11 +4,13 @@ fi
 
 autoload -Uz compinit bashcompinit
 
-for dump in ~/.zcompdump(N.mh+24); do
-    compinit -u
-done
-
-compinit -C
+if [[ -s ~/.zcompdump && -n ~/.zcompdump(N.mh-24) ]]; then
+    rc_debug "loading cached completions"
+    compinit -C -u -d ~/.zcompdump
+else
+    rc_debug "loading completions normally"
+    compinit -u -d ~/.zcompdump
+fi
 
 mkdir -p ~/.zsh/cache
 

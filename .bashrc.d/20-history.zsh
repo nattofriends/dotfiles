@@ -15,20 +15,40 @@ setopt hist_verify
 setopt share_history
 
 rc_history() {
-    if command -v atuin >/dev/null; then
+    if (( $+commands[atuin] )); then
         # Also see 89-zsh-autosuggestions.zsh
-        rc_log "integrating atuin"
-        eval "$(atuin init zsh --disable-up-arrow)"
+        rc_debug "integrating atuin"
+
+        if [[ "$RC_CACHING" = 1 ]]; then
+            local cachedir=~/.cache/.bashrc.d
+            local cachefile=$cachedir/atuin.zsh
+
+            if [[ -s "$cachefile.zwc" && ! "${commands[atuin]}" -nt "$cachefile.zwc" ]]; then
+                rc_debug "atuin: using cached init"
+                source "$cachefile"
+                # use up key mode for another binding
+                bindkey '^e' atuin-up-search
+                return
+            fi
+        fi
+
+        rc_debug "atuin: recreating init file"
+        local init=$(atuin init zsh --disable-up-arrow)
+
+        eval "$init"
 
         # use up key mode for another binding
         bindkey '^e' atuin-up-search
-        return
-    else
-        rc_log "atuin not found, not integrating"
-    fi
 
-    if command -v hstr >/dev/null; then
-        rc_log "integrating hstr"
+        if [[ "$RC_CACHING" = 1 ]]; then
+            {
+                [[ -d "$cachedir" ]] || mkdir -p "$cachedir"
+                echo "$init" > $cachefile
+                zcompile -U $cachefile
+            } &!
+        fi
+    elif (( $+commands[hstr] )); then
+        rc_debug "integrating hstr"
         export HSTR_CONFIG=hicolor,prompt-bottom,help-on-opposite-side
         export HSTR_PROMPT="> "
         # https://unix.stackexchange.com/questions/373795/bindkey-to-execute-command-zsh
@@ -39,14 +59,15 @@ rc_history() {
             # No-TIOCSTI should give more control but hstr seems to ignore HSTR_NO_TIOCSTI?
             hstr -- ${=BUFFER} < /dev/tty
             BUFFER=
-            # There is also some strange interaction with zsh-autosuggestions when Esc-exiting
-            # This helps a little for some reason
-            # zle recursive-edit
+
+            # Force autosuggestions to refresh so the old ghost text doesn't hang around
+            if (( $+functions[_zsh_autosuggest_fetch] )); then
+                _zsh_autosuggest_fetch
+            fi
+            zle redisplay
         }
         zle -N _hstr
         bindkey "\C-r" _hstr
-    else
-        rc_log "hstr not found, not integrating"
     fi
 }
 

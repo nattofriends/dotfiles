@@ -9,8 +9,12 @@ update() {
     return
   fi
 
-  (git --git-dir $HOME/.git --work-tree $HOME pull --no-edit &)
-  (git --git-dir $HOME/.git --work-tree $HOME submodule update --init --recursive &)
+  (
+    (
+    git --git-dir $HOME/.git --work-tree $HOME pull --no-edit;
+    git --git-dir $HOME/.git --work-tree $HOME submodule update --init --recursive
+    ) 2>&1 | /usr/bin/grep -v "Already up to date" &
+  )
 }
 
 update && unset update
