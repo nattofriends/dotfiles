@@ -555,7 +555,7 @@ map g# <Plug>(is-g#)zv
 nmap <silent> <leader>a <Plug>(ArgWrapToggle)
 
 if has('persistent_undo')
-    let s:undo_path = expand('~/.vim/undodir')
+    let s:undo_path = expand('~/.vim/undo')
 
     if !isdirectory(s:undo_path)
         call mkdir(s:undo_path, 'p', 0700)
