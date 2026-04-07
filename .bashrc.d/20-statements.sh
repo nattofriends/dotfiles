@@ -7,6 +7,7 @@ fi
 # Disable flow control
 stty ixany ixoff -ixon
 
+export PYTHONSTARTUP=~/.pythonrc.py
 export PIP_REQUIRE_VIRTUALENV=true
 
 export npm_config_prefix='~/.npm-prefix'
