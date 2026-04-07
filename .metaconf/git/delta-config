@@ -2,9 +2,14 @@
     pager = delta
 [interactive]
     diffFilter = delta --color-only
+[alias]
+    sdiff = -c delta.features=side-by-side diff
 [delta]
     diff-highlight = true
     navigate = true
     navigate-regex = "^diff --git"
     line-numbers-left-format = "{nm:^4}│ "
     line-numbers-right-format = "{np:^4}│ "
+    wrap-right-percent = 0.01
+    wrap-right-symbol = " "
+    wrap-left-symbol = " "
