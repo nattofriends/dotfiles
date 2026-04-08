@@ -138,6 +138,8 @@ set updatetime=250
 set signcolumn=yes
 autocmd FileType tagbar,nerdtree,qf,twiggy,undotree,ctrlp setlocal signcolumn=no
 
+autocmd VimEnter * if &diff | setlocal foldcolumn=1 | endif
+
 let g:baselistchars = "tab:>>,trail:·,precedes:<,extends:>"
 let &listchars = g:baselistchars
 " Indent guide with (lead)multispace and reconfiguring when sw changes
