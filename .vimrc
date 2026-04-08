@@ -554,33 +554,20 @@ map g# <Plug>(is-g#)zv
 " ArgWrap: no default bindings
 nmap <silent> <leader>a <Plug>(ArgWrapToggle)
 
-function! s:MkdirAsUser(path)
-    " Create the directory first (usually created as root if under sudo)
-    if !isdirectory(a:path)
-        call mkdir(a:path, 'p', 0700)
-    endif
-
-    " If running under sudo, change ownership back to the original user
-    if !empty($SUDO_UID) && !empty($SUDO_GID)
-        let l:cmd = printf('chown %s:%s %s', $SUDO_UID, $SUDO_GID, shellescape(a:path))
-        call system(l:cmd)
-    endif
-endfunction
-
 if has('persistent_undo')
-    let s:undo_path = expand('~/.vim/undo')
+    let s:undo_path = expand('~$USER/.vim/undo')
 
-    call s:MkdirAsUser(s:undo_path)
+    call mkdir(s:undo_path, 'p', 0700)
 
     let &undodir = s:undo_path
     set undofile
 endif
 
-set directory=~/.vim/swap//
-call s:MkdirAsUser(&directory)
+set directory=~$USER/.vim/swap//
+call mkdir(&directory, 'p', 0700)
 
-set backupdir=~/.vim/backup//
-call s:MkdirAsUser(&backupdir)
+set backupdir=~$USER/.vim/backup//
+call mkdir(&backupdir, 'p', 0700)
 
 " Undotree
 nnoremap <leader>u :UndotreeToggle<cr>
