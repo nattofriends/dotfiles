@@ -1,5 +1,3 @@
-PIP_INDEX_URL ?= https://pypi.org/simple/
-
 export PIPX_HOME := ${HOME}/.pipx/pipx
 export PIPX_BIN_DIR := ${HOME}/.pipx/bin
 export PIPX_MAN_DIR := ${HOME}/.pipx/man

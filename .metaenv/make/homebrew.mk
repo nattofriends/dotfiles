@@ -12,7 +12,6 @@ brew-bootstrap:
 	mkdir -p ${HOME}/.homebrew
 	git clone https://github.com/Homebrew/brew ${HOME}/.homebrew
 	${HOME}/.homebrew/bin/brew tap homebrew/core --force
-	${HOME}/.homebrew/bin/brew tap homebrew/bundle
 	$(MAKE) brew-upgrade
 
 clean: brew-clean
