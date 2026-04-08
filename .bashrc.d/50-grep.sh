@@ -50,11 +50,11 @@ configure_grep () {
 }
 
 wrap_grep () {
-    _grep_path=$(command -v grep 2>&1)
-    declare -r _grep_path
+    # Ignore this variable
+    _grep=${_grep_path:-$(command -v grep 2>&1)}
 
     grep () {
-        "${_grep_path}" --color=auto "$@"
+        "${_grep}" --color=auto "$@"
     }
 }
 

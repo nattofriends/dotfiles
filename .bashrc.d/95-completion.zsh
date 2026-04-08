@@ -30,7 +30,7 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS} ""
 # Group items
 zstyle ':completion:*' group-name ''
-zstyle ':completion:*:descriptions' format '%B%F{yellow}-- %d --%f%b'
+zstyle ':completion:*:descriptions' format '%B%F{yellow}%d%f%b'
 zstyle ':completion:*' select-prompt %S%p%s
 zstyle ':completion:*:warnings' format '%F{red}no matches for:%f %d'
 
