@@ -111,7 +111,7 @@
 	path = .vim/bundle/vim-tagbar
 	url = https://github.com/preservim/tagbar
 [submodule ".zsh/autosuggestions"]
-	path = .zsh/plugin/90-autosuggestions
+	path = .zsh/plugin/92-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions
 	branch = master
 [submodule ".zsh/completions"]

@@ -14,8 +14,14 @@ fi
 
 mkdir -p ~/.zsh/cache
 
-# Shift-Tab
-bindkey '^[[Z' reverse-menu-complete
+# Shift-Tab - reverse in completion menu, but accept autosuggest otherwise
+zmodload -i zsh/complist
+
+bindkey -M menuselect '^[[Z' reverse-menu-complete
+
+if (( $+widgets[autosuggest-accept] )); then
+    bindkey '^[[Z' autosuggest-accept
+fi
 
 # Visual
 # Enable menu

@@ -1,9 +1,7 @@
-ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+# This configuration is set before zsh-autosuggestions loads
+
+# No atuin even if it exists
+ZSH_AUTOSUGGEST_STRATEGY=(history)
 ZSH_AUTOSUGGEST_HISTORY_IGNORE="cd *"
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 ZSH_AUTOSUGGEST_MANUAL_REBIND=1
-ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=(expand-or-complete)
-
-# Double tab to accept autosuggest
-zle -la autosuggest-accept && \
-    bindkey '^I^I' autosuggest-accept
