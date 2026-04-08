@@ -6,4 +6,5 @@ if command -v tmux >/dev/null \
     else
       tmux -u new
   fi
+  rc_log "this computer is still ${HOST:-${HOSTNAME}}"
 fi
