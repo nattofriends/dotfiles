@@ -122,10 +122,6 @@
 	path = .zsh/plugin/91-history-substring-search
 	url = https://github.com/zsh-users/zsh-history-substring-search
 	branch = master
-[submodule ".zsh/50-defer"]
-	path = .zsh/plugin/50-defer
-	url = https://github.com/romkatv/zsh-defer
-	branch = master
 [submodule ".vim/bundle/yadi"]
 	path = .vim/bundle/yadi
 	url = https://github.com/timakro/vim-yadi

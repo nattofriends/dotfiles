@@ -18,9 +18,6 @@ load_plugins() {
     initfile=($plugin/*.plugin.zsh)
     . $initfile
     zcompile_many $plugin/{*.plugin.zsh,**/*.zsh} &!
-
-    # TODO: define deferrable plugins
-    # (( $+functions[zsh-defer] )) && zsh-defer . $initfile || . $initfile
   done
 }
 
