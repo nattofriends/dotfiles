@@ -28,6 +28,9 @@ let s:none = { "gui": "NONE", "cterm": "NONE" }
 let s:black = { "gui": "#000000", "cterm": "16" }
 let s:yellow = { "gui": "#ffcc00", "cterm": "220" }
 
+let s:yellow_light = { "gui": "#ffdc4d", "cterm": "221" }
+let s:yellow_dark = { "gui": "#e6b900", "cterm": "178" }
+
 let s:normal = { "fg": s:black, "bg": s:yellow }
 let s:reverse = { "fg": s:yellow, "bg": s:black }
 
@@ -64,7 +67,7 @@ endfor
 " http://vimdoc.sourceforge.net/htmldoc/syntax.html#highlight-groups
 
 for highlight_group in [
-    \"Conceal", "DiffText", "Directory", "Folded", "LineNr", "MoreMsg", "NonText",
+    \"Conceal", "DiffText", "Directory", "FoldColumn", "Folded", "LineNr", "MoreMsg", "NonText",
     \"PMenuSel", "PMenuSbar", "SignColumn", "SpecialKey", "TabLine", "WildMenu"
 \]
     call s:h(highlight_group, s:normal)
@@ -74,7 +77,7 @@ endfor
 " Note: The fg of TabLineFill is the color.
 for highlight_group in [
     \"ColorColumn", "Cursor","CursorIM", "CursorColumn", "CursorLineNr", "DiffAdd",
-    \"DiffChange", "DiffDelete", "ErrorMsg", "FoldColumn", "PMenu", "PMenuThumb",
+    \"DiffChange", "DiffDelete", "ErrorMsg", "PMenu", "PMenuThumb",
     \"Question", "Search", "TabLineSel", "TabLineFill", "Visual",
     \"VertSplit", "WarningMsg"
 \]
@@ -84,6 +87,12 @@ endfor
 " No additional color for CursorLine, sorry.
 call s:h("CursorLine", { "fg": s:none, "bg": s:none, "attrs": "underline" })
 call s:h("LineNr", { "attrs": "italic" })
+
+" Diffs need some different colors
+call s:h("DiffChange", s:normal)
+call s:h("DiffText", { "bg": s:yellow_light, "attrs": "italic,underline,bold" })
+call s:h("DiffAdd", { "bg": s:yellow_light, "fg": s:black })
+call s:h("DiffDelete", { "bg": s:yellow_dark, "fg": s:black })
 
 " Plugin highlighting groups {{{1
 " TagBar {{{2
