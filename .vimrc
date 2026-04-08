@@ -370,7 +370,7 @@ let g:ale_linters = {
 
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\   'python': ['autopep8'],
+\   'python': ['autopep8', 'autoimport'],
 \}
 
 let g:ale_python_auto_virtualenv = 1
