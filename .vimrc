@@ -184,48 +184,10 @@ set background=dark
 colorscheme taxicab
 
 " For 24bit support
-function! RetoggleTermguicolors()
-    " Disable 24-bit color when the most recent client is Panic Prompt 2,
-    " which does not support it. Luckily for us, Prompt 2 sets the value of
-    " TERM_PROGRAM when it connects. We look for this env var in the client
-    " tmux's environ, if it is supported. Getting the client pid is only
-    " supported starting from tmux 2.1.
-    if len($TMUX) == 0
-        let l:isprompt2 = $TERM_PROGRAM == "Prompt_2"
-    else  " We are running inside tmux
-        if g:tmuxversion >= 21
-            let l:tmuxclients = reverse(sort(systemlist("tmux list-clients -F \"#{client_activity} #{client_pid}\"")))[0]
-            let l:activetmuxclient = split(l:tmuxclients)[1]
-
-            let l:activeenviron = ""
-            if g:platform == "Linux"
-                let l:activeenviron = readfile("/proc/" . l:activetmuxclient . "/environ")
-            elseif g:platform == "Darwin"
-                let l:activeenviron = system("ps eww -o command= -p " . l:activetmuxclient)
-            endif
-
-            let l:isprompt2 = match(l:activeenviron, "TERM_PROGRAM=Prompt_2") > -1
-        else
-            " We can't access client_pid: just give up for now
-            let l:isprompt2 = 1
-        endif
-    endif
-
-    if l:isprompt2
-        set notermguicolors
-    else
-        set termguicolors
-    endif
-endfunction
-
 if has("termguicolors")
-    let g:tmuxversion = substitute(system('tmux -V'), "[^0-9]", '', 'g')
-    let g:platform = system("uname")
-
-    autocmd VimResized * call RetoggleTermguicolors()
     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-    call RetoggleTermguicolors()
+    set termguicolors
 endif
 
 " Hide filename if it's a loclist (should be always)
@@ -609,19 +571,26 @@ map g# <Plug>(is-g#)zv
 " ArgWrap: no default bindings
 nmap <silent> <leader>a <Plug>(ArgWrapToggle)
 
-if has('persistent_undo')
+if !empty($SUDO_USER)
     let s:undo_path = expand('~$USER/.vim/undo')
+    let s:swap_path = expand('~$USER/.vim/swap//')
+    let s:backup_path = expand('~$USER/.vim/backup//')
+else
+    let s:undo_path = $HOME . '/.vim/undo'
+    let s:swap_path = $HOME . '/.vim/swap//'
+    let s:backup_path = $HOME . '/.vim/backup//'
+endif
 
+if has('persistent_undo')
     call mkdir(s:undo_path, 'p', 0700)
-
     let &undodir = s:undo_path
     set undofile
 endif
 
-set directory=~$USER/.vim/swap//
+let &directory = s:swap_path
 call mkdir(&directory, 'p', 0700)
 
-set backupdir=~$USER/.vim/backup//
+let &backupdir = s:backup_path
 call mkdir(&backupdir, 'p', 0700)
 
 " Undotree
