@@ -150,3 +150,7 @@
 	path = .vim/bundle/jinja2-syntax
 	url = https://github.com/Glench/Vim-Jinja2-Syntax
 	branch = master
+[submodule ".zsh/plugin/90-git-completion"]
+	path = .zsh/plugin/90-git-completion
+	url = https://github.com/felipec/git-completion
+	branch = master
