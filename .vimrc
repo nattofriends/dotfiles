@@ -15,8 +15,35 @@ set fileencoding=utf-8
 set fileformats=unix,dos
 
 " Better command-line completion
-set wildmode=longest,list,full
 set wildmenu
+if has('patch-8.2.4463')
+    set wildoptions=pum,fuzzy
+elseif has('patch-8.2.4325')
+    set wildoptions=pum
+endif
+
+if has('patch-9.1.1166')
+    set wildmode=noselect:lastused,full
+else
+    set wildmode=longest:list,full
+endif
+
+if exists('*wildtrigger')
+    function! s:NativeTrigger()
+        " Guard against shell commands and empty lines
+        " getcmdcompltype() was added in 8.2.4411, so it's safe here
+        if getcmdcompltype() !=# 'shellcmd' && getcmdline() !=# ''
+            call wildtrigger()
+        endif
+    endfunction
+
+    augroup CmdlineAutoCompletion
+        autocmd!
+        autocmd CmdlineChanged : call s:NativeTrigger()
+    augroup END
+endif
+
+set wildignorecase
 set wildignore+=*/tmp/*,*/__pycache__/*,*/.mypy_cache/*,*.so,*.swp,*.pyc,*.pyo,*.gif,*.jpg,*.png
 
 " Show partial commands in the last line of the screen
