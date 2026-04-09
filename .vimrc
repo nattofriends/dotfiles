@@ -125,9 +125,6 @@ set tabstop=4       " display width of a physical tab character
 set shiftwidth=0    " auto-indent (e.g. >>) width; 0 = use tabstop
 set softtabstop=-1  " disable part-tab-part-space tabbing; < 0 = use tabstop
 
-autocmd BufRead * DetectIndent
-autocmd FileType make set noexpandtab
-
 set relativenumber
 
 set scrolloff=1
@@ -136,9 +133,6 @@ set list
 
 set updatetime=250
 set signcolumn=yes
-autocmd FileType tagbar,nerdtree,qf,twiggy,undotree,ctrlp setlocal signcolumn=no
-
-autocmd VimEnter * if &diff | setlocal foldcolumn=1 | endif
 
 let g:baselistchars = "tab:>>,trail:·,precedes:<,extends:>"
 let &listchars = g:baselistchars
@@ -159,9 +153,6 @@ set diffopt+=internal,algorithm:patience
 " Colorscheme {{{1
 " If something goes horribly wrong, still use the built in dark colors.
 set background=dark
-
-" Comments get italics. Vim considers TUI as cterm; Neovim reads gui.
-autocmd ColorScheme * highlight Comment cterm=italic gui=italic
 
 colorscheme taxicab
 
@@ -234,14 +225,17 @@ if has('patch-8.2.0959')
 endif
 
 function! StripTrailingWhitespace()
-  if !&binary && &filetype != 'diff'
+  if &modifiable && !&binary && &filetype != 'diff' && (line('$') > 1 || getline(1) != '')
     let l:save = winsaveview()
     keeppatterns %s/\s\+$//e
     call winrestview(l:save)
   endif
 endfun
 
-autocmd BufWritePre * | :call StripTrailingWhitespace()
+augroup StripTrailingWhitespace
+  autocmd!
+  autocmd BufWritePre * call StripTrailingWhitespace()
+augroup END
 
 " Plugin options {{{1
 " NERDTree {{{2
@@ -252,11 +246,13 @@ let NERDTreeIgnore = ['\.pyc$']
 let g:nerdtree_tabs_focus_on_files=1
 let g:nerdtree_tabs_open_on_gui_startup=0
 
-" Exit Vim if NERDTree is the only window remaining in the only tab.
-autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
-
-" Close the tab if NERDTree is the only window remaining in it.
-autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
+augroup NERDTreeAutoClose
+  autocmd!
+  " Exit Vim if NERDTree is the last window remaining in the only tab.
+  autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+  " Close the tab if NERDTree is the only window remaining in it.
+  autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+augroup END
 
 " NERDCommenter {{{2
 let g:NERDSpaceDelims = 1
@@ -455,11 +451,28 @@ vnoremap d "_d
 nnoremap q <Nop>
 nnoremap Q <Nop>
 
-" requirements.txt filetype
-autocmd FileType requirements setlocal commentstring=#\ %s
+augroup MiscAutocmd
+    autocmd!
 
-" Make CtrlPBuffer usable
-autocmd BufRead * setlocal bufhidden=delete
+    " requirements.txt filetype comment support
+    autocmd FileType requirements setlocal commentstring=#\ %s
+
+    " Make CtrlPBuffer usable
+    autocmd BufRead * setlocal bufhidden=delete
+
+    autocmd BufRead * DetectIndent
+
+    " Hard tabs for Makefiles
+    autocmd FileType make setlocal noexpandtab
+
+    autocmd FileType tagbar,nerdtree,qf,twiggy,undotree,ctrlp setlocal signcolumn=no
+
+    " Decrease foldcolumn size in diff mode
+    autocmd VimEnter * if &diff | setlocal foldcolumn=1 | endif
+
+    " Comments get italics. Vim considers TUI as cterm; Neovim reads gui.
+    autocmd ColorScheme * highlight Comment cterm=italic gui=italic
+augroup END
 
 " Command line abbrevation for current file's directory
 " See http://vim.wikia.com/wiki/Easy_edit_of_files_in_the_same_directory
@@ -578,8 +591,11 @@ nnoremap <leader>u :UndotreeToggle<cr>
 nnoremap <leader>u :UndotreeToggle<cr>
 
 " Twiggy
-autocmd BufNewFile,BufReadPost,VimEnter * call FugitiveDetect()
-map <leader>b :Twiggy<CR>
+augroup Twiggy
+    autocmd!
+    autocmd BufNewFile,BufReadPost,VimEnter * call FugitiveDetect()
+augroup END
+map <leader>gb :Twiggy<CR>
 
 " Source .vimrc_local {{{1
 if !empty(glob("~/.vimrc_local"))
