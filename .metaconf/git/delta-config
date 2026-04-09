@@ -4,6 +4,8 @@
     diffFilter = delta --color-only
 [alias]
     sdiff = -c delta.features=side-by-side diff
+    scdiff = -c delta.features=side-by-side diff --cached
+    csdiff = -c delta.features=side-by-side diff --cached
 [delta]
     diff-highlight = true
     navigate = true
