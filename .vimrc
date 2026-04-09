@@ -246,12 +246,25 @@ let NERDTreeIgnore = ['\.pyc$']
 let g:nerdtree_tabs_focus_on_files=1
 let g:nerdtree_tabs_open_on_gui_startup=0
 
-augroup NERDTreeAutoClose
+function! s:ShouldAutoQuit()
+  " If more than one window is open, don't quit
+  if winnr('$') > 1 | return 0 | endif
+
+  " List of filetypes that shouldn't stay open alone
+  let l:sidebars = ['tagbar', 'undotree', 'twiggy', 'qf']
+
+  if index(l:sidebars, &filetype) != -1
+    return 1
+  elseif exists('b:NERDTree') && b:NERDTree.isTabTree()
+    return 1
+  endif
+
+  return 0
+endfunction
+
+augroup AutoQuit
   autocmd!
-  " Exit Vim if NERDTree is the last window remaining in the only tab.
-  autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-  " Close the tab if NERDTree is the only window remaining in it.
-  autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+  autocmd BufEnter * if s:ShouldAutoQuit() | quit | endif
 augroup END
 
 " NERDCommenter {{{2
