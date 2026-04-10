@@ -202,6 +202,8 @@ set list
 
 set updatetime=250
 set signcolumn=yes
+set formatoptions-=r
+set formatoptions-=o
 
 let g:baselistchars = "tab:>>,trail:·,precedes:<,extends:>"
 let &listchars = g:baselistchars
@@ -306,9 +308,14 @@ let g:NERDDefaultAlign = 'left'
 let g:NERDCustomDelimiters = { 'python': { 'left': '# ', 'leftAlt': '"""', 'rightAlt': '"""' } }
 
 " Airline {{{2
+" Mode is in the statusline
+set noshowmode
 let g:airline_highlighting_cache = 1
+let g:airline_powerline_fonts = 0
 let g:airline_left_sep=''
 let g:airline_right_sep=''
+let g:airline_section_z = airline#section#create(['%p%%', ' %l:%c'])
+
 let g:airline#extensions#branch#enabled = 0
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#tab_nr_type = 1 " tabnr
@@ -316,6 +323,7 @@ let g:airline#extensions#tabline#show_buffers = 0
 let g:airline#extensions#tabline#show_splits = 0
 " They're all tabs
 let g:airline#extensions#tabline#show_tab_type = 0
+let g:airline#extensions#whitespace#enabled = 0
 
 " CtrlP {{{2
 let g:ctrlp_mruf_save_on_update = 0
