@@ -227,6 +227,11 @@ set background=dark
 
 colorscheme taxicab
 
+" Cursor shapes
+let &t_SI = "\<Esc>[6 q\<Esc>]50;CursorShape=1\x7"
+let &t_SR = "\<Esc>[4 q\<Esc>]50;CursorShape=2\x7"
+let &t_EI = "\<Esc>[2 q\<Esc>]50;CursorShape=0\x7"
+
 " For 24bit support
 if has("termguicolors")
     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
