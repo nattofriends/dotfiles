@@ -1,0 +1,4 @@
+[core]
+    pager = ~/.tools/delta-reflow
+[interactive]
+    diffFilter = ~/.tools/delta-reflow --color-only

@@ -35,8 +35,15 @@ configure_diff() {
     #     rc_debug "enabling diffr"
     #     cat diff-generic-config | sed s~DIFF_TOOL~diffr~ >> generated/config
     if command -v delta >/dev/null; then
-        rc_debug "enabling delta"
-        cat delta-config >> generated/config
+        if command -v python3 >/dev/null; then
+            rc_debug "enabling delta+reflow"
+            cat delta-reflow-config >> generated/config
+            cat delta-config-common >> generated/config
+        else
+            rc_debug "enabling delta"
+            cat delta-config >> generated/config
+            cat delta-config-common >> generated/config
+        fi
     elif [ -f /opt/homebrew/opt/git/share/git-core/contrib/diff-highlight/diff-highlight ]; then
         rc_debug "enabling diff-highlight (system homebrew)"
         cat diff-generic-config | sed s~DIFF_TOOL~perl /opt/homebrew/opt/git/share/git-core/contrib/diff-highlight/diff-highlight~ >> generated/config
