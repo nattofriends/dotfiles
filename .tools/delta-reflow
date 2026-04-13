@@ -1,0 +1,107 @@
+#!/usr/bin/env python3
+"""
+delta-reflow — wraps delta and reruns it on SIGWINCH so diffs reflow at the
+new terminal width.
+
+How it works
+------------
+When the terminal is resized, SIGWINCH is delivered to the entire foreground
+process group (this script, delta, and less).  This script runs in two modes:
+
+  Main mode   – buffers stdin; on SIGWINCH, kills delta and loops.
+  Pager mode  – replaces delta's own `less` invocation; on SIGWINCH, kills
+                less and exits so the main loop can restart delta cleanly.
+
+DELTA_PAGER is set to point back at this script so both halves fire on every
+resize event.
+
+Install
+-------
+    chmod +x delta-reflow
+    mv delta-reflow ~/bin/          # or anywhere on $PATH
+
+Usage
+-----
+    git diff | delta-reflow [delta-args...]
+    git config --global core.pager delta-reflow
+"""
+
+import os
+import shlex
+import signal
+import subprocess
+import sys
+
+_PAGER_ENV = "_DELTA_REFLOW_PAGER"
+
+
+def _pager_main() -> None:
+    """Pager mode: run less, exit on SIGWINCH so the parent can restart delta."""
+    proc: list[subprocess.Popen | None] = [None]
+
+    def _winch(_sig: int, _frame: object) -> None:
+        if proc[0] is not None:
+            proc[0].terminate()
+        sys.exit(1)
+
+    signal.signal(signal.SIGWINCH, _winch)
+
+    # -R: render ANSI colour escapes (required for delta output).
+    # -F: quit immediately when output fits on one screen.
+    # The user's $LESS is still honoured by less itself.
+    p = subprocess.Popen(["less", "-RF"], stdin=sys.stdin)
+    proc[0] = p
+    try:
+        p.wait()
+    except KeyboardInterrupt:
+        p.terminate()
+        p.wait()
+        sys.exit(130)
+    sys.exit(p.returncode)
+
+
+def _delta_main() -> None:
+    """Main mode: buffer stdin, run delta, restart it on SIGWINCH."""
+    data = sys.stdin.buffer.read()
+
+    needs_restart = False
+    curr: list[subprocess.Popen | None] = [None]
+
+    def _winch(_sig: int, _frame: object) -> None:
+        nonlocal needs_restart
+        needs_restart = True
+        if curr[0] is not None:
+            curr[0].terminate()
+
+    signal.signal(signal.SIGWINCH, _winch)
+
+    # Point DELTA_PAGER at ourselves (pager mode) so the pager also traps
+    # SIGWINCH and tears down less before we restart delta.
+    script = os.path.abspath(__file__)
+    env = os.environ.copy()
+    env[_PAGER_ENV] = "1"
+    env["DELTA_PAGER"] = f"{shlex.quote(sys.executable)} {shlex.quote(script)}"
+
+    cmd = ["delta"] + sys.argv[1:]
+
+    try:
+        while True:
+            needs_restart = False
+            p = subprocess.Popen(cmd, stdin=subprocess.PIPE, env=env)
+            curr[0] = p
+            p.stdin.write(data)
+            p.stdin.close()
+            p.wait()
+            if not needs_restart:
+                break
+    except KeyboardInterrupt:
+        if curr[0] is not None:
+            curr[0].terminate()
+        sys.exit(130)
+
+
+if __name__ == "__main__":
+    if os.environ.get(_PAGER_ENV):
+        _pager_main()
+    else:
+        _delta_main()
