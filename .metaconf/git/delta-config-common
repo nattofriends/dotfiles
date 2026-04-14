@@ -1,7 +1,7 @@
-[alias]
-    sdiff = -c delta.features=side-by-side diff
-    scdiff = -c delta.features=side-by-side diff --cached
-    csdiff = -c delta.features=side-by-side diff --cached
+[core]
+    pager = delta
+[interactive]
+    diffFilter = delta --color-only
 [delta]
     diff-highlight = true
     navigate = true
