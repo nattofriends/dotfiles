@@ -29,61 +29,18 @@ else
 endif
 
 if exists('*wildtrigger')
+    augroup CmdlineAutoCompletion
+        autocmd!
+        autocmd CmdlineChanged : call s:TriggerCompletion()
+    augroup END
+
     function! s:TriggerCompletion()
         " Guard against shell commands and empty lines
         if getcmdcompltype() !=# 'shellcmd' && getcmdline() !=# ''
             call wildtrigger()
         endif
     endfunction
-
-else
-    let s:cmp_timer = -1
-
-    function! s:ShouldComplete()
-        " Only trigger in the normal ':' command line
-        if getcmdtype() !=# ':'
-            return 0
-        endif
-
-        let l:cmd = getcmdline()
-
-        " Ignore empty lines and shell commands (e.g., :!ls)
-        if l:cmd ==# '' || getcmdcompltype() ==# 'shellcmd'
-            return 0
-        endif
-
-        " Lookahead: If there are no completions, do NOT press Tab.
-        " This prevents Vim from inserting a literal ^I and causing an infinite loop.
-        if empty(getcompletion(l:cmd, 'cmdline'))
-            return 0
-        endif
-
-        return 1
-    endfunction
-
-    function! s:DoCompletion(timer_id)
-        if !wildmenumode() && s:ShouldComplete()
-            call feedkeys("\<Tab>", 'tn')
-        endif
-    endfunction
-
-    function! s:TriggerCompletion()
-        if s:cmp_timer != -1
-            call timer_stop(s:cmp_timer)
-        endif
-
-        if !s:ShouldComplete()
-            return
-        endif
-
-        let s:cmp_timer = timer_start(30, function('s:DoCompletion'))
-    endfunction
 endif
-
-augroup CmdlineAutoCompletion
-    autocmd!
-    autocmd CmdlineChanged : call s:TriggerCompletion()
-augroup END
 
 set wildignorecase
 set wildignore+=*/tmp/*,*/__pycache__/*,*/.mypy_cache/*,*.so,*.swp,*.pyc,*.pyo,*.gif,*.jpg,*.png
