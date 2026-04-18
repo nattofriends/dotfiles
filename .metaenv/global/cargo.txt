@@ -1,2 +1,2 @@
+cargo-binstall
 cargo-update
-py-spy
