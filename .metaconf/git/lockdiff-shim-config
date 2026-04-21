@@ -1,0 +1,2 @@
+[diff "lockdiff"]
+    textconv = "f() { local d=$(mktemp -d); local clean=${1##*_}; ln $1 $d/$clean; lockdiff $d/$clean; rm -rf $d/$clean; }; f"
