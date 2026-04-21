@@ -32,6 +32,7 @@ import signal
 import subprocess
 import sys
 
+
 _PAGER_ENV = "_DELTA_REFLOW_PAGER"
 
 
@@ -94,10 +95,13 @@ def _delta_main() -> None:
             p.wait()
             if not needs_restart:
                 break
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, BrokenPipeError) as e:
         if curr[0] is not None:
             curr[0].terminate()
-        sys.exit(130)
+        if isinstance(e, KeyboardInterrupt):
+            sys.exit(130)
+        elif isinstance(e, BrokenPipeError):
+            sys.exit(141)
 
 
 if __name__ == "__main__":
