@@ -159,6 +159,7 @@ set list
 
 set updatetime=250
 set signcolumn=yes
+" Don't autoadd the comment leader
 set formatoptions-=r
 set formatoptions-=o
 
@@ -400,6 +401,14 @@ let g:ale_python_autopep8_options = '--ignore=E401,E402,E501,W503,W504 --max-lin
 let g:ale_python_black_options = '--line-length=999'
 let g:ale_python_flake8_options = '--max-line-length=999 --extend-ignore=E203,W391,W503,W504,F403,F405'
 let g:ale_python_isort_options = '--profile=black --force-single-line-imports --line-length=999 --float-to-top'
+<<<<<<< LEFT
+||||||| BASE
+let g:ale_python_autopep8_options = '--ignore=E401,E402,E501,W503,W504 --max-line-length=999'
+let g:ale_python_ruff_options = '--extend-select F841'
+=======
+let g:ale_python_autopep8_options = '--ignore=E401,E402,E501,W503,W504 --max-line-length=999'
+let g:ale_python_ruff_options = '--extend-select F841,RUF100'
+>>>>>>> RIGHT
 
 let g:ale_yaml_yamllint_options = '-d "{extends: relaxed, rules: {line-length: {max: 999}, indentation: disable, hyphens: disable}}"'
 
