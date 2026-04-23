@@ -11,3 +11,16 @@ npm-upgrade:
 clean: npm-clean
 npm-clean:
 	rm -rf ${HOME}/.npm-prefix
+
+# Optional
+nvm-bootstrap:
+	git clone https://github.com/nvm-sh/nvm ${HOME}/.nvm
+
+upgrade: nvm-upgrade
+nvm-upgrade:
+	[ -d ${HOME}/.nvm ] || (echo "prerequisite not installed, skipping $@" && false)
+	cd ${HOME}/.nvm && git pull
+
+clean: nvm-clean
+nvm-clean:
+	rm -rf ${HOME}/.nvm
