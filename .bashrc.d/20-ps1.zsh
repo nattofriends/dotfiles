@@ -5,6 +5,7 @@ autoload -Uz add-zsh-hook
 
 zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:git:*' formats '(%b) '
+zstyle ':vcs_info:git:*' actionformats '(%b|%a) '
 
 vcs_info_precmd() {
   local git_root=$(git rev-parse --show-toplevel 2>/dev/null)
