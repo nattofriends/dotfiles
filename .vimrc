@@ -1,3 +1,5 @@
+set nocompatible
+
 " Vim options {{{1
 " Pathogen load
 runtime bundle/vim-pathogen/autoload/pathogen.vim
@@ -5,9 +7,6 @@ execute pathogen#infect()
 
 filetype plugin indent on
 syntax on
-
-" Important in some environments...
-set nocompatible
 
 " In Windows it inherits the environment, i.e. cp932
 set encoding=utf-8
@@ -522,9 +521,9 @@ function! s:OpenTabsAndNerdTree()
     endif
 
     " Apply patch-specific logic for argument list deduplication
-    if has('patch-8.2.3888')
-        argded
-    endif
+    " if has('patch-8.2.3888')
+    "     argded
+    " endif
 
     " Open all arguments in individual tabs
     tab all
@@ -537,10 +536,10 @@ function! s:OpenTabsAndNerdTree()
     tabfirst
 endfunction
 
-augroup open-tabs
-    au!
-    au VimEnter * ++nested call s:OpenTabsAndNerdTree()
-augroup end
+" augroup open-tabs
+"     au!
+"     au VimEnter * ++nested call s:OpenTabsAndNerdTree()
+" augroup end
 
 nnoremap <silent> p :call PasteOverEmpty()<CR>
 
