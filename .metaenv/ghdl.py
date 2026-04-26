@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import fnmatch
 import json
 import os
 import shutil
@@ -98,7 +99,11 @@ def process(repo, tag_filter, file_filter, archive_member, local_name, existing_
 
     if asset['name'].endswith('.zip'):
         with ZipFile(downloaded) as zipf:
-            target = zipf.read(archive_member)
+            filenames = zipf.namelist()
+            target_members = fnmatch.filter(filenames, archive_member)
+            assert len(target_members) == 1
+            target_member = next(iter(target_members))
+            target = zipf.read(target_member)
 
             target_path = BIN_DIR / local_name
             target_path.write_bytes(target)
@@ -106,12 +111,16 @@ def process(repo, tag_filter, file_filter, archive_member, local_name, existing_
             print(f'Wrote {archive_member} to disk')
     elif asset['name'].endswith('.tar.gz') or asset['name'].endswith('.tar.zst'):
         with tarfile.open(downloaded) as tarf:
-            target = tarf.extractfile(tarf.getmember(archive_member))
+            filenames = tarf.getnames()
+            target_members = fnmatch.filter(filenames, archive_member)
+            assert len(target_members) == 1
+            target_member = next(iter(target_members))
+            target = tarf.extractfile(tarf.getmember(target_member))
 
             target_path = BIN_DIR / local_name
             target_path.write_bytes(target.read())
             target_path.chmod(0o755)
-            print(f'Wrote {archive_member} to disk')
+            print(f'Wrote {target_member} to disk')
     else:
         shutil.move(downloaded, target_path)
 
