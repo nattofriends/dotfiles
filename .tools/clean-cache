@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -x
+
+rm -rf ~/.cache/.bashrc.d
+
+find ~/.bashrc.d -name '*.zwc' -delete
