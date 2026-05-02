@@ -54,10 +54,6 @@
 	branch = master
 	path = .vim/bundle/osc52
 	url = https://github.com/ShikChen/osc52.vim
-[submodule ".vim/bundle/polyglot"]
-	branch = master
-	path = .vim/bundle/polyglot
-	url = https://github.com/sheerun/vim-polyglot
 [submodule ".vim/bundle/puppet"]
 	branch = master
 	path = .vim/bundle/puppet
