@@ -154,3 +154,6 @@
 	path = .zsh/plugin/90-git-completion
 	url = https://github.com/felipec/git-completion
 	branch = master
+[submodule ".vim/bundle/colorizer"]
+	path = .vim/bundle/colorizer
+	url = https://github.com/chrisbra/colorizer

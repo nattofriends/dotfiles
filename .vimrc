@@ -436,6 +436,9 @@ let g:twiggy_remote_branch_sort = 'date'
 let g:twiggy_show_full_ui = 0
 let g:twiggy_icons = ['*', '=', '+', '-', '~', '%', 'x']
 
+" Colorizer
+let g:colorizer_auto_filetype='css,html,jinja'
+
 " Maps and other garbage {{{1
 
 " Vim native functionality {{{2
