@@ -13,7 +13,7 @@ configure_less () {
 
     # https://stackoverflow.com/a/42056714/
     # https://unix.stackexchange.com/questions/184597/
-    local less="-XRF --mouse --use-color"
+    local less="-iXRF --mouse --use-color"
 
     local version=$(less --version | head -n 1 | grep -Eo "[[:digit:]].*[[:digit:]]")
     rc_debug "less: version is ${version}"
