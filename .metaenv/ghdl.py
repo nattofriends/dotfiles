@@ -41,8 +41,8 @@ def main():
         repo = conf[section]['repo']
         tag = conf[section]['tag'].format(**identifiers)
         file = conf[section]['file'].format(**identifiers)
-        archive_member = conf[section].get('archive_member')
-        local_name = conf[section]['local_name']
+        archive_member = conf[section].get('archive_member', section)
+        local_name = conf[section].get('local_name', section)
 
         existing_version = downloaded_versions.get(section)
 
