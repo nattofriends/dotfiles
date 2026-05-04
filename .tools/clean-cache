@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -x
+
+rm -rf ~/.cache/.bashrc.d
+rm -rf ~/.zcompdump
+find ~/.bashrc.d -name '*.zwc' -delete
+find ~ -maxdepth 1 -name '*.zwc' -delete
