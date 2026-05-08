@@ -153,3 +153,7 @@
 [submodule ".vim/bundle/colorizer"]
 	path = .vim/bundle/colorizer
 	url = https://github.com/chrisbra/colorizer
+[submodule ".vim/bundle/python-pep8-indent"]
+	path = .vim/bundle/python-pep8-indent
+	url = https://github.com/Vimjas/vim-python-pep8-indent
+	branch = master
