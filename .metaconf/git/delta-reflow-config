@@ -1,4 +1,7 @@
 [alias]
-    sdiff =  -c core.pager=~/.tools/delta-reflow -c delta.features=side-by-side diff
+    sdiff = -c core.pager=~/.tools/delta-reflow -c delta.features=side-by-side diff
+    diffs = sdiff
     scdiff = -c core.pager=~/.tools/delta-reflow -c delta.features=side-by-side diff --cached
-    csdiff = -c core.pager=~/.tools/delta-reflow -c delta.features=side-by-side diff --cached
+    csdiff = scdiff
+    diffsc = scdiff
+    diffcs = scdiff

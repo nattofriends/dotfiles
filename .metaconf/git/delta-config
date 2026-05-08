@@ -1,4 +1,7 @@
 [alias]
     sdiff = -c delta.features=side-by-side diff
+    diffs = sdiff
     scdiff = -c delta.features=side-by-side diff --cached
-    csdiff = -c delta.features=side-by-side diff --cached
+    csdiff = scdiff
+    diffsc = scdiff
+    diffcs = scdiff
