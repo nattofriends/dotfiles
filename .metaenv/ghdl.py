@@ -68,6 +68,8 @@ def get_identifiers():
 
     if identifiers['machine'] in ('x86_64', 'amd64'):
         identifiers['machine'] = 'x86_64|amd64|64bit'
+    elif identifiers['machine'] == "arm64":
+        identifiers["machine"] += "|aarch64"
     if identifiers['system'] == 'Darwin':
         identifiers['system'] += '|macOS'
 
