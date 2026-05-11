@@ -36,8 +36,9 @@ def main():
 
     identifiers = get_identifiers()
 
-    for section in conf.sections():
-        print(f'Working on {section}')
+    print("Starting ghdl")
+    for i, section in enumerate(conf.sections()):
+        print(f'{i+1}: Working on {section}')
         repo = conf[section]['repo']
         tag = conf[section]['tag'].format(**identifiers)
         file = conf[section]['file'].format(**identifiers)
@@ -120,6 +121,7 @@ def process(repo, tag_filter, file_filter, archive_member, local_name, existing_
             target = tarf.extractfile(tarf.getmember(target_member))
 
             target_path = BIN_DIR / local_name
+            target_path.unlink()
             target_path.write_bytes(target.read())
             target_path.chmod(0o755)
             print(f'Wrote {target_member} to disk')
