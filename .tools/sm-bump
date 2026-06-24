@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -euo pipefail
+
+git submodule update --remote --merge
+
+git submodule foreach --quiet 'echo $displaypath' | xargs git add --
+
+if git diff --cached --quiet; then
+    echo "No submodule changes."
+    exit 0
+fi
+
+git commit -m "bump submodules"
