@@ -6,7 +6,9 @@ import os
 import shutil
 import platform
 import re
+import subprocess
 import tarfile
+import tempfile
 from configparser import ConfigParser
 from pathlib import Path
 from urllib.request import urlopen
@@ -112,25 +114,39 @@ def process(repo, tag_filter, file_filter, archive_member, local_name, existing_
             target_path.write_bytes(target)
             target_path.chmod(0o755)
             print(f'Wrote {archive_member} to disk')
-    elif asset['name'].endswith('.tar.gz') or asset['name'].endswith('.tar.zst'):
+    elif asset['name'].endswith('.tar.gz'):
         with tarfile.open(downloaded) as tarf:
-            filenames = tarf.getnames()
-            target_members = fnmatch.filter(filenames, archive_member)
-            assert len(target_members) == 1
-            target_member = next(iter(target_members))
-            target = tarf.extractfile(tarf.getmember(target_member))
+            extract_tar_member(tarf, archive_member, target_path)
+    elif asset['name'].endswith('.tar.zst'):
+        unzstd = shutil.which('unzstd')
+        if not unzstd:
+            raise RuntimeError('Cannot extract .tar.zst asset: unzstd from zstd(1) was not found')
 
-            target_path = BIN_DIR / local_name
-            target_path.unlink()
-            target_path.write_bytes(target.read())
-            target_path.chmod(0o755)
-            print(f'Wrote {target_member} to disk')
+        with tempfile.TemporaryFile() as f:
+            subprocess.run([unzstd, '-c', downloaded], stdout=f, check=True)
+            f.seek(0)
+            with tarfile.open(fileobj=f, mode='r:') as tarf:
+                extract_tar_member(tarf, archive_member, target_path)
     else:
         shutil.move(downloaded, target_path)
 
     target_path.chmod(0o755)
 
     return release['tag_name']
+
+
+def extract_tar_member(tarf, archive_member, target_path):
+    filenames = tarf.getnames()
+    target_members = fnmatch.filter(filenames, archive_member)
+    assert len(target_members) == 1
+    target_member = next(iter(target_members))
+    target = tarf.extractfile(tarf.getmember(target_member))
+
+    if target_path.exists():
+        target_path.unlink()
+    target_path.write_bytes(target.read())
+    target_path.chmod(0o755)
+    print(f'Wrote {target_member} to disk')
 
 
 if __name__ == '__main__':
