@@ -5,9 +5,9 @@ RC_PLUGIN_DISABLE=""
 
 noninteractive () {
     RC_DEBUG=0
-    source_file ~/.zshrc.pre.noninteractive
+    source_file ~/.zshenv.pre
     source_dir ~/.bashrc.d/noninteractive
-    source_file ~/.zshrc.local.noninteractive
+    source_file ~/.zshenv.local
 }
 
 main () {
