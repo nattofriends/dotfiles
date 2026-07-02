@@ -5,19 +5,26 @@ RC_PLUGIN_DISABLE=""
 
 noninteractive () {
     RC_DEBUG=0
+    source_file ~/.zshrc.pre.noninteractive
     source_dir ~/.bashrc.d/noninteractive
+    source_file ~/.zshrc.local.noninteractive
 }
 
 main () {
     rc_log "using zsh"
     rc_debug "RC_DEBUG=$RC_DEBUG"
 
-    source_file ~/.zshrc_prelocal
+    # Let's copy grml's naming convention on this, which seems to be reasonable
+    source_file ~/.zshrc.pre
+    source_file ~/.zshrc_prelocal # old
+
     source_dir ~/.bashrc.d/pre
 
     source_dir ~/.bashrc.d
 
+    source_file ~/.zshrc.local
     source_file ~/.zshrc_local
+
     source_dir ~/.bashrc.d/post
 }
 
