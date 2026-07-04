@@ -128,7 +128,8 @@ def process(repo, tag_filter, file_filter, archive_member, local_name, existing_
             with tarfile.open(fileobj=f, mode='r:') as tarf:
                 extract_tar_member(tarf, archive_member, target_path)
     else:
-        shutil.move(downloaded, target_path)
+        shutil.copyfile(downloaded, target_path)
+        Path(downloaded).unlink()
 
     target_path.chmod(0o755)
 
