@@ -7,8 +7,10 @@ import shutil
 import platform
 import re
 import subprocess
+import sys
 import tarfile
 import tempfile
+import traceback
 from configparser import ConfigParser
 from pathlib import Path
 from urllib.request import urlopen
@@ -37,6 +39,7 @@ def main():
         downloaded_versions = json.loads(versions_path.read_text())
 
     identifiers = get_identifiers()
+    failures = []
 
     print("Starting ghdl")
     for i, section in enumerate(conf.sections()):
@@ -49,18 +52,30 @@ def main():
 
         existing_version = downloaded_versions.get(section)
 
-        downloaded_tag = process(
-            repo,
-            tag,
-            file,
-            archive_member,
-            local_name,
-            existing_version,
-        )
+        try:
+            downloaded_tag = process(
+                repo,
+                tag,
+                file,
+                archive_member,
+                local_name,
+                existing_version,
+            )
+        except Exception:
+            failures.append((section, traceback.format_exc()))
+            continue
+
         downloaded_versions[section] = downloaded_tag
 
     versions_path.parent.mkdir(parents=True, exist_ok=True)
     versions_path.write_text(json.dumps(downloaded_versions, indent=2))
+
+    if failures:
+        print('\nghdl failed for these sections:', file=sys.stderr)
+        for section, failure in failures:
+            print(f'\n[{section}]', file=sys.stderr)
+            print(failure.rstrip(), file=sys.stderr)
+        sys.exit(1)
 
 
 def get_identifiers():
