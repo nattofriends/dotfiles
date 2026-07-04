@@ -6,7 +6,11 @@ import os
 import shutil
 import platform
 import re
+import subprocess
+import sys
 import tarfile
+import tempfile
+import traceback
 from configparser import ConfigParser
 from pathlib import Path
 from urllib.request import urlopen
@@ -35,6 +39,7 @@ def main():
         downloaded_versions = json.loads(versions_path.read_text())
 
     identifiers = get_identifiers()
+    failures = []
 
     print("Starting ghdl")
     for i, section in enumerate(conf.sections()):
@@ -47,18 +52,30 @@ def main():
 
         existing_version = downloaded_versions.get(section)
 
-        downloaded_tag = process(
-            repo,
-            tag,
-            file,
-            archive_member,
-            local_name,
-            existing_version,
-        )
+        try:
+            downloaded_tag = process(
+                repo,
+                tag,
+                file,
+                archive_member,
+                local_name,
+                existing_version,
+            )
+        except Exception:
+            failures.append((section, traceback.format_exc()))
+            continue
+
         downloaded_versions[section] = downloaded_tag
 
     versions_path.parent.mkdir(parents=True, exist_ok=True)
     versions_path.write_text(json.dumps(downloaded_versions, indent=2))
+
+    if failures:
+        print('\nghdl failed for these sections:', file=sys.stderr)
+        for section, failure in failures:
+            print(f'\n[{section}]', file=sys.stderr)
+            print(failure.rstrip(), file=sys.stderr)
+        sys.exit(1)
 
 
 def get_identifiers():
@@ -112,25 +129,40 @@ def process(repo, tag_filter, file_filter, archive_member, local_name, existing_
             target_path.write_bytes(target)
             target_path.chmod(0o755)
             print(f'Wrote {archive_member} to disk')
-    elif asset['name'].endswith('.tar.gz') or asset['name'].endswith('.tar.zst'):
+    elif asset['name'].endswith('.tar.gz'):
         with tarfile.open(downloaded) as tarf:
-            filenames = tarf.getnames()
-            target_members = fnmatch.filter(filenames, archive_member)
-            assert len(target_members) == 1
-            target_member = next(iter(target_members))
-            target = tarf.extractfile(tarf.getmember(target_member))
+            extract_tar_member(tarf, archive_member, target_path)
+    elif asset['name'].endswith('.tar.zst'):
+        unzstd = shutil.which('unzstd')
+        if not unzstd:
+            raise RuntimeError('Cannot extract .tar.zst asset: unzstd from zstd(1) was not found')
 
-            target_path = BIN_DIR / local_name
-            target_path.unlink()
-            target_path.write_bytes(target.read())
-            target_path.chmod(0o755)
-            print(f'Wrote {target_member} to disk')
+        with tempfile.TemporaryFile() as f:
+            subprocess.run([unzstd, '-c', downloaded], stdout=f, check=True)
+            f.seek(0)
+            with tarfile.open(fileobj=f, mode='r:') as tarf:
+                extract_tar_member(tarf, archive_member, target_path)
     else:
-        shutil.move(downloaded, target_path)
+        shutil.copyfile(downloaded, target_path)
+        Path(downloaded).unlink()
 
     target_path.chmod(0o755)
 
     return release['tag_name']
+
+
+def extract_tar_member(tarf, archive_member, target_path):
+    filenames = tarf.getnames()
+    target_members = fnmatch.filter(filenames, archive_member)
+    assert len(target_members) == 1
+    target_member = next(iter(target_members))
+    target = tarf.extractfile(tarf.getmember(target_member))
+
+    if target_path.exists():
+        target_path.unlink()
+    target_path.write_bytes(target.read())
+    target_path.chmod(0o755)
+    print(f'Wrote {target_member} to disk')
 
 
 if __name__ == '__main__':
