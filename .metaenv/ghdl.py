@@ -10,9 +10,12 @@ import subprocess
 import sys
 import tarfile
 import tempfile
+import time
 import traceback
 from configparser import ConfigParser
 from pathlib import Path
+from urllib.error import HTTPError
+from urllib.request import Request
 from urllib.request import urlopen
 from urllib.request import urlretrieve
 from zipfile import ZipFile
@@ -95,8 +98,7 @@ def get_identifiers():
 
 
 def process(repo, tag_filter, file_filter, archive_member, local_name, existing_version):
-    releases = urlopen(RELEASE_API.format(repo))
-    releases = json.load(releases)
+    releases = fetch_releases(repo)
 
     for release in releases:
         if not release['prerelease'] and re.search(tag_filter, release['tag_name'], flags=re.I):
@@ -149,6 +151,43 @@ def process(repo, tag_filter, file_filter, archive_member, local_name, existing_
     target_path.chmod(0o755)
 
     return release['tag_name']
+
+
+def fetch_releases(repo):
+    github_token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
+    headers = {}
+    if github_token:
+        headers = {"Authorization": f"Bearer {github_token}"}
+
+    while True:
+        try:
+            request = Request(RELEASE_API.format(repo), headers=headers)
+            return json.load(urlopen(request))
+        except HTTPError as error:
+            body = error.read().decode("utf-8", errors="replace").lower()
+            rate_limited = (
+                error.code == 429
+                or error.headers.get("X-RateLimit-Remaining") == "0"
+                or error.headers.get("Retry-After")
+                or "rate limit" in body
+            )
+            if not rate_limited:
+                raise
+
+            retry_after = error.headers.get("Retry-After")
+            reset = error.headers.get("X-RateLimit-Reset")
+            if retry_after:
+                wait = int(retry_after)
+            elif reset:
+                wait = int(reset) - int(time.time()) + 1
+            else:
+                wait = 60
+            wait = max(wait, 1)
+
+            print(f"GitHub rate limited {repo}; waiting {wait} seconds")
+            if not github_token:
+                print("Set GH_TOKEN or GITHUB_TOKEN to use an authenticated limit")
+            time.sleep(wait)
 
 
 def extract_tar_member(tarf, archive_member, target_path):
