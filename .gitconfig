@@ -1,16 +1,20 @@
 [alias]
     co = checkout
     sm = submodule
-
-    sttaus = status
-    brnach = branch
-    gpre = grep
-
     b = rev-parse --abbrev-ref HEAD
     br = branch --sort=-committerdate --format='%(HEAD) %(refname:short) %(color:yellow)%(objectname:short)%(color:reset) (%(color:green)%(committerdate:relative)%(color:reset))'
     # TODO: Support other fuzzy finders
     bri = "!git checkout $(git br | fzy | tr -s ' ' | cut -f2 -d' ')"
-    cdiff = diff --cached
+[alias]
+    commti = commit
+    commmit = commit
+    satus = status
+    sttaus = status
+    brnach = branch
+    gpre = grep
+    etst = test
+[alias]
+    diffc = diff --cached
 [branch]
     sort = committerdate
 [color]
