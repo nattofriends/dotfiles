@@ -37,18 +37,6 @@ function pbcopy {
     printf "\033]52;c;$(base64 | tr -d '\r\n')\a"
 }
 
-function pathcheck {
-    [[ -d "$1" && ":$PATH:" != *":$1:"* ]]
-}
-
-function pathprepend {
-    pathcheck "$1" && PATH="$1:${PATH}"
-}
-
-function pathappend {
-    pathcheck "$1" && PATH="${PATH}:$1"
-}
-
 function envinstall {
   echo -e "/.env\n/.envrc" >> .git/info/exclude
   touch .env

@@ -3,13 +3,6 @@ RC_CACHING=1
 RC_PLUGIN=1
 RC_PLUGIN_DISABLE=""
 
-noninteractive () {
-    RC_DEBUG=0
-    source_file ~/.zshenv.pre
-    source_dir ~/.bashrc.d/noninteractive
-    source_file ~/.zshenv.local
-}
-
 main () {
     rc_log "using zsh"
     rc_debug "RC_DEBUG=$RC_DEBUG"
@@ -32,11 +25,8 @@ for lib in ~/.bashrc.d/lib/lib.{sh,zsh}; do
     . $lib
 done
 
-if [[ $- != *i* ]] ; then
-    noninteractive
-else
-    main
-fi
+# noninteractive is done only in .zshenv
+main
 
 uninit
 unset RC_DEBUG RC_CACHING RC_PLUGIN main noninteractive
