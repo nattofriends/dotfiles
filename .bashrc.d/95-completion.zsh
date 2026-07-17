@@ -5,6 +5,8 @@
         fpath=(~/.metaconf/zsh-completions/generated $fpath)
     fi
 
+    # Replace the shim from noninteractive/10-misc.zsh before cached compinit.
+    unfunction compdef
     autoload -Uz compinit bashcompinit
 
     if [[ -s ~/.zcompdump && -n ~/.zcompdump(N.mh-24) ]]; then
@@ -14,6 +16,9 @@
         rc_log "loading completions"
         compinit -u -d ~/.zcompdump
     fi
+
+    compdef "${deferred_compdef_args[@]}"
+    unset deferred_compdef_args
 
     mkdir -p ~/.zsh/cache
 
