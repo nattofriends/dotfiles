@@ -17,7 +17,9 @@
         compinit -u -d ~/.zcompdump
     fi
 
-    compdef "${deferred_compdef_args[@]}"
+    if (( ${#deferred_compdef_args} )); then
+        compdef "${deferred_compdef_args[@]}"
+    fi
     unset deferred_compdef_args
 
     mkdir -p ~/.zsh/cache
