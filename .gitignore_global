@@ -12,6 +12,7 @@ venv/
 *.pyc
 cscope.out
 tags
+coverage.xml
 
 *.zwc
 

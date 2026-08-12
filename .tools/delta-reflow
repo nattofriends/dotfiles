@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """
 delta-reflow — wraps delta and reruns it on SIGWINCH so diffs reflow at the
 new terminal width.
