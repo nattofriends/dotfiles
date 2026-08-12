@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """
 delta-reflow — wraps delta and reruns it on SIGWINCH so diffs reflow at the
 new terminal width.
@@ -8,9 +8,12 @@ How it works
 When the terminal is resized, SIGWINCH is delivered to the entire foreground
 process group (this script, delta, and less).  This script runs in two modes:
 
-  Main mode   – buffers stdin; on SIGWINCH, kills delta and loops.
-  Pager mode  – replaces delta's own `less` invocation; on SIGWINCH, kills
-                less and exits so the main loop can restart delta cleanly.
+  Main mode   – buffers stdin and owns an anonymous rendered-output buffer.
+  Pager mode  – copies delta's output into that buffer and runs less on it.
+
+On SIGWINCH, pager mode waits for less to save its current position before it
+exits.  Main mode then reruns delta and less returns to approximately the same
+position in the reflowed output.
 
 DELTA_PAGER is set to point back at this script so both halves fire on every
 resize event.
@@ -28,86 +31,276 @@ Usage
 
 import os
 import shlex
+import shutil
 import signal
 import subprocess
 import sys
+import tempfile
+from pathlib import Path
+from stat import S_IMODE
+from time import monotonic
+from time import sleep
 
 
-_PAGER_ENV = "_DELTA_REFLOW_PAGER"
+PAGER_ENV = "_DELTA_REFLOW_PAGER"
+RENDER_BUFFER_PATH_ENV = "_DELTA_REFLOW_BUFFER_PATH"
+RESTORE_POSITION_ENV = "_DELTA_REFLOW_RESTORE_POSITION"
+SAVE_MARKS_ENV = "_DELTA_REFLOW_SAVE_MARKS"
+RESIZE_DEBOUNCE_SECONDS = 0.05
+HIDDEN_FILENAME_SHORT_PROMPT = (
+    r"?e(END) ?x- Next\: %x.:?pB%pB\%:byte %bB?s/%s...%t"
+)
 
 
-def _pager_main() -> None:
-    """Pager mode: run less, exit on SIGWINCH so the parent can restart delta."""
-    proc: list[subprocess.Popen | None] = [None]
+def less_history_path(environment: dict[str, str]) -> Path | None:
+    """Return the history file less will use, or None when it is disabled."""
+    configured_path = environment.get("LESSHISTFILE")
+    if configured_path in {"-", "/dev/null"}:
+        return None
+    if configured_path:
+        return Path(configured_path).absolute()
 
-    def _winch(_sig: int, _frame: object) -> None:
-        if proc[0] is not None:
-            proc[0].terminate()
-        sys.exit(1)
+    data_home = environment.get("XDG_DATA_HOME")
+    if data_home:
+        return Path(data_home) / "lesshst"
 
-    signal.signal(signal.SIGWINCH, _winch)
+    home = environment.get("HOME")
+    if home:
+        return Path(home) / ".lesshst"
+    return None
 
-    # -R: render ANSI colour escapes (required for delta output).
-    # -F: quit immediately when output fits on one screen.
-    # The user's $LESS is still honoured by less itself.
-    p = subprocess.Popen(["less", "-RF"], stdin=sys.stdin)
-    proc[0] = p
+
+def remove_render_buffer_marks(
+    history_path: Path | None,
+    render_buffer_path: str,
+) -> None:
+    """Remove saved less marks that refer to this invocation's memfd."""
+    if history_path is None or not history_path.exists():
+        return
+
+    history_contents = history_path.read_bytes()
+    history_lines = history_contents.splitlines(keepends=True)
+    render_buffer_suffix = b" " + os.fsencode(render_buffer_path)
+    filtered_lines: list[bytes] = []
+    in_mark_section = False
+    removed_mark = False
+
+    for history_line in history_lines:
+        stripped_line = history_line.rstrip(b"\r\n")
+        if stripped_line.startswith(b"."):
+            in_mark_section = stripped_line == b".mark"
+
+        if (
+            in_mark_section
+            and stripped_line.startswith(b"m ")
+            and stripped_line.endswith(render_buffer_suffix)
+        ):
+            removed_mark = True
+            continue
+        filtered_lines.append(history_line)
+
+    if not removed_mark:
+        return
+
+    mark_header_index = next(
+        index
+        for index, history_line in enumerate(filtered_lines)
+        if history_line.rstrip(b"\r\n") == b".mark"
+    )
+    mark_section_end = next(
+        (
+            index
+            for index in range(mark_header_index + 1, len(filtered_lines))
+            if filtered_lines[index].startswith(b".")
+        ),
+        len(filtered_lines),
+    )
+    if mark_section_end == mark_header_index + 1:
+        del filtered_lines[mark_header_index]
+
+    filtered_contents = b"".join(filtered_lines)
+    history_metadata = history_path.stat()
+    temporary_history = tempfile.NamedTemporaryFile(
+        dir=history_path.parent,
+        prefix=f".{history_path.name}.delta-reflow-",
+        delete=False,
+    )
+    temporary_history_path = Path(temporary_history.name)
     try:
-        p.wait()
+        with temporary_history:
+            os.fchmod(
+                temporary_history.fileno(),
+                S_IMODE(history_metadata.st_mode),
+            )
+            temporary_history.write(filtered_contents)
+        os.replace(temporary_history_path, history_path)
+    finally:
+        temporary_history_path.unlink(missing_ok=True)
+
+
+def schedule_render_buffer_mark_cleanup(
+    history_path: Path | None,
+    render_buffer_path: str,
+) -> None:
+    """Remove this invocation's less mark without delaying shell return."""
+    if history_path is None:
+        return
+
+    cleanup_pid = os.fork()
+    if cleanup_pid != 0:
+        return
+
+    try:
+        os.setsid()
+        null_fd = os.open(os.devnull, os.O_RDWR)
+        for standard_fd in range(3):
+            os.dup2(null_fd, standard_fd)
+        if null_fd > 2:
+            os.close(null_fd)
+        remove_render_buffer_marks(history_path, render_buffer_path)
+    finally:
+        os._exit(0)
+
+
+def pager_main() -> int:
+    """Buffer one delta rendering and page it until exit or terminal resize."""
+    render_buffer_path = os.environ[RENDER_BUFFER_PATH_ENV]
+    resize_requested = False
+    less_process: subprocess.Popen | None = None
+
+    def handle_winch(signal_number: int, frame: object) -> None:
+        nonlocal resize_requested
+        resize_requested = True
+        if less_process is not None:
+            less_process.terminate()
+
+    signal.signal(signal.SIGWINCH, handle_winch)
+
+    try:
+        with open(render_buffer_path, "wb") as render_buffer:
+            shutil.copyfileobj(sys.stdin.buffer, render_buffer)
+
+        if resize_requested:
+            return 1
+
+        # The user's LESS options remain active alongside these command-line
+        # requirements for ANSI output and one-screen auto-exit.
+        less_command = [
+            "less",
+            "-RF",
+            f"-Ps{HIDDEN_FILENAME_SHORT_PROMPT}",
+        ]
+        if os.environ.get(SAVE_MARKS_ENV):
+            less_command.append("--save-marks")
+        if os.environ.get(RESTORE_POSITION_ENV):
+            less_command.append("+''")
+        less_command.append(render_buffer_path)
+
+        less_process = subprocess.Popen(less_command)
+        if resize_requested:
+            less_process.terminate()
+        less_process.wait()
     except KeyboardInterrupt:
-        p.terminate()
-        p.wait()
-        sys.exit(130)
-    sys.exit(p.returncode)
+        if less_process is not None:
+            less_process.terminate()
+            less_process.wait()
+        return 130
+
+    if resize_requested:
+        return 1
+    return less_process.returncode
 
 
-def _delta_main() -> None:
-    """Main mode: buffer stdin, run delta, restart it on SIGWINCH."""
+def delta_main() -> int:
+    """Run delta and retain its anonymous render buffer across reflows."""
     data = sys.stdin.buffer.read()
 
     needs_restart = False
-    curr: list[subprocess.Popen | None] = [None]
+    current_process: subprocess.Popen | None = None
 
-    def _winch(_sig: int, _frame: object) -> None:
+    def handle_winch(signal_number: int, frame: object) -> None:
         nonlocal needs_restart
         needs_restart = True
-        if curr[0] is not None:
-            curr[0].terminate()
 
-    signal.signal(signal.SIGWINCH, _winch)
+    signal.signal(signal.SIGWINCH, handle_winch)
 
-    # Point DELTA_PAGER at ourselves (pager mode) so the pager also traps
-    # SIGWINCH and tears down less before we restart delta.
     script = os.path.abspath(__file__)
-    env = os.environ.copy()
-    env[_PAGER_ENV] = "1"
-    env["DELTA_PAGER"] = f"{shlex.quote(sys.executable)} {shlex.quote(script)}"
+    environment = os.environ.copy()
+    environment[PAGER_ENV] = "1"
+    environment["DELTA_PAGER"] = (
+        f"{shlex.quote(sys.executable)} {shlex.quote(script)}"
+    )
 
-    cmd = ["delta"] + sys.argv[1:]
+    render_buffer_fd = os.memfd_create("delta-reflow")
+    render_buffer_path = f"/proc/{os.getpid()}/fd/{render_buffer_fd}"
+    environment[RENDER_BUFFER_PATH_ENV] = render_buffer_path
+
+    history_path = less_history_path(environment)
+    marks_enabled = history_path is not None
+    if marks_enabled:
+        environment[SAVE_MARKS_ENV] = "1"
+
+    command = ["delta"] + sys.argv[1:]
+    restore_position = False
 
     try:
         while True:
             needs_restart = False
-            p = subprocess.Popen(cmd, stdin=subprocess.PIPE, env=env)
-            curr[0] = p
-            p.stdin.write(data)
-            p.stdin.close()
-            p.wait()
+            run_environment = environment.copy()
+            if restore_position:
+                run_environment[RESTORE_POSITION_ENV] = "1"
+
+            current_process = subprocess.Popen(
+                command,
+                stdin=subprocess.PIPE,
+                env=run_environment,
+            )
+            current_process.communicate(input=data)
             if not needs_restart:
                 break
-    except (KeyboardInterrupt, BrokenPipeError) as e:
-        if curr[0] is not None:
-            curr[0].terminate()
-        if isinstance(e, KeyboardInterrupt):
-            sys.exit(130)
-        elif isinstance(e, BrokenPipeError):
-            sys.exit(141)
-        else:
-            raise
+
+            # Starting less during a resize drag can replace the useful saved
+            # mark before +'' has restored it. Polling dimensions identifies
+            # the end of the burst even when repeated SIGWINCH signals merge.
+            terminal_size = shutil.get_terminal_size()
+            quiet_started_at = monotonic()
+            while True:
+                quiet_time_remaining = (
+                    quiet_started_at
+                    + RESIZE_DEBOUNCE_SECONDS
+                    - monotonic()
+                )
+                if quiet_time_remaining <= 0:
+                    break
+                sleep(
+                    min(
+                        quiet_time_remaining,
+                        RESIZE_DEBOUNCE_SECONDS / 5,
+                    ),
+                )
+                current_terminal_size = shutil.get_terminal_size()
+                if current_terminal_size != terminal_size:
+                    terminal_size = current_terminal_size
+                    quiet_started_at = monotonic()
+            restore_position = marks_enabled
+    except KeyboardInterrupt:
+        if current_process is not None:
+            current_process.terminate()
+            current_process.wait()
+        return 130
+    finally:
+        try:
+            schedule_render_buffer_mark_cleanup(
+                history_path,
+                render_buffer_path,
+            )
+        finally:
+            os.close(render_buffer_fd)
+    return 0
 
 
 if __name__ == "__main__":
-    if os.environ.get(_PAGER_ENV):
-        _pager_main()
+    if os.environ.get(PAGER_ENV):
+        sys.exit(pager_main())
     else:
-        _delta_main()
+        sys.exit(delta_main())

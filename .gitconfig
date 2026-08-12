@@ -3,6 +3,7 @@
     sm = submodule
     b = rev-parse --abbrev-ref HEAD
     br = branch --sort=-committerdate --format='%(HEAD) %(refname:short) %(color:yellow)%(objectname:short)%(color:reset) (%(color:green)%(committerdate:relative)%(color:reset))'
+    fp = fetch --all --prune
     # TODO: Support other fuzzy finders
     bri = "!git checkout $(git br | fzy | tr -s ' ' | cut -f2 -d' ')"
 [alias]
