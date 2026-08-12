@@ -102,6 +102,8 @@ def _delta_main() -> None:
             sys.exit(130)
         elif isinstance(e, BrokenPipeError):
             sys.exit(141)
+        else:
+            raise
 
 
 if __name__ == "__main__":
