@@ -19,8 +19,23 @@ _git_prompt_precmd() {
   fi
   [[ -z "$git_root" || "$git_root" == "$HOME" ]] && { _git_prompt=""; return; }
 
-  local branch=$($_git symbolic-ref --short HEAD 2>/dev/null) || branch="detached"
+  # In a worktree, .git is a file containing "gitdir: <path>" pointing to the
+  # worktree-specific git dir (e.g. main/.git/worktrees/name). Resolving it
+  # gives the correct HEAD and action state for this worktree.
   local git_dir=${git_root}/.git
+  if [[ -f "$git_dir" ]]; then
+    git_dir=$(<"$git_dir")
+    git_dir=${git_dir#gitdir: }
+  fi
+
+  # Read HEAD directly to avoid forking git for branch detection.
+  local branch
+  local head=$(<"$git_dir/HEAD")
+  if [[ "$head" == ref:\ * ]]; then
+    branch=${head#ref: refs/heads/}
+  else
+    branch="detached"
+  fi
 
   if [[ -d "$git_dir/rebase-merge" || -d "$git_dir/rebase-apply" ]]; then
     _git_prompt="($branch|rebase) "
