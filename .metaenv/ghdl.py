@@ -46,7 +46,7 @@ def main():
 
     print("Starting ghdl")
     for i, section in enumerate(conf.sections()):
-        print(f'{i+1}: Working on {section}')
+        print(f'{i + 1}: Working on {section}')
         repo = conf[section]['repo']
         tag = conf[section]['tag'].format(**identifiers)
         file = conf[section]['file'].format(**identifiers)
@@ -88,7 +88,7 @@ def get_identifiers():
     }
 
     if identifiers['machine'] in ('x86_64', 'amd64'):
-        identifiers['machine'] = 'x86_64|amd64|64bit'
+        identifiers['machine'] = 'x86_64|amd64|64bit|x64'
     elif identifiers['machine'] == "arm64":
         identifiers["machine"] += "|aarch64"
     if identifiers['system'] == 'Darwin':
@@ -113,6 +113,8 @@ def process(repo, tag_filter, file_filter, archive_member, local_name, existing_
         if re.search(file_filter, asset['name'], flags=re.I):
             print(f'Found matching asset name: {asset["name"]}')
             break
+    else:
+        raise RuntimeError(f"Unable to find matching asset matching {file_filter}")
 
     print(f'Downloading asset URL: {asset["browser_download_url"]}...')
 
