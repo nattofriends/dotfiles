@@ -539,10 +539,10 @@ function! s:OpenTabsAndNerdTree()
     tabfirst
 endfunction
 
-" augroup open-tabs
-"     au!
-"     au VimEnter * ++nested call s:OpenTabsAndNerdTree()
-" augroup end
+augroup open-tabs
+    au!
+    au VimEnter * ++nested call s:OpenTabsAndNerdTree()
+augroup end
 
 nnoremap <silent> p :call PasteOverEmpty()<CR>
 
