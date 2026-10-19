@@ -10,6 +10,10 @@ bindkey "^[[4~" end-of-line
 bindkey "^[[H" beginning-of-line
 bindkey "^[[F" end-of-line
 
+# Make Alt-LRArrow work through SSH (shouldn't need to do this...)
+bindkey "^[[1;3C" forward-word
+bindkey "^[[1;3D" backward-word
+
 # https://stackoverflow.com/questions/890620/unable-to-have-bash-like-c-x-e-in-zsh
 autoload edit-command-line
 zle -N edit-command-line
